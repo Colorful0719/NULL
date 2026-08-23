@@ -1,14 +1,16 @@
 import { GAME_MODE } from '../core/GameMode.js';
 import { InteractionSystem } from '../systems/InteractionSystem.js?v=neighborhoodboards1';
 import { RoamingEnemyManager } from './RoamingEnemyManager.js?v=roamingchase1';
+import { MapAssetCache } from '../core/MapAssetCache.js?v=mapperf1';
 
 export class MapManager {
-  constructor({ scenes, gameState, view, saveManager, onEncounter, onPuzzle, onInteract, onEnter }) {
+  constructor({ scenes, gameState, view, saveManager, onEncounter, onPuzzle, onInteract, onEnter, assetCache = new MapAssetCache() }) {
     this.scenes = scenes; this.gameState = gameState; this.view = view; this.saveManager = saveManager; this.onEncounter=onEncounter; this.onPuzzle=onPuzzle;
-    this.onInteract=onInteract;this.onEnter=onEnter;this.scene = null; this.position = { x: 0, y: 0 };
+    this.onInteract=onInteract;this.onEnter=onEnter;this.assetCache=assetCache;this.scene = null; this.position = { x: 0, y: 0 };
     this.roamingEnemies=new RoamingEnemyManager({gameState,view,saveManager,isCollision:(position)=>this.isCollision(position),onEncounter:(enemy)=>this.handleRoamingEncounter(enemy)});
   }
   enter(sceneId, { resetToSpawn = false, position = null, direction = null } = {}) {
+    const measureStart=globalThis.performance?.now?.()??0;
     const scene = this.scenes.find((item) => item.id === sceneId && item.type === 'map');
     if (!scene) throw new Error(`找不到探索場景：${sceneId}`);
     if(scene.id==='home_map'&&!this.gameState.get('flags.albumParentPostBattleComplete')){
@@ -29,6 +31,10 @@ export class MapManager {
     this.gameState.set('playerMovementLocked', false);
     this.persistExploration();
     this.view.open(); this.view.render(scene, this.position, (to) => this.enter(to), (enemyId)=>this.onEncounter?.(enemyId), (puzzleId)=>this.onPuzzle?.(puzzleId));this.roamingEnemies.enter(scene); this.view.move(this.position, this.gameState.get('exploration.facing') ?? scene.spawnFacing ?? 'down');this.refreshInteraction();this.onEnter?.(scene);
+    this.assetCache.preloadNeighbors(scene,this.scenes);
+    const measureEnd=globalThis.performance?.now?.()??measureStart;
+    this.lastEnterMetric={sceneId:scene.id,durationMs:Number((measureEnd-measureStart).toFixed(2))};
+    globalThis.performance?.measure?.(`map-enter:${scene.id}`,{start:measureStart,end:measureEnd});
   }
   move(dx, dy) {
     if (!this.scene || this.gameState.get('playerMovementLocked')) return false;

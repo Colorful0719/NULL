@@ -25,7 +25,13 @@ export class MapView {
     window.addEventListener('resize', this.onResize);
   }
   open() { this.root.querySelector('#title-screen').hidden = true; this.root.querySelector('#dialogue-scene').hidden = true; this.screen.hidden = false; }
-  transition(run){this.screen.classList.add('is-transitioning');window.setTimeout(()=>{run();window.requestAnimationFrame(()=>this.screen.classList.remove('is-transitioning'));},180);}
+  transition(run){
+    this.screen.classList.add('is-transitioning');
+    window.requestAnimationFrame(()=>{
+      run();
+      window.requestAnimationFrame(()=>this.screen.classList.remove('is-transitioning'));
+    });
+  }
   render(scene, position, onExit, onEncounter, onPuzzle) {
     this.screen.dataset.theme = scene.theme;
     this.screen.dataset.debugMap = String(DEBUG_MAP);
@@ -41,8 +47,8 @@ export class MapView {
     this.grid.dataset.mapArt=String(Boolean(mapArt?.baseImage));
     this.grid.dataset.gridVisible=String(mapArt?.gridVisible!==false);
     this.grid.setAttribute('aria-label',`${scene.displayName}，${scene.grid?.width??6} 乘 ${scene.grid?.height??4} 格探索地圖`);
-    if(this.groundLayer){this.groundLayer.hidden=!mapArt?.baseImage;this.groundLayer.src=mapArt?.baseImage??'';}
-    if(this.objectLayer){this.objectLayer.hidden=!mapArt?.objectImage;this.objectLayer.src=mapArt?.objectImage??'';}
+    if(this.groundLayer){this.groundLayer.hidden=!mapArt?.baseImage;if(this.groundLayer.getAttribute('src')!==(mapArt?.baseImage??''))this.groundLayer.src=mapArt?.baseImage??'';}
+    if(this.objectLayer){this.objectLayer.hidden=!mapArt?.objectImage;if(this.objectLayer.getAttribute('src')!==(mapArt?.objectImage??''))this.objectLayer.src=mapArt?.objectImage??'';}
     this.title.textContent = scene.displayName;
     this.description.textContent = scene.description;
     this.player.style.setProperty('--player-x', position.x);
