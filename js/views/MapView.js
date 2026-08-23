@@ -99,7 +99,8 @@ export class MapView {
     const moved=this.lastPlayerPosition&&(this.lastPlayerPosition.x!==position.x||this.lastPlayerPosition.y!==position.y);
     if(this.playerSprite){const frames=this.playerSprite.directions?.[facing]??this.playerSprite.directions?.down??[];if(moved&&!blocked&&frames.length)this.playerStep=(this.playerStep+1)%frames.length;const frame=frames[this.playerStep%Math.max(frames.length,1)];if(frame)this.applyPlayerFrame(frame);}
     this.lastPlayerPosition={...position};this.lastPosition={...position};this.camera.follow(position,this.lastGrid);
-    this.root.querySelector('#map-position').textContent = `位置：${position.x + 1}，${position.y + 1}`;
+    const positionLabel=this.root.querySelector('#map-position');
+    if(positionLabel)positionLabel.textContent = `位置：${position.x + 1}，${position.y + 1}`;
     if(DEBUG_MAP&&this.debugInfo)this.debugInfo.textContent=`Map: ${this.sceneId} · Tile: ${position.x}, ${position.y}`;
   }
   renderRoamingEnemies(enemies){
