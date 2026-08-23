@@ -7,15 +7,15 @@
   <title>《NULL：被看見的我們》</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23090d18'/%3E%3Cpath d='M17 46V18h7l16 18V18h7v28h-7L24 28v18z' fill='%2362e7ff'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./css/main.css">
-  <link rel="stylesheet" href="./css/map.css?v=friendlylabels1">
+  <link rel="stylesheet" href="./css/map.css?v=touch1">
   <link rel="stylesheet" href="./css/dialogue.css?v=boardphotos1">
   <link rel="stylesheet" href="./css/battle.css?v=battleaudio1">
   <link rel="stylesheet" href="./css/puzzle.css?v=rinphoto2">
   <link rel="stylesheet" href="./css/memory.css?v=memoryquestions2">
   <link rel="stylesheet" href="./css/menu.css?v=mutesafe1">
   <link rel="stylesheet" href="./css/summary.css?v=ch1summary1">
-  <link rel="stylesheet" href="./css/responsive.css?v=responsive3">
   <link rel="stylesheet" href="./css/battle-redesign.css?v=battleui2">
+  <link rel="stylesheet" href="./css/responsive.css?v=touch1">
 </head>
 <body>
   <main id="app" class="app-shell" aria-live="polite">
@@ -84,13 +84,14 @@
       <p id="map-message" class="map-message" role="status" hidden></p>
       <div class="map-interface">
         <div><p id="map-position">位置：2，4</p><div id="map-exits" class="map-exits" aria-label="場景出口"></div></div>
-        <div id="map-controls" class="map-controls" aria-label="移動控制">
+      <div id="map-controls" class="map-controls" aria-label="移動控制">
           <button type="button" data-move="up" aria-label="向上移動">↑</button>
           <button type="button" data-move="left" aria-label="向左移動">←</button>
           <button type="button" data-move="down" aria-label="向下移動">↓</button>
           <button type="button" data-move="right" aria-label="向右移動">→</button>
         </div>
       </div>
+      <button id="touch-interact" class="touch-interact" type="button" hidden aria-label="互動">互動</button>
       <nav class="guide-menu" aria-label="遊戲選單"><button type="button" data-guide-action="controls">操作說明（M）</button><button type="button" data-guide-action="journal">任務（J）</button><button id="audio-mute-toggle" class="audio-mute-toggle" type="button" aria-pressed="false" aria-label="全部靜音">🔊 靜音</button></nav>
       <p class="map-hint">方向鍵或 WASD 移動 · E 互動 · 亦可使用下方按鈕</p>
     </section>
@@ -144,6 +145,6 @@
     <aside id="quest-notification" class="quest-notification" role="status" hidden><strong id="quest-notification-title">任務已更新</strong><span id="quest-notification-objective"></span></aside>
   </main>
   <noscript>此遊戲需要啟用 JavaScript。</noscript>
-  <script type="module" src="./js/main.js?v=battleui2"></script>
+  <script type="module" src="./js/main.js?v=touch1"></script>
 </body>
 </html>

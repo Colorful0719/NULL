@@ -4,11 +4,11 @@ import { DATA_MANIFEST, DataLoader } from './DataLoader.js?v=bossreturn2';
 import { SaveManager } from '../managers/SaveManager.js?v=24p10';
 import { ChoiceManager } from '../managers/ChoiceManager.js?v=rinphoto1';
 import { DialogueManager } from '../managers/DialogueManager.js?v=rinphoto1';
-import { InputManager } from '../managers/InputManager.js?v=wasdfix1';
+import { InputManager } from '../managers/InputManager.js?v=touch1';
 import { SceneManager } from '../managers/SceneManager.js?v=24p5';
 import { DialogueView } from '../views/DialogueView.js?v=boardphotos1';
 import { MapManager } from '../managers/MapManager.js?v=parentfinal1';
-import { MapView } from '../views/MapView.js?v=friendlylabels1';
+import { MapView } from '../views/MapView.js?v=touch1';
 import { BattleManager } from '../managers/BattleManager.js?v=battlepolish2';
 import { BattleView } from '../views/BattleView.js?v=battleui1';
 import { PuzzleManager } from '../managers/PuzzleManager.js?v=rinmulti1';
@@ -20,7 +20,7 @@ import { MemoryInvestigationManager } from '../managers/MemoryInvestigationManag
 import { MemoryInvestigationView } from '../views/MemoryInvestigationView.js?v=memoryquestions2';
 import { AudioManager } from '../audio/AudioManager.js?v=mute1';
 import { GuidanceManager } from '../managers/GuidanceManager.js?v=boardside1';
-import { GuidanceView } from '../views/GuidanceView.js?v=partners1';
+import { GuidanceView } from '../views/GuidanceView.js?v=touch1';
 import { ChapterSummaryManager } from '../managers/ChapterSummaryManager.js?v=ending1';
 import { ChapterSummaryView } from '../views/ChapterSummaryView.js?v=ending1';
 
@@ -91,8 +91,9 @@ export class Game {
     });
     this.root.querySelector('#map-controls')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-move]'); if (!button) return;
-      const moves = { up:[0,-1], down:[0,1], left:[-1,0], right:[1,0] }; this.mapManager.move(...moves[button.dataset.move]);
+      const moves = { up:[0,-1], down:[0,1], left:[-1,0], right:[1,0] }; this.inputManager.move(...moves[button.dataset.move]);
     });
+    this.root.querySelector('#touch-interact')?.addEventListener('click',()=>this.inputManager.interact());
     this.root.querySelector('#battle-commands')?.addEventListener('click',(event)=>{ const button=event.target.closest('[data-battle-action]'); if(button){battleView.playUiSound('ui_confirm');this.battleManager.act(button.dataset.battleAction);} });
     this.root.querySelector('#battle-commands')?.addEventListener('focusin',(event)=>{if(event.target.closest('button:not(:disabled)'))battleView.playUiSound('ui_cursor');});
     this.root.querySelector('#battle-exit')?.addEventListener('click',()=>{battleView.playUiSound('ui_cancel');this.battleManager.exit();});

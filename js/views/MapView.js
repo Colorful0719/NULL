@@ -19,6 +19,7 @@ export class MapView {
     this.debugLayer = root.querySelector('#map-debug-layer');
     this.debugInfo = root.querySelector('#map-debug-info');
     this.interactionPrompt = root.querySelector('#map-interaction-prompt');
+    this.touchInteract = root.querySelector('#touch-interact');
     this.message = root.querySelector('#map-message');
     this.onResize = () => this.lastPosition && this.camera.follow(this.lastPosition, this.lastGrid);
     window.addEventListener('resize', this.onResize);
@@ -119,9 +120,26 @@ export class MapView {
   renderDebug(scene){this.sceneId=scene.id;if(!this.debugLayer||!this.debugInfo)return;this.debugInfo.hidden=!DEBUG_MAP;if(!DEBUG_MAP){this.debugLayer.replaceChildren();return;}const tiles=[];const add=(className,x,y,label)=>{const tile=document.createElement('span');tile.className=`map-debug-tile ${className}`;tile.style.setProperty('--tile-x',x);tile.style.setProperty('--tile-y',y);tile.textContent=label;tiles.push(tile);};for(const rect of scene.collisionRects??[])for(let y=rect.y;y<rect.y+rect.height;y++)for(let x=rect.x;x<rect.x+rect.width;x++)add('map-debug-collision',x,y,'C');for(const entity of scene.entities??[]){if(entity.type==='npc'){const radius=entity.interactionRadius??1;for(let y=entity.position.y-radius;y<=entity.position.y+radius;y++)for(let x=entity.position.x-radius;x<=entity.position.x+radius;x++)if(Math.abs(x-entity.position.x)+Math.abs(y-entity.position.y)<=radius)add('map-debug-interaction',x,y,'I');}}for(const trigger of scene.triggers??[])add(trigger.type==='exit'?'map-debug-transition':'map-debug-event',trigger.position.x,trigger.position.y,trigger.type==='exit'?'T':'E');this.debugLayer.replaceChildren(...tiles);}
   applyPlayerFrame(frame){const sprite=this.playerSprite;const scale=(sprite.display?.width??sprite.frameSize.width)/sprite.frameSize.width;this.player.style.width=`${sprite.display?.width??sprite.frameSize.width}px`;this.player.style.height=`${sprite.display?.height??Math.round(sprite.frameSize.height*scale)}px`;this.player.style.backgroundImage=`url("${sprite.sheet}")`;this.player.style.backgroundSize=`${sprite.sheetSize.width*scale}px ${sprite.sheetSize.height*scale}px`;this.player.style.backgroundPosition=`-${frame.x*scale}px -${frame.y*scale}px`;}
   setInteraction(prompt, targetId) {
-    this.interactionPrompt.textContent = prompt;
+    const touchCapable=this.root.dataset.touchCapable==='true';
+    const touchLabel=this.getTouchLabel(prompt);
+    const visiblePrompt=touchCapable?String(prompt).replace(/\[?E\]?\s*/gi,'').replace(/按\s*互動/,'').replace(/按\s*/,'').trim():prompt;
+    this.interactionPrompt.textContent = visiblePrompt;
     this.interactionPrompt.hidden = !prompt;
     this.interactionPrompt.dataset.targetId = targetId ?? '';
+    if(this.touchInteract){
+      this.touchInteract.textContent=touchLabel;
+      this.touchInteract.setAttribute('aria-label',touchLabel);
+      this.touchInteract.dataset.targetId=targetId??'';
+      this.touchInteract.hidden=!prompt||!touchCapable;
+    }
+  }
+  getTouchLabel(prompt=''){
+    const text=String(prompt);
+    if(/交談|對話/.test(text))return '對話';
+    if(/布告欄|公布欄|查看|調查/.test(text))return '查看';
+    if(/照片|檢查/.test(text))return '檢查';
+    if(/進入|出口|離開|門/.test(text))return '進入';
+    return '互動';
   }
   showMessage(message) { this.message.textContent = message; this.message.hidden = !message; }
 }
