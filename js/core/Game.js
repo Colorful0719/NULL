@@ -80,7 +80,7 @@ export class Game {
     this.puzzleManager = new PuzzleManager({puzzles:this.data.puzzles,gameState:this.state,view:new PuzzleView(this.root),saveManager:this.saveManager,onStart:(context,puzzle)=>this.beginPuzzle(context,puzzle),onComplete:(puzzle,context)=>this.completePuzzle(puzzle,context),onExit:(puzzle,context,completed)=>this.finishPuzzle(puzzle,context,completed)});
     this.memoryView=new MemoryInvestigationView(this.root);
     this.memoryManager=new MemoryInvestigationManager({definitions:this.data.memories,gameState:this.state,view:this.memoryView,saveManager:this.saveManager,onStart:(context,memory)=>this.beginMemory(context,memory),onComplete:(memory,context)=>this.completeMemory(memory,context),onExit:(memory,context)=>this.finishMemory(memory,context)});
-    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onEnter:(scene)=>{this.audioManager.playBGM(scene.bgmId??'DAILY_EXPLORATION');this.guidanceManager.onExploration(scene.id);} });
+    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onEnter:(scene)=>{this.root.dataset.gameMode='exploration';this.audioManager.playBGM(scene.bgmId??'DAILY_EXPLORATION');this.guidanceManager.onExploration(scene.id);} });
     this.dialogueManager = new DialogueManager({ data: this.data, view, choiceManager, saveManager: this.saveManager, onStart:(context,dialogue)=>this.beginDialogue(context,dialogue),onComplete: () => this.syncSaveUi(),onFinish:(context,dialogue,choice)=>this.finishDialogue(context,dialogue,choice) });
     this.sceneManager = new SceneManager({ gameState: this.state, dialogueManager: this.dialogueManager });
     this.inputManager = new InputManager({ root: this.root, dialogueManager: this.dialogueManager, getMapManager: () => this.mapManager,onControls:()=>this.guidanceManager.openControls(),onJournal:()=>this.guidanceManager.openJournal(),isModalOpen:()=>this.guidanceManager.modalOpen });
@@ -152,7 +152,7 @@ export class Game {
   beginDialogue(context={},dialogue=null){
     if(context.returnContext)this.state.set('exploration.returnContext',context.returnContext);
     if(dialogue)this.state.set('activeFlow.dialogue',{id:dialogue.id,context});
-    this.state.set('mode',GAME_MODE.DIALOGUE);this.state.set('playerMovementLocked',true);this.saveManager.save();
+    this.state.set('mode',GAME_MODE.DIALOGUE);if(this.root?.dataset)this.root.dataset.gameMode='dialogue';this.state.set('playerMovementLocked',true);this.saveManager.save();
     if(dialogue?.id==='ch1_gallery_keeper_ready'&&!this.state.get('flags.photoKeeperFinalDialogueComplete'))this.memoryView.playMontage(this.data.memories.map((memory)=>memory.image));
     if(dialogue?.id==='ch1_rin_photo_check')this.guidanceManager.discoverRin();
   }
@@ -222,7 +222,7 @@ export class Game {
   beginMemory(context={},memory=null){
     if(context.returnContext)this.state.set('exploration.returnContext',context.returnContext);
     if(memory)this.state.set('activeFlow.memory',{id:memory.id,context});
-    this.state.set('mode',GAME_MODE.PUZZLE);this.state.set('playerMovementLocked',true);this.saveManager.save();
+    this.state.set('mode',GAME_MODE.PUZZLE);if(this.root?.dataset)this.root.dataset.gameMode='puzzle';this.state.set('playerMovementLocked',true);this.saveManager.save();
   }
 
   completeMemory(memory){
@@ -241,7 +241,7 @@ export class Game {
   beginPuzzle(context={},puzzle=null){
     if(context.returnContext)this.state.set('exploration.returnContext',context.returnContext);
     if(puzzle)this.state.set('activeFlow.puzzle',{id:puzzle.id,context});
-    this.state.set('mode',GAME_MODE.PUZZLE);this.state.set('playerMovementLocked',true);this.saveManager.save();
+    this.state.set('mode',GAME_MODE.PUZZLE);if(this.root?.dataset)this.root.dataset.gameMode='puzzle';this.state.set('playerMovementLocked',true);this.saveManager.save();
   }
 
   completePuzzle(puzzle){
@@ -290,7 +290,7 @@ export class Game {
   beginBattle(context={},enemy=null){
     if(context.returnContext)this.state.set('exploration.returnContext',context.returnContext);
     this.audioManager.playBGM(enemy?.phases?'ALBUM':'BATTLE',{fade:550});
-    this.state.set('mode',GAME_MODE.BATTLE);this.state.set('playerMovementLocked',true);this.saveManager.save();
+    this.state.set('mode',GAME_MODE.BATTLE);if(this.root?.dataset)this.root.dataset.gameMode='battle';this.state.set('playerMovementLocked',true);this.saveManager.save();
     if(enemy&&!enemy.phases)this.guidanceManager.onBattle(enemy.id);
   }
 
@@ -316,10 +316,10 @@ export class Game {
   }
 
   startReflection(id){this.audioManager.playBGM('REFLECTION');this.reflectionManager.start(id);}
-  beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);this.state.set('playerMovementLocked',true);this.saveManager.save();}
+  beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);if(this.root?.dataset)this.root.dataset.gameMode='reflection';this.state.set('playerMovementLocked',true);this.saveManager.save();}
   finishReflection(){this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);this.saveManager.save();this.summaryManager.start();}
 
-  returnToMainMenu(){['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
+  returnToMainMenu(){['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
 
   handleAction(action) {
     if (action === 'start') {
