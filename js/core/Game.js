@@ -4,7 +4,7 @@ import { DATA_MANIFEST, DataLoader } from './DataLoader.js?v=bossreturn2';
 import { SaveManager } from '../managers/SaveManager.js?v=24p10';
 import { ChoiceManager } from '../managers/ChoiceManager.js?v=rinphoto1';
 import { DialogueManager } from '../managers/DialogueManager.js?v=rinphoto1';
-import { InputManager } from '../managers/InputManager.js?v=touch1';
+import { InputManager } from '../managers/InputManager.js?v=regressionfix1';
 import { SceneManager } from '../managers/SceneManager.js?v=24p5';
 import { DialogueView } from '../views/DialogueView.js?v=boardphotos1';
 import { MapManager } from '../managers/MapManager.js?v=parentfinal1';
@@ -89,11 +89,6 @@ export class Game {
     this.root.querySelector('#dialogue-close')?.addEventListener('click', () => {
       this.dialogueManager.finish();
     });
-    this.root.querySelector('#map-controls')?.addEventListener('click', (event) => {
-      const button = event.target.closest('[data-move]'); if (!button) return;
-      const moves = { up:[0,-1], down:[0,1], left:[-1,0], right:[1,0] }; this.inputManager.move(...moves[button.dataset.move]);
-    });
-    this.root.querySelector('#touch-interact')?.addEventListener('click',()=>this.inputManager.interact());
     this.root.querySelector('#battle-commands')?.addEventListener('click',(event)=>{ const button=event.target.closest('[data-battle-action]'); if(button){battleView.playUiSound('ui_confirm');this.battleManager.act(button.dataset.battleAction);} });
     this.root.querySelector('#battle-commands')?.addEventListener('focusin',(event)=>{if(event.target.closest('button:not(:disabled)'))battleView.playUiSound('ui_cursor');});
     this.root.querySelector('#battle-exit')?.addEventListener('click',()=>{battleView.playUiSound('ui_cancel');this.battleManager.exit();});
