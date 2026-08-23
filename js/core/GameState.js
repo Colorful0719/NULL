@@ -36,7 +36,6 @@ const pathParts = (path) => Array.isArray(path) ? path : String(path).split('.')
 
 export class GameState {
   #state;
-  #listeners = new Set();
 
   constructor(seed = initialGameState) { this.#state = clone(seed); }
 
@@ -59,7 +58,6 @@ export class GameState {
     }, next);
     target[leaf] = clone(value);
     this.#state = next;
-    for (const listener of this.#listeners) listener(path, this.get(path), this.get());
     return this.get();
   }
 
@@ -71,11 +69,8 @@ export class GameState {
   replace(nextState) {
     if (!nextState || typeof nextState !== 'object') throw new TypeError('存檔格式無效。');
     this.#state = clone(nextState);
-    for (const listener of this.#listeners) listener('', this.get(), this.get());
     return this.get();
   }
 
-  subscribe(listener) { this.#listeners.add(listener); return () => this.#listeners.delete(listener); }
-
-  reset() { this.#state = clone(initialGameState); for (const listener of this.#listeners) listener('', this.get(), this.get()); return this.get(); }
+  reset() { this.#state = clone(initialGameState); return this.get(); }
 }

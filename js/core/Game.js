@@ -1,4 +1,4 @@
-import { GameState } from './GameState.js?v=tablethud1';
+import { GameState } from './GameState.js?v=ch1summary1';
 import { GAME_MODE } from './GameMode.js';
 import { DATA_MANIFEST, DataLoader } from './DataLoader.js?v=bossreturn2';
 import { SaveManager } from '../managers/SaveManager.js?v=24p10';
@@ -8,7 +8,7 @@ import { InputManager } from '../managers/InputManager.js?v=regressionfix1';
 import { SceneManager } from '../managers/SceneManager.js?v=24p5';
 import { DialogueView } from '../views/DialogueView.js?v=boardphotos1';
 import { MapManager } from '../managers/MapManager.js?v=parentfinal1';
-import { MapView } from '../views/MapView.js?v=tablethud1';
+import { MapView } from '../views/MapView.js?v=touch1';
 import { BattleManager } from '../managers/BattleManager.js?v=battlepolish2';
 import { BattleView } from '../views/BattleView.js?v=battleui1';
 import { PuzzleManager } from '../managers/PuzzleManager.js?v=rinmulti1';
@@ -19,8 +19,8 @@ import { QuestManager } from '../managers/QuestManager.js?v=noticeboards1';
 import { MemoryInvestigationManager } from '../managers/MemoryInvestigationManager.js?v=memoryquestions2';
 import { MemoryInvestigationView } from '../views/MemoryInvestigationView.js?v=memoryquestions2';
 import { AudioManager } from '../audio/AudioManager.js?v=mute1';
-import { GuidanceManager } from '../managers/GuidanceManager.js?v=tablethud1';
-import { GuidanceView } from '../views/GuidanceView.js?v=tablethud1';
+import { GuidanceManager } from '../managers/GuidanceManager.js?v=boardside1';
+import { GuidanceView } from '../views/GuidanceView.js?v=touch1';
 import { ChapterSummaryManager } from '../managers/ChapterSummaryManager.js?v=ending1';
 import { ChapterSummaryView } from '../views/ChapterSummaryView.js?v=ending1';
 
@@ -32,10 +32,6 @@ export class Game {
     this.audioManager = new AudioManager();
     this.dataLoader = new DataLoader();
     this.data = null;
-    this.root.dataset.gameMode = this.state.get('mode');
-    this.state.subscribe((path,value,state)=>{
-      if(path==='mode'||path==='')this.root.dataset.gameMode=path==='mode'?value:state.mode;
-    });
   }
   async initialize() {
     if (!this.root) throw new Error('找不到遊戲根節點。');
