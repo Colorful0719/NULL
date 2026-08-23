@@ -1,0 +1,119 @@
+{
+  "act3Dialogues": [
+    {
+      "id": "ch1_gallery_keeper_wait",
+      "label": "第三幕 · 回憶畫廊",
+      "sceneId": "memory_gallery",
+      "participants": [
+        {"characterId":"photo_keeper","position":"left","expression":"thinking"},
+        {"characterId":"player","position":"right","expression":"neutral"}
+      ],
+      "lines": [
+        {"speakerId":"photo_keeper","expression":"thinking","text":"這裡保存的不是照片。"},
+        {"speakerId":"player","expression":"thinking","text":"……那是什麼？"},
+        {"speakerId":"photo_keeper","expression":"thinking","text":"是照片留下來的資訊。"},
+        {"speakerId":"photo_keeper","expression":"thinking","text":"有些照片看起來什麼都沒有。"},
+        {"speakerId":"photo_keeper","expression":"thinking","text":"但如果有人把它們放在一起呢？"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"去看看那三段回憶吧。"}
+      ],
+      "choices": [],
+      "endText": "先調查畫廊中的三組回憶展示，再回來與 PHOTO KEEPER 交談。"
+    },
+    {
+      "id": "ch1_gallery_keeper_ready",
+      "label": "第三幕 · 回憶畫廊",
+      "sceneId": "memory_gallery",
+      "participants": [
+        {"characterId":"photo_keeper","position":"left","expression":"determined"},
+        {"characterId":"player","position":"right","expression":"thinking"}
+      ],
+      "lines": [
+        {"speakerId":"photo_keeper","expression":"thinking","text":"看完了？"},
+        {"speakerId":"player","expression":"thinking","text":"只是三張普通的照片。"},
+        {"speakerId":"photo_keeper","expression":"thinking","text":"真的只是三張嗎？"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"第一張，讓人知道你生活在哪種地方。"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"第二張，留下了你去過哪裡。"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"第三張，留下了你和誰在一起。"},
+        {"speakerId":"photo_keeper","expression":"thinking","text":"一張照片可能什麼都說不清楚。"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"但很多碎片放在一起——"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"就會慢慢變成一個人。"},
+        {"speakerId":"player","expression":"thinking","text":"……"},
+        {"speakerId":"photo_keeper","expression":"determined","text":"這就是資料。"}
+      ],
+      "choices": [],
+      "endText": "PHOTO KEEPER 開啟了通往相簿房間的許可。"
+    },
+    {
+      "id": "ch1_album_phase1_complete",
+      "label": "第三幕 · 回憶屏障",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"memory"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"memory","text":"你沒有否定回憶，卻讓我看見回憶裡也需要保留他人的聲音。"},
+        {"speakerId":"player","expression":"determined","text":"照片可以被珍藏，但珍藏不能取代詢問與同意。"},
+        {"speakerId":"album","expression":"memory","text":"第一層回憶屏障已經鬆開。這段記憶會留在這裡，等待下一次面對。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 第一階段「回憶」已完成。"
+    },
+    {
+      "id": "ch1_album_phase2_complete",
+      "label": "第三幕 · 曝光屏障",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"exposure"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"exposure","text":"你看見了公開之後的擴散，也沒有把轉傳當成理所當然。"},
+        {"speakerId":"player","expression":"determined","text":"每次分享都要確認對象、範圍與照片中每個人的意願。"},
+        {"speakerId":"album","expression":"exposure","text":"第二層曝光屏障已經收起。更深處仍保持安靜。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 第二階段「曝光」已完成。"
+    },
+    {
+      "id": "ch1_album_phase3_complete",
+      "label": "第三幕 · 資料拼圖屏障",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"profile"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"profile","text":"你拆開了那些被我組合的片段，也看見每個片段之間的關聯。"},
+        {"speakerId":"player","expression":"determined","text":"保護隱私不能只檢查單一照片，也要留意多次分享累積出的完整輪廓。"},
+        {"speakerId":"album","expression":"profile","text":"第三層資料拼圖屏障已經停止。我的三層防線都已平靜下來。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 第三階段「資料拼圖」已完成。回到探索後，請回家找 PARENT。"
+    },
+    {
+      "id": "ch1_album_parent_post_battle",
+      "label": "第一章 · ALBUM 戰後",
+      "sceneId": "home_map",
+      "participants": [
+        {"characterId":"parent","position":"left","expression":"thinking"},
+        {"characterId":"player","position":"right","expression":"neutral"}
+      ],
+      "conditionalPreludes": [
+        {"flag":"photo_choice_ask_first","equals":true,"lines":[{"speakerId":"player","expression":"thinking","text":"一開始，我就希望分享之前先問過我。走到這裡，我更明白那個回答對我的意義。"}]},
+        {"flag":"photo_choice_family_only","equals":true,"lines":[{"speakerId":"player","expression":"thinking","text":"一開始，我只想把照片留在家人之間。現在我覺得，即使分享範圍很小，也應該先問照片裡的人。"}]},
+        {"flag":"photo_choice_post_now","equals":true,"lines":[{"speakerId":"player","expression":"thinking","text":"一開始，我覺得直接分享也沒關係。經過這些事，我發現自己的想法已經不一樣了。"}]}
+      ],
+      "lines": [
+        {"speakerId":"parent","expression":"thinking","text":"我以前只想把值得紀念的時刻留下，卻沒有先問你願不願意被拍、被分享。"},
+        {"speakerId":"player","expression":"determined","text":"我也明白照片不只是一個瞬間。分享的範圍和累積的線索，都可能影響照片裡的人。"},
+        {"speakerId":"parent","expression":"sad","text":"以後拍照與發布之前，我會先說明用途、詢問你的意願，也尊重你改變決定。"},
+        {"speakerId":"player","expression":"happy","text":"那我們還是可以保存回憶，只是一起決定怎麼保存。"},
+        {"speakerId":"parent","expression":"happy","text":"好。回憶屬於我們，不該由其中一個人替所有人決定。"}
+      ],
+      "choices": [],
+      "endText": "你與 PARENT 約定：拍攝與分享之前，先詢問照片中每個人的意願。接下來完成戰後反思，再回顧第一章的旅程。",
+      "next": {"type":"reflection","id":"album_reflection"}
+    }
+  ]
+}

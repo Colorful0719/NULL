@@ -1,0 +1,100 @@
+{
+  "quests": [
+    {
+      "id": "ch1_album_path",
+      "type": "MAIN",
+      "displayName": "前往相簿房間",
+      "description": "理解照片分享可能留下的線索，並聽取城鎮居民的觀點。",
+      "stages": [
+        {
+          "id": "meet_photo_keeper",
+          "displayName": "詢問照片守門人",
+          "objective": "與 PHOTO KEEPER 交談。"
+        },
+        {
+          "id": "find_privacy_clue",
+          "displayName": "尋找隱私線索",
+          "objective": "調查資料世界中的照片碎片。"
+        },
+        {
+          "id": "complete_photo_check",
+          "displayName": "完成照片檢查",
+          "objective": "找出照片中四項可能透露個人資訊的線索。"
+        },
+        {
+          "id": "meet_album_allies",
+          "displayName": "聽取不同觀點",
+          "objective": "與 KAI、MIO 交談。"
+        },
+        {
+          "id": "enter_memory_gallery",
+          "displayName": "進入回憶畫廊",
+          "objective": "從相簿城鎮前往回憶畫廊。"
+        },
+        {
+          "id": "inspect_memory_gallery",
+          "displayName": "調查回憶展示",
+          "objective": "查看畫廊中的三組回憶展示。"
+        },
+        {
+          "id": "meet_gallery_keeper",
+          "displayName": "再次詢問照片守門人",
+          "objective": "在回憶畫廊與 PHOTO KEEPER 交談。"
+        },
+        {
+          "id": "unlock_album_room",
+          "displayName": "開啟相簿房間",
+          "objective": "完成回憶畫廊調查並取得進入許可。"
+        },
+        {
+          "id": "complete_album_memory_phase",
+          "displayName": "面對回憶",
+          "objective": "完成 ALBUM 的第一階段「回憶」。"
+        },
+        {
+          "id": "complete_album_exposure_phase",
+          "displayName": "控制曝光",
+          "objective": "完成 ALBUM 的第二階段「曝光」。"
+        },
+        {
+          "id": "complete_album_profile_phase",
+          "displayName": "拆解資料拼圖",
+          "objective": "完成 ALBUM 的第三階段「資料拼圖」。"
+        },
+        {
+          "id": "speak_parent_after_album",
+          "displayName": "與家長重新約定",
+          "objective": "在 ALBUM 戰後與 PARENT 討論拍照與分享的同意。"
+        }
+      ]
+    },
+    {
+      "id": "rin_photo_inspection",
+      "type": "SIDE",
+      "displayName": "RIN 的照片檢查",
+      "description": "RIN 正準備挑選一些照片分享出去。幫她看看照片中是否藏著容易被忽略的資訊。",
+      "stages": [
+        {
+          "id": "talk_to_rin",
+          "displayName": "和 RIN 談談",
+          "objective": "和 RIN 談談。"
+        },
+        {
+          "id": "inspect_photos",
+          "displayName": "檢查照片",
+          "objective": "檢查 RIN 準備分享的照片。"
+        },
+        {
+          "id": "return_to_rin",
+          "displayName": "回去找 RIN",
+          "objective": "回去和 RIN 談談。"
+        },
+        {
+          "id": "completed",
+          "displayName": "照片檢查完成",
+          "objective": "已完成。"
+        }
+      ]
+    }
+  ]
+}

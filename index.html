@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d18">
+  <title>《NULL：被看見的我們》</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23090d18'/%3E%3Cpath d='M17 46V18h7l16 18V18h7v28h-7L24 28v18z' fill='%2362e7ff'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/map.css?v=friendlylabels1">
+  <link rel="stylesheet" href="./css/dialogue.css?v=boardphotos1">
+  <link rel="stylesheet" href="./css/battle.css?v=battleaudio1">
+  <link rel="stylesheet" href="./css/puzzle.css?v=rinphoto2">
+  <link rel="stylesheet" href="./css/memory.css?v=memoryquestions2">
+  <link rel="stylesheet" href="./css/menu.css?v=mutesafe1">
+  <link rel="stylesheet" href="./css/summary.css?v=ch1summary1">
+  <link rel="stylesheet" href="./css/responsive.css?v=responsive3">
+  <link rel="stylesheet" href="./css/battle-redesign.css?v=battleui2">
+</head>
+<body>
+  <main id="app" class="app-shell" aria-live="polite">
+    <section id="story-intro" class="story-intro" aria-label="故事介紹" hidden>
+      <div class="story-intro-panel"><p id="story-intro-progress" class="story-intro-progress"></p><p id="story-intro-text" class="story-intro-text"></p><div><button id="story-intro-continue" type="button">繼續</button><button id="story-intro-skip" type="button">跳過</button></div></div>
+    </section>
+    <section id="title-screen" class="title-screen" aria-labelledby="game-title">
+      <p class="eyebrow">數位隱私權 · 2D 角色扮演</p>
+      <div class="signal-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1 id="game-title"><span class="null-word">NULL</span><small>被看見的我們</small></h1>
+      <p class="tagline">當每一張照片都留下痕跡，你想讓誰看見？</p>
+      <nav class="main-menu" aria-label="主選單">
+        <button type="button" data-action="start">開始遊戲</button>
+        <button type="button" data-action="continue" disabled aria-describedby="save-status">繼續遊戲</button>
+        <button type="button" data-action="settings">設定</button>
+      </nav>
+      <p id="save-status" class="status-text" role="status">尚未建立存檔</p>
+      <p id="data-status" class="data-status">正在載入資料層…</p>
+      <section id="development-error" class="development-error" role="alert" hidden>
+        <h2>開發資料錯誤</h2>
+        <p data-error-message></p>
+        <p>請檢查對應的 data JSON 檔案與必要欄位。</p>
+      </section>
+      <section id="save-tools" class="save-tools" aria-label="存檔工具" hidden>
+        <h2>存檔工具</h2>
+        <div>
+          <button type="button" data-action="save">儲存進度</button>
+          <button type="button" data-action="load" data-requires-save>讀取進度</button>
+          <button type="button" data-action="reset" data-requires-save>重設存檔</button>
+        </div>
+        <p>僅儲存虛構的遊戲內狀態，不包含任何個人資料。</p>
+        <fieldset class="feedback-settings"><legend>音訊與戰鬥回饋</legend><label><input id="audio-mute" type="checkbox"> 全部靜音</label><label><input id="bgm-mute" type="checkbox"> 背景音樂靜音</label><label><input id="sfx-mute" type="checkbox"> 音效靜音</label><label>背景音樂 <input id="bgm-volume" type="range" min="0" max="100" value="38"></label><label>音效 <input id="sfx-volume" type="range" min="0" max="100" value="18"></label><label><input id="reduced-effects" type="checkbox"> 降低特效</label></fieldset>
+      </section>
+      <p class="step-label">v2.4 · 第一章探索版</p>
+    </section>
+    <section id="dialogue-scene" class="dialogue-scene" aria-label="事件對話場景" hidden>
+      <header class="scene-header"><span data-dialogue-label>事件對話</span><strong data-scene-name></strong></header>
+      <div id="portrait-layer" class="portrait-layer" aria-hidden="false"></div>
+      <figure id="environment-dialogue-visual" class="environment-dialogue-visual" hidden><img id="environment-dialogue-image" alt="公布欄照片"></figure>
+      <section class="dialogue-box" aria-live="polite">
+        <p id="speaker-name" class="speaker-name"></p>
+        <p id="dialogue-text" class="dialogue-text"></p>
+        <div id="dialogue-choices" class="dialogue-choices" hidden></div>
+        <p id="choice-result" class="choice-result" hidden></p>
+        <div class="dialogue-controls">
+          <button id="dialogue-advance" type="button">下一句</button>
+          <button id="dialogue-close" type="button">返回標題</button>
+        </div>
+        <p class="input-hint">Enter：下一句　Space：顯示全文　Esc：結束已完成對話</p>
+      </section>
+    </section>
+    <section id="map-screen" class="map-screen" aria-labelledby="map-title" hidden>
+      <header class="map-header"><div><p>探索模式</p><h1 id="map-title"></h1></div><p id="map-description"></p></header>
+      <div id="map-viewport" class="map-viewport">
+      <div id="map-grid" class="map-grid" role="img" aria-label="六乘四格臨時探索地圖">
+        <img id="map-ground-layer" class="map-ground-layer" alt="" aria-hidden="true" hidden>
+        <img id="map-object-layer" class="map-object-layer" alt="" aria-hidden="true" hidden>
+        <div class="map-decoration map-decoration--one"></div><div class="map-decoration map-decoration--two"></div>
+        <div id="map-collision-layer" class="map-collision-layer" aria-hidden="true"></div>
+        <div id="map-entity-layer" class="map-entity-layer"></div>
+        <div id="map-debug-layer" class="map-debug-layer" aria-hidden="true"></div>
+        <div id="map-player" class="map-player" aria-label="PLAYER 所在位置"><span>PLAYER</span></div>
+      </div></div>
+      <output id="map-debug-info" class="map-debug-info" hidden></output>
+      <p id="map-interaction-prompt" class="map-interaction-prompt" role="status" hidden></p>
+      <p id="map-message" class="map-message" role="status" hidden></p>
+      <div class="map-interface">
+        <div><p id="map-position">位置：2，4</p><div id="map-exits" class="map-exits" aria-label="場景出口"></div></div>
+        <div id="map-controls" class="map-controls" aria-label="移動控制">
+          <button type="button" data-move="up" aria-label="向上移動">↑</button>
+          <button type="button" data-move="left" aria-label="向左移動">←</button>
+          <button type="button" data-move="down" aria-label="向下移動">↓</button>
+          <button type="button" data-move="right" aria-label="向右移動">→</button>
+        </div>
+      </div>
+      <nav class="guide-menu" aria-label="遊戲選單"><button type="button" data-guide-action="controls">操作說明（M）</button><button type="button" data-guide-action="journal">任務（J）</button><button id="audio-mute-toggle" class="audio-mute-toggle" type="button" aria-pressed="false" aria-label="全部靜音">🔊 靜音</button></nav>
+      <p class="map-hint">方向鍵或 WASD 移動 · E 互動 · 亦可使用下方按鈕</p>
+    </section>
+    <section id="battle-screen" class="battle-screen battle-screen--redesign" aria-labelledby="enemy-name" hidden>
+      <header class="battle-header"><div><p>第一章 · 相簿區域</p><h1 id="enemy-name">DATA NOISE</h1></div><div class="battle-turn-info"><span>回合 <strong id="battle-turn">1</strong></span><span id="battle-phase">戰鬥開始</span><button class="battle-escape" type="button" disabled aria-label="本場戰鬥無法逃跑">ESC　無法逃跑</button></div></header>
+      <div class="battle-main">
+        <section class="battle-enemy-info"><h2>敵方資訊</h2><p><span id="enemy-progress-label">生命值</span> <strong id="enemy-hp">45／45</strong></p><div class="enemy-bar" aria-label="敵方生命值"><i></i></div><p>情緒策略<br><strong id="enemy-emotion">覺察</strong></p><p>可觀察線索<br><strong id="battle-clue">尚未發現</strong></p></section>
+        <div class="battle-stage">
+          <div class="battle-field"><div id="battle-effects" class="battle-effects" aria-hidden="true"></div><img id="battle-enemy-art" class="battle-enemy-art" alt="" hidden><div class="noise-enemy" aria-label="普通敵人開發用圖像"><span></span><span></span><span></span></div><p id="boss-phase"></p><p class="battle-intent">下一步行動：<strong id="enemy-intent"></strong></p></div>
+          <p id="battle-message" class="battle-message" role="status">戰鬥開始。選擇這一回合的行動。</p>
+        </div>
+        <section class="player-battle-card"><img id="battle-player-portrait" alt="PLAYER 角色立繪"><div><h2>PLAYER</h2><p>生命值<br><strong id="player-hp">100／100</strong></p><p>技能值<br><strong id="player-sp">50／50</strong></p><p>目前情緒<br><strong id="player-emotion">覺察</strong></p><p>狀態效果<br><strong id="player-statuses">無</strong></p></div></section>
+      </div>
+      <div class="battle-bottom">
+        <div id="battle-commands" class="battle-commands" aria-label="戰鬥指令">
+          <button type="button" data-battle-action="ATTACK"><span aria-hidden="true">◆</span><strong>攻擊</strong><small>造成傷害</small></button><button type="button" data-locked="true"><span aria-hidden="true">✦</span><strong>技能</strong><small>尚未解鎖</small></button><button type="button" data-battle-action="OBSERVE"><span aria-hidden="true">◉</span><strong>觀察</strong><small>發現線索</small></button><button type="button" data-battle-action="COMMUNICATE"><span aria-hidden="true">◌</span><strong>溝通</strong><small>影響敵人狀態</small></button><button type="button" data-battle-action="EMOTION"><span aria-hidden="true">◇</span><strong>情緒</strong><small>調整應對方式</small></button><button type="button" data-locked="true"><span aria-hidden="true">▣</span><strong>道具</strong><small>尚未解鎖</small></button><button type="button" data-battle-action="ASK_FIRST" hidden><span aria-hidden="true">？</span><strong>先詢問</strong><small>確認照片意願</small></button>
+        </div>
+        <div class="battle-utility"><p id="battle-tip" class="battle-tip">提示：觀察可能揭露新的資訊。</p><button id="battle-log-toggle" class="battle-log-toggle" type="button" aria-expanded="false" aria-controls="battle-log-panel">戰鬥紀錄</button></div>
+        <section id="battle-log-panel" class="battle-log-panel" hidden><h2>戰鬥紀錄</h2><ol id="battle-log"></ol></section>
+      </div>
+      <section id="battle-result" class="battle-result" hidden><h2 id="battle-result-title"></h2><p id="battle-result-text"></p><button id="battle-exit" type="button">返回探索地圖</button></section>
+    </section>
+    <section id="puzzle-screen" class="puzzle-screen" aria-labelledby="puzzle-title" hidden>
+      <header><p>解謎支線 · 照片檢查</p><h1 id="puzzle-title">照片檢查</h1><p id="puzzle-instructions"></p></header>
+      <div class="photo-check-image" role="img" aria-label="照片檢查區"><img id="inspection-photo" class="inspection-photo" alt="" hidden><span id="inspection-caption" class="inspection-caption" hidden></span><span class="photo-date">08／18　17:30</span><span class="photo-school">校徽</span><span class="photo-face">人物</span><span class="photo-home">門牌 17</span><div id="photo-hotspots"></div></div>
+      <div class="puzzle-footer"><p id="puzzle-progress">已發現 0／4</p><p id="puzzle-feedback" class="puzzle-feedback" role="status"></p><div><button id="puzzle-submit" type="button">確認線索</button><button id="puzzle-retry" type="button">重新檢查</button><button id="puzzle-exit" type="button">返回相簿城鎮</button></div></div>
+    </section>
+    <section id="memory-investigation-screen" class="memory-investigation" aria-labelledby="memory-title" hidden>
+      <article class="memory-card">
+        <header><div><p>回憶照片調查</p><h1 id="memory-title"><span id="memory-author">PARENT</span> 的社群貼文</h1><p id="memory-post-text" class="memory-post-text"></p></div><button id="memory-exit" type="button">關閉照片</button></header>
+        <figure class="memory-photo-frame"><img id="memory-photo" alt=""></figure>
+        <p id="memory-question" class="memory-question" hidden></p>
+        <div id="memory-options" class="memory-options" hidden></div>
+        <p id="memory-feedback" class="memory-feedback" role="status" hidden></p>
+        <div class="memory-actions"><button id="memory-investigate" type="button">調查照片</button><button id="memory-submit" type="button" hidden>確認答案</button><button id="memory-next" type="button" hidden>下一題</button></div>
+      </article>
+    </section>
+    <div id="memory-montage" class="memory-montage" aria-hidden="true" hidden><img id="memory-montage-image" alt=""></div>
+    <section id="reflection-screen" class="reflection-screen" aria-labelledby="reflection-title" hidden>
+      <header><p>第一章 · 戰後反思</p><h1 id="reflection-title"></h1><p id="reflection-introduction"></p></header>
+      <form id="reflection-form"></form>
+      <p id="reflection-feedback" class="reflection-feedback" role="status"></p>
+      <div class="reflection-actions"><button id="reflection-submit" type="button">保存反思</button><button id="reflection-complete" type="button" hidden>繼續第一章總結</button></div>
+      <p class="privacy-note">不需要輸入姓名、聯絡方式或任何真實個人資料。</p>
+    </section>
+    <section id="chapter-summary-screen" class="chapter-summary" aria-labelledby="summary-title" hidden>
+      <div class="summary-layout"><div class="summary-copy"><p id="summary-eyebrow" class="summary-eyebrow"></p><h1 id="summary-title"></h1><div id="summary-body" class="summary-body"></div></div><div id="summary-visual" class="summary-visual" aria-label="第一章回顧畫面"></div></div>
+      <footer class="summary-footer"><span id="summary-progress" class="summary-progress"></span><button id="summary-next" type="button">繼續</button><button id="summary-skip" class="summary-skip" type="button">跳過總結</button><button id="summary-review" type="button" hidden>查看旅程</button><button id="summary-menu" type="button" hidden>返回主選單</button></footer>
+    </section>
+    <section id="guidance-modal" class="guidance-modal" role="dialog" aria-modal="true" aria-labelledby="guidance-title" hidden><article><header><p>PLAYER GUIDE</p><h2 id="guidance-title"></h2></header><div id="guidance-body"></div><button id="guidance-close" type="button">關閉</button></article></section>
+    <aside id="quest-notification" class="quest-notification" role="status" hidden><strong id="quest-notification-title">任務已更新</strong><span id="quest-notification-objective"></span></aside>
+  </main>
+  <noscript>此遊戲需要啟用 JavaScript。</noscript>
+  <script type="module" src="./js/main.js?v=battleui2"></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+{
+  "puzzles": [
+    {
+      "id": "photo_check",
+      "displayName": "照片檢查",
+      "instructions": "找出照片中可能透露個人資訊的四個線索。",
+      "hotspots": [
+        {
+          "id": "face",
+          "label": "人物臉部",
+          "explanation": "清楚的臉可能讓陌生人辨識照片中的人。"
+        },
+        {
+          "id": "uniform",
+          "label": "制服與校徽",
+          "explanation": "制服或校徽可能透露就讀學校。"
+        },
+        {
+          "id": "date",
+          "label": "拍攝日期",
+          "explanation": "日期能與其他資訊組合，推測生活規律。"
+        },
+        {
+          "id": "home",
+          "label": "家庭環境",
+          "explanation": "門牌、窗景或室內配置可能透露居住環境。"
+        }
+      ],
+      "required": [
+        "face",
+        "uniform",
+        "date",
+        "home"
+      ],
+      "privacyClues": [
+        "face_identifier",
+        "school_identifier",
+        "time_pattern",
+        "home_environment"
+      ],
+      "questUpdate": {
+        "questId": "ch1_album_path",
+        "stageId": "complete_photo_check"
+      },
+      "battleModifiers": [
+        {
+          "targetId": "data_noise",
+          "type": "DEF_PERCENT",
+          "value": -15,
+          "displayName": "防禦降低 15%"
+        },
+        {
+          "targetId": "album",
+          "type": "DEF_PERCENT",
+          "value": -15,
+          "displayName": "ALBUM 抗拒度削減提高 15%"
+        },
+        {
+          "targetId": "album",
+          "type": "UNLOCK_ACTION",
+          "actionId": "ASK_FIRST",
+          "displayName": "可解鎖「先詢問」"
+        }
+      ]
+    },
+    {
+      "id": "rin_photo_inspection",
+      "displayName": "RIN 的照片檢查",
+      "instructions": "和 RIN 依序看看八張照片，選出你第一眼覺得需要留意的地方。",
+      "presentation": "rin_photo_inspection",
+      "optional": true,
+      "optionalSideQuest": "rinPhotoInspection",
+      "options": [
+        {
+          "id": "people",
+          "label": "人物／他人"
+        },
+        {
+          "id": "school",
+          "label": "學校"
+        },
+        {
+          "id": "location",
+          "label": "位置"
+        },
+        {
+          "id": "time",
+          "label": "時間"
+        },
+        {
+          "id": "daily",
+          "label": "生活資訊"
+        },
+        {
+          "id": "personal",
+          "label": "其他個人資訊"
+        },
+        {
+          "id": "consent",
+          "label": "先問照片裡的人"
+        },
+        {
+          "id": "none",
+          "label": "沒有明顯資訊"
+        }
+      ],
+      "photos": [
+        {
+          "id": "PHOTO-01",
+          "title": "寵物與日常",
+          "image": "assets/puzzles/rin_photo_inspection/photo_01_pet.png",
+          "objectPosition": "center",
+          "alt": "家中一隻坐在地板上的小狗",
+          "answers": ["none"],
+          "feedback": "嗯……這張好像真的沒有太多能認出我們的東西。"
+        },
+        {
+          "id": "PHOTO-02",
+          "title": "RIN 與朋友合照",
+          "image": "assets/puzzles/rin_photo_inspection/photo_02_friends.png",
+          "objectPosition": "center",
+          "alt": "RIN 與兩位朋友在戶外的合照",
+          "answers": ["people", "consent"],
+          "feedback": "對耶……我本來只注意到自己的臉，卻忘了照片裡還有朋友。"
+        },
+        {
+          "id": "PHOTO-03",
+          "title": "校園自拍",
+          "image": "assets/puzzles/rin_photo_inspection/photo_03_school_selfie.png",
+          "objectPosition": "center",
+          "alt": "RIN 在校舍走廊拍攝的自拍照",
+          "answers": ["people", "school"],
+          "feedback": "制服和後面的校舍也一起拍進去了。"
+        },
+        {
+          "id": "PHOTO-04",
+          "title": "社團活動",
+          "image": "assets/puzzles/rin_photo_inspection/photo_04_club_activity.png",
+          "objectPosition": "center",
+          "alt": "學生在教室準備社團活動海報",
+          "answers": ["people", "school", "time", "daily"],
+          "feedback": "活動內容再加上後面的行程表，能看出我們那天在做什麼。"
+        },
+        {
+          "id": "PHOTO-05",
+          "title": "放學街景",
+          "image": "assets/puzzles/rin_photo_inspection/photo_05_after_school.png",
+          "objectPosition": "center",
+          "alt": "RIN 與朋友在公車站附近的放學合照",
+          "answers": ["people", "school", "location", "time"],
+          "feedback": "站牌、制服和放學後常走的地方放在一起，位置就變得明顯了。"
+        },
+        {
+          "id": "PHOTO-06",
+          "title": "房間照片",
+          "image": "assets/puzzles/rin_photo_inspection/photo_06_room_study.png",
+          "objectPosition": "center",
+          "alt": "RIN 在房間讀書，背景可見行程表與時鐘",
+          "answers": ["time", "daily", "personal"],
+          "feedback": "原來背景裡的時鐘和行程表，也可能說出平常的生活習慣。"
+        },
+        {
+          "id": "PHOTO-07",
+          "title": "朋友的尷尬抓拍",
+          "image": "assets/puzzles/rin_photo_inspection/photo_07_prank.png",
+          "objectPosition": "center",
+          "alt": "朋友吃東西時剛好閉眼的尷尬抓拍",
+          "answers": ["people", "consent"],
+          "feedback": "……也是。我覺得好笑，不代表她也會覺得好笑。"
+        },
+        {
+          "id": "PHOTO-08",
+          "title": "公車站放學照",
+          "image": "assets/puzzles/rin_photo_inspection/photo_08_bus_stop.png",
+          "objectPosition": "center",
+          "alt": "RIN 穿著制服站在公車站旁的街景照片",
+          "answers": ["people", "school", "location", "time", "daily"],
+          "feedback": "制服、站牌、班次和放學時間放在一起，平常的移動路線也可能被看出來。"
+        }
+      ],
+      "battleModifiers": []
+    }
+  ]
+}

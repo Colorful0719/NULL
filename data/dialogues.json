@@ -1,0 +1,296 @@
+{
+  "dialogues": [
+    {
+      "id": "prologue_parent_photo_01",
+      "label": "序章 · 照片",
+      "sceneId": "home_intro",
+      "backgroundId": "home_evening",
+      "participants": [
+        {
+          "characterId": "parent",
+          "position": "left",
+          "expression": "happy"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "neutral"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "parent",
+          "expression": "happy",
+          "text": "這張照片好可愛，我想分享給大家。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "nervous",
+          "text": "可以先問問我的想法嗎？照片分享出去後，可能會被更多人看到。"
+        },
+        {
+          "speakerId": "parent",
+          "expression": "nervous",
+          "text": "我只是想留下回憶……你希望我怎麼做？"
+        }
+      ],
+      "choices": [
+        "photo_choice_ask_first",
+        "photo_choice_family_only",
+        "photo_choice_post_now"
+      ]
+    },
+    {
+      "id": "home_parent_checkin",
+      "label": "家中 · 對話",
+      "sceneId": "home_map",
+      "backgroundId": "home_evening",
+      "participants": [
+        {
+          "characterId": "parent",
+          "position": "left",
+          "expression": "thinking"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "neutral"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "parent",
+          "expression": "thinking",
+          "text": "剛才的事讓我想到，留下回憶和尊重你的想法可以同時做到。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "happy",
+          "text": "只要分享前先說一聲，我們就能一起決定。"
+        }
+      ],
+      "choices": [],
+      "endText": "你們約定之後分享照片前，都先詢問彼此。"
+    },
+    {
+      "id": "ch1_photo_keeper_intro",
+      "label": "第一章 · 資料世界",
+      "sceneId": "data_world",
+      "participants": [
+        {
+          "characterId": "photo_keeper",
+          "position": "left",
+          "expression": "neutral"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "thinking"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "photo_keeper",
+          "expression": "thinking",
+          "text": "每一張照片都帶著看得見與看不見的線索。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "thinking",
+          "text": "只看照片內容還不夠，也要留意它可能附帶的資料。"
+        }
+      ],
+      "choices": [],
+      "endText": "PHOTO KEEPER 請你前往相簿城鎮前，先調查資料碎片。"
+    },
+    {
+      "id": "ch1_photo_kid_intro",
+      "label": "第一章 · 資料世界",
+      "sceneId": "data_world",
+      "participants": [
+        {
+          "characterId": "photo_kid",
+          "position": "left",
+          "expression": "nervous"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "neutral"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "photo_kid",
+          "expression": "nervous",
+          "text": "照片被轉傳以後，我不知道最後會被誰看見。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "determined",
+          "text": "照片裡的人也應該知道分享範圍，並且有拒絕的權利。"
+        }
+      ],
+      "choices": [],
+      "endText": "你記住了：照片中的人也有感受與選擇。"
+    },
+    {
+      "id": "ch1_kai_intro",
+      "label": "第一章 · 相簿城鎮",
+      "sceneId": "album_town",
+      "participants": [
+        {
+          "characterId": "kai",
+          "position": "left",
+          "expression": "happy"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "neutral"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "kai",
+          "expression": "nervous",
+          "text": "我只是發了一張照片。"
+        },
+        {
+          "speakerId": "kai",
+          "expression": "happy",
+          "text": "看到有趣的照片，我常常第一時間就想分享。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "thinking",
+          "text": "分享很快，但被拍到的人可能還沒準備好。"
+        },
+        {
+          "speakerId": "kai",
+          "expression": "nervous",
+          "text": "那我至少先停一下，確認大家都同意。"
+        }
+      ],
+      "choices": [],
+      "endText": "KAI 開始思考衝動分享可能造成的影響。"
+    },
+    {
+      "id": "ch1_rin_photo_check",
+      "label": "第一章 · 相簿城鎮",
+      "sceneId": "album_town",
+      "participants": [
+        {
+          "characterId": "rin",
+          "position": "left",
+          "expression": "thinking"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "neutral"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "rin",
+          "expression": "happy",
+          "text": "欸，你來得正好。"
+        },
+        {
+          "speakerId": "rin",
+          "expression": "thinking",
+          "text": "我剛剛整理了一堆照片，本來想挑幾張發出去。"
+        },
+        {
+          "speakerId": "rin",
+          "expression": "nervous",
+          "text": "可是看久了之後，我突然覺得有幾張怪怪的。"
+        },
+        {
+          "speakerId": "rin",
+          "expression": "thinking",
+          "text": "你可以幫我看一下嗎？"
+        }
+      ],
+      "choices": ["rin_photo_inspection_accept","rin_photo_inspection_later"],
+      "endText": "選擇是否現在協助 RIN。"
+    },
+    {
+      "id": "ch1_rin_photo_check_result",
+      "label": "第一章 · 照片檢查結果",
+      "sceneId": "album_town",
+      "participants": [
+        {
+          "characterId": "rin",
+          "position": "left",
+          "expression": "happy"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "determined"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "rin",
+          "expression": "thinking",
+          "text": "原來照片裡能看到的東西，比我想的還多。"
+        },
+        {
+          "speakerId": "rin",
+          "expression": "surprised",
+          "text": "有些甚至不是我原本想拍的。"
+        },
+        {
+          "speakerId": "rin",
+          "expression": "happy",
+          "text": "下次發照片之前，我應該會多看一眼了。"
+        }
+      ],
+      "choices": [],
+      "endText": "RIN 收起照片，準備在分享前再仔細看一次。"
+    },
+    {
+      "id": "ch1_rin_photo_check_repeat",
+      "label": "第一章 · RIN 的照片檢查",
+      "sceneId": "school_interior",
+      "participants": [{"characterId":"rin","position":"left","expression":"happy"},{"characterId":"player","position":"right","expression":"neutral"}],
+      "lines": [{"speakerId":"rin","expression":"happy","text":"謝謝你陪我把那些照片看完。我現在分享前，真的會多看一眼。"}],
+      "choices": [],
+      "endText": "RIN 已完成照片整理。"
+    },
+    {
+      "id": "ch1_mio_intro",
+      "label": "第一章 · 相簿城鎮",
+      "sceneId": "album_town",
+      "participants": [
+        {
+          "characterId": "mio",
+          "position": "left",
+          "expression": "neutral"
+        },
+        {
+          "characterId": "player",
+          "position": "right",
+          "expression": "thinking"
+        }
+      ],
+      "lines": [
+        {
+          "speakerId": "mio",
+          "expression": "thinking",
+          "text": "保護隱私不只是把所有照片藏起來，也包括好好說明與詢問。"
+        },
+        {
+          "speakerId": "player",
+          "expression": "happy",
+          "text": "先溝通分享目的和範圍，大家才能一起做決定。"
+        }
+      ],
+      "choices": [],
+      "endText": "MIO 提醒你：溝通也是保護隱私的方式。"
+    }
+  ]
+}

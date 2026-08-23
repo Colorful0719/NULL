@@ -1,0 +1,72 @@
+{
+  "bossDialogues": [
+    {
+      "id": "ch1_album_pre_battle",
+      "label": "第一章 · 相簿房間",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"memory"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"memory","text":"我保存每一張照片，因為回憶不應該消失。"},
+        {"speakerId":"player","expression":"thinking","text":"回憶值得珍惜，但照片中的人也應該參與保存的決定。"},
+        {"speakerId":"album","expression":"memory","text":"如果先詢問，珍藏的瞬間還能保持原本的溫度嗎？"},
+        {"speakerId":"player","expression":"determined","text":"真正被珍惜的回憶，不需要忽略任何人的感受。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 的第一層「回憶」屏障開始回應。",
+      "next": {"type":"battle","id":"album","isBoss":true,"phaseLimit":"phase_1_memory","afterDialogueId":"ch1_album_phase1_complete"}
+    },
+    {
+      "id": "ch1_album_phase2_pre_battle",
+      "label": "第一章 · 相簿房間",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"exposure"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"exposure","text":"回憶一旦被公開，就會被複製、轉傳，離開原本的範圍。"},
+        {"speakerId":"player","expression":"thinking","text":"分享不只是按下一個按鈕，也會改變照片中的人能否控制自己的影像。"},
+        {"speakerId":"album","expression":"exposure","text":"那就面對第二層「曝光」，看看你能不能守住分享的界線。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 的第二層「曝光」屏障開始擴散。",
+      "next": {"type":"battle","id":"album","isBoss":true,"phaseLimit":"phase_2_exposure","afterDialogueId":"ch1_album_phase2_complete"}
+    },
+    {
+      "id": "ch1_album_phase3_pre_battle",
+      "label": "第一章 · 相簿房間",
+      "sceneId": "album_room",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"profile"},
+        {"characterId":"player","position":"right","expression":"determined"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"profile","text":"一張照片也許只是片段，但多個片段可以拼出身分、地點與生活規律。"},
+        {"speakerId":"player","expression":"thinking","text":"分開看似普通的資訊，被組合後也可能指向同一個人。"},
+        {"speakerId":"album","expression":"profile","text":"那就面對最後一層「資料拼圖」，辨認照片共同留下的輪廓。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 的第三層「資料拼圖」屏障開始組合。",
+      "next": {"type":"battle","id":"album","isBoss":true,"phaseLimit":"phase_3_profile","afterDialogueId":"ch1_album_phase3_complete"}
+    },
+    {
+      "id": "ch1_album_post_battle",
+      "label": "第一章 · ALBUM 戰後",
+      "sceneId": "album_town",
+      "participants": [
+        {"characterId":"album","position":"left","expression":"resolve"},
+        {"characterId":"player","position":"right","expression":"happy"}
+      ],
+      "lines": [
+        {"speakerId":"album","expression":"resolve","text":"回憶不必消失，但保存與分享之前，可以先詢問照片中的人。"},
+        {"speakerId":"player","expression":"happy","text":"我們可以留下珍惜的事，也能尊重每個人的界線。"}
+      ],
+      "choices": [],
+      "endText": "ALBUM 收起資料屏障，邀請你回想這一路做過的決定。",
+      "next": {"type":"reflection","id":"album_reflection"}
+    }
+  ]
+}

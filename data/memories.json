@@ -1,0 +1,81 @@
+{
+  "memories": [
+    {
+      "id": "memory_01_home",
+      "completionFlag": "memory01Complete",
+      "legacyMemoryId": "family_consent",
+      "author": "PARENT",
+      "postText": "上學前拍一張 📷\n今天也要加油！",
+      "image": "assets/images/memories/ch1/memory_parent_home.png",
+      "alt": "PLAYER 站在住宅前拿著手機",
+      "questions": [
+        {
+          "prompt": "這張照片可能透露哪些資訊？",
+          "options": [
+            {"id": "a", "text": "PLAYER 喜歡什麼遊戲"},
+            {"id": "b", "text": "PLAYER 可能居住的環境或位置"},
+            {"id": "c", "text": "PLAYER 的帳號密碼"}
+          ],
+          "correct": "b",
+          "correctFeedback": "住宅外觀、門牌附近環境、道路與周圍建築，都可能成為辨識生活範圍的線索。",
+          "incorrectFeedback": "再看看照片背景。照片透露的資訊不一定來自主角本人。"
+        }
+      ]
+    },
+    {
+      "id": "memory_02_park",
+      "completionFlag": "memory02Complete",
+      "legacyMemoryId": "school_identity",
+      "author": "PARENT",
+      "postText": "難得一起出門 ❤️\n今天在湖邊走了好久。",
+      "image": "assets/images/memories/ch1/memory_parent_park.png",
+      "alt": "PARENT 與 PLAYER 在湖邊公園自拍",
+      "questions": [
+        {
+          "prompt": "這張照片最直接透露了什麼？",
+          "options": [
+            {"id": "a", "text": "PLAYER 曾經出現在特定地點"},
+            {"id": "b", "text": "PLAYER 的遊戲紀錄"},
+            {"id": "c", "text": "PLAYER 的登入密碼"}
+          ],
+          "correct": "a",
+          "correctFeedback": "照片中的文字、地標、背景，甚至貼文內容，都可能直接暴露所在地點。",
+          "incorrectFeedback": "再看看照片中的文字、地標與貼文內容。"
+        },
+        {
+          "prompt": "除了地點，這張照片還透露了什麼？",
+          "options": [
+            {"id": "a", "text": "PLAYER 與 PARENT 的關係"},
+            {"id": "b", "text": "PLAYER 的電子郵件密碼"},
+            {"id": "c", "text": "PLAYER 的瀏覽器紀錄"}
+          ],
+          "correct": "a",
+          "correctFeedback": "照片不只記錄人物。人物之間的關係也可能被推測出來。",
+          "incorrectFeedback": "再看看照片中同框的人，以及貼文描述的相處情境。"
+        }
+      ]
+    },
+    {
+      "id": "memory_03_gym",
+      "completionFlag": "memory03Complete",
+      "legacyMemoryId": "sharing_scope",
+      "author": "PARENT",
+      "postText": "運動日！\n看到孩子和朋友玩得這麼開心，忍不住拍了一張。",
+      "image": "assets/images/memories/ch1/memory_parent_gym.png",
+      "alt": "PLAYER 與 KAI 在學校體育館合照",
+      "questions": [
+        {
+          "prompt": "從這張照片可能推測出什麼？",
+          "options": [
+            {"id": "a", "text": "PLAYER 與 KAI 可能認識"},
+            {"id": "b", "text": "PLAYER 的銀行帳號"},
+            {"id": "c", "text": "PLAYER 的手機解鎖密碼"}
+          ],
+          "correct": "a",
+          "correctFeedback": "合照可能暴露社交關係。背景中的體育館、制服、活動與其他學生，也可能讓觀看者推測學校或固定活動。",
+          "incorrectFeedback": "再看看照片中的人物、體育館、活動與其他學生。"
+        }
+      ]
+    }
+  ]
+}

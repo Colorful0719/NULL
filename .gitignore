@@ -1,0 +1,41 @@
+node_modules/
+dist/
+build/
+cache/
+.cache/
+logs/
+*.log
+*.tmp
+*.temp
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+coverage/
+playwright-report/
+test-results/
+
+# Public release: third-party raw audio is intentionally not redistributed.
+# Pixabay Content License — game use verified; raw repository redistribution excluded.
+assets/audio/sfx/alexzavesa-glitch-transition-1-463623.mp3
+assets/audio/sfx/zoedit-digital-glitch-whoosh-533580.mp3
+assets/audio/sfx/freesound_community-cinematic-glitch-transition-sfx-27806.mp3
+assets/audio/sfx/virtual_vibes-digital-glitch-noise-hd-379465.mp3
+assets/audio/sfx/soulfuljamtracks-glitch-fx-transitions-9-378582.mp3
+assets/audio/sfx/khemrajdotin-glitch-transition-sfx-182152.mp3
+
+# Mixkit Sound Effects Free License — game use verified; raw repository redistribution excluded.
+assets/audio/sfx/mixkit-camera-digital-shutter-1432.wav
+assets/audio/sfx/mixkit-glitch-static-1457.wav
+assets/audio/sfx/mixkit-modern-technology-select-3124.wav
+assets/audio/sfx/mixkit-quick-win-video-game-notification-269.wav
+assets/audio/sfx/mixkit-sci-fi-click-900.wav
+assets/audio/sfx/mixkit-select-click-1109.wav
+assets/audio/sfx/mixkit-small-electric-glitch-2595.wav
+
+# Source/license evidence is incomplete; keep locally but exclude from public release.
+assets/audio/bgm/Exploration Theme.ogg

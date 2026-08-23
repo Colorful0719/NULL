@@ -1,0 +1,3130 @@
+{
+  "scenes": [
+    {
+      "id": "home_intro",
+      "displayName": "家中客廳",
+      "background": "home_evening",
+      "dialogueId": "prologue_parent_photo_01"
+    },
+    {
+      "id": "home_map",
+      "type": "map",
+      "bgmId": "DAILY_EXPLORATION",
+      "displayName": "家中",
+      "description": "熟悉的客廳裡，手機螢幕閃著不自然的微光。",
+      "theme": "home",
+      "mapArt": {
+        "baseImage": "assets/maps/player_home/player_home_base.png",
+        "tilesetSource": "assets/maps/player_home/source/player_home_tileset.png",
+        "conceptSource": "assets/maps/player_home/source/player_home_map_concept.png",
+        "logicalSize": {
+          "width": 960,
+          "height": 720
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 20,
+        "height": 15
+      },
+      "spawn": {
+        "x": 3,
+        "y": 4
+      },
+      "spawnFacing": "down",
+      "collisions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 6,
+          "y": 0
+        },
+        {
+          "x": 7,
+          "y": 0
+        },
+        {
+          "x": 8,
+          "y": 0
+        },
+        {
+          "x": 9,
+          "y": 0
+        },
+        {
+          "x": 10,
+          "y": 0
+        },
+        {
+          "x": 11,
+          "y": 0
+        },
+        {
+          "x": 12,
+          "y": 0
+        },
+        {
+          "x": 13,
+          "y": 0
+        },
+        {
+          "x": 14,
+          "y": 0
+        },
+        {
+          "x": 15,
+          "y": 0
+        },
+        {
+          "x": 16,
+          "y": 0
+        },
+        {
+          "x": 17,
+          "y": 0
+        },
+        {
+          "x": 18,
+          "y": 0
+        },
+        {
+          "x": 19,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 1,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 1
+        },
+        {
+          "x": 8,
+          "y": 1
+        },
+        {
+          "x": 10,
+          "y": 1
+        },
+        {
+          "x": 11,
+          "y": 1
+        },
+        {
+          "x": 12,
+          "y": 1
+        },
+        {
+          "x": 13,
+          "y": 1
+        },
+        {
+          "x": 14,
+          "y": 1
+        },
+        {
+          "x": 15,
+          "y": 1
+        },
+        {
+          "x": 16,
+          "y": 1
+        },
+        {
+          "x": 17,
+          "y": 1
+        },
+        {
+          "x": 19,
+          "y": 1
+        },
+        {
+          "x": 0,
+          "y": 2
+        },
+        {
+          "x": 1,
+          "y": 2
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 6,
+          "y": 2
+        },
+        {
+          "x": 7,
+          "y": 2
+        },
+        {
+          "x": 8,
+          "y": 2
+        },
+        {
+          "x": 10,
+          "y": 2
+        },
+        {
+          "x": 11,
+          "y": 2
+        },
+        {
+          "x": 12,
+          "y": 2
+        },
+        {
+          "x": 13,
+          "y": 2
+        },
+        {
+          "x": 14,
+          "y": 2
+        },
+        {
+          "x": 15,
+          "y": 2
+        },
+        {
+          "x": 16,
+          "y": 2
+        },
+        {
+          "x": 17,
+          "y": 2
+        },
+        {
+          "x": 19,
+          "y": 2
+        },
+        {
+          "x": 0,
+          "y": 3
+        },
+        {
+          "x": 1,
+          "y": 3
+        },
+        {
+          "x": 2,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 7,
+          "y": 3
+        },
+        {
+          "x": 8,
+          "y": 3
+        },
+        {
+          "x": 10,
+          "y": 3
+        },
+        {
+          "x": 11,
+          "y": 3
+        },
+        {
+          "x": 12,
+          "y": 3
+        },
+        {
+          "x": 13,
+          "y": 3
+        },
+        {
+          "x": 14,
+          "y": 3
+        },
+        {
+          "x": 15,
+          "y": 3
+        },
+        {
+          "x": 16,
+          "y": 3
+        },
+        {
+          "x": 17,
+          "y": 3
+        },
+        {
+          "x": 19,
+          "y": 3
+        },
+        {
+          "x": 0,
+          "y": 4
+        },
+        {
+          "x": 8,
+          "y": 4
+        },
+        {
+          "x": 19,
+          "y": 4
+        },
+        {
+          "x": 0,
+          "y": 5
+        },
+        {
+          "x": 19,
+          "y": 5
+        },
+        {
+          "x": 0,
+          "y": 6
+        },
+        {
+          "x": 1,
+          "y": 6
+        },
+        {
+          "x": 2,
+          "y": 6
+        },
+        {
+          "x": 19,
+          "y": 6
+        },
+        {
+          "x": 0,
+          "y": 7
+        },
+        {
+          "x": 1,
+          "y": 7
+        },
+        {
+          "x": 2,
+          "y": 7
+        },
+        {
+          "x": 8,
+          "y": 7
+        },
+        {
+          "x": 10,
+          "y": 7
+        },
+        {
+          "x": 12,
+          "y": 7
+        },
+        {
+          "x": 13,
+          "y": 7
+        },
+        {
+          "x": 14,
+          "y": 7
+        },
+        {
+          "x": 15,
+          "y": 7
+        },
+        {
+          "x": 16,
+          "y": 7
+        },
+        {
+          "x": 17,
+          "y": 7
+        },
+        {
+          "x": 18,
+          "y": 7
+        },
+        {
+          "x": 19,
+          "y": 7
+        },
+        {
+          "x": 0,
+          "y": 8
+        },
+        {
+          "x": 1,
+          "y": 8
+        },
+        {
+          "x": 2,
+          "y": 8
+        },
+        {
+          "x": 3,
+          "y": 8
+        },
+        {
+          "x": 4,
+          "y": 8
+        },
+        {
+          "x": 6,
+          "y": 8
+        },
+        {
+          "x": 7,
+          "y": 8
+        },
+        {
+          "x": 19,
+          "y": 8
+        },
+        {
+          "x": 0,
+          "y": 9
+        },
+        {
+          "x": 1,
+          "y": 9
+        },
+        {
+          "x": 2,
+          "y": 9
+        },
+        {
+          "x": 3,
+          "y": 9
+        },
+        {
+          "x": 4,
+          "y": 9
+        },
+        {
+          "x": 5,
+          "y": 9
+        },
+        {
+          "x": 6,
+          "y": 9
+        },
+        {
+          "x": 7,
+          "y": 9
+        },
+        {
+          "x": 10,
+          "y": 9
+        },
+        {
+          "x": 11,
+          "y": 9
+        },
+        {
+          "x": 12,
+          "y": 9
+        },
+        {
+          "x": 13,
+          "y": 9
+        },
+        {
+          "x": 15,
+          "y": 9
+        },
+        {
+          "x": 19,
+          "y": 9
+        },
+        {
+          "x": 0,
+          "y": 10
+        },
+        {
+          "x": 1,
+          "y": 10
+        },
+        {
+          "x": 2,
+          "y": 10
+        },
+        {
+          "x": 3,
+          "y": 10
+        },
+        {
+          "x": 4,
+          "y": 10
+        },
+        {
+          "x": 5,
+          "y": 10
+        },
+        {
+          "x": 6,
+          "y": 10
+        },
+        {
+          "x": 7,
+          "y": 10
+        },
+        {
+          "x": 10,
+          "y": 10
+        },
+        {
+          "x": 11,
+          "y": 10
+        },
+        {
+          "x": 12,
+          "y": 10
+        },
+        {
+          "x": 13,
+          "y": 10
+        },
+        {
+          "x": 15,
+          "y": 10
+        },
+        {
+          "x": 19,
+          "y": 10
+        },
+        {
+          "x": 0,
+          "y": 11
+        },
+        {
+          "x": 1,
+          "y": 11
+        },
+        {
+          "x": 2,
+          "y": 11
+        },
+        {
+          "x": 3,
+          "y": 11
+        },
+        {
+          "x": 4,
+          "y": 11
+        },
+        {
+          "x": 5,
+          "y": 11
+        },
+        {
+          "x": 6,
+          "y": 11
+        },
+        {
+          "x": 7,
+          "y": 11
+        },
+        {
+          "x": 11,
+          "y": 11
+        },
+        {
+          "x": 12,
+          "y": 11
+        },
+        {
+          "x": 13,
+          "y": 11
+        },
+        {
+          "x": 19,
+          "y": 11
+        },
+        {
+          "x": 0,
+          "y": 12
+        },
+        {
+          "x": 1,
+          "y": 12
+        },
+        {
+          "x": 2,
+          "y": 12
+        },
+        {
+          "x": 3,
+          "y": 12
+        },
+        {
+          "x": 4,
+          "y": 12
+        },
+        {
+          "x": 5,
+          "y": 12
+        },
+        {
+          "x": 6,
+          "y": 12
+        },
+        {
+          "x": 7,
+          "y": 12
+        },
+        {
+          "x": 11,
+          "y": 12
+        },
+        {
+          "x": 12,
+          "y": 12
+        },
+        {
+          "x": 13,
+          "y": 12
+        },
+        {
+          "x": 17,
+          "y": 12
+        },
+        {
+          "x": 19,
+          "y": 12
+        },
+        {
+          "x": 0,
+          "y": 13
+        },
+        {
+          "x": 1,
+          "y": 13
+        },
+        {
+          "x": 2,
+          "y": 13
+        },
+        {
+          "x": 3,
+          "y": 13
+        },
+        {
+          "x": 4,
+          "y": 13
+        },
+        {
+          "x": 5,
+          "y": 13
+        },
+        {
+          "x": 6,
+          "y": 13
+        },
+        {
+          "x": 7,
+          "y": 13
+        },
+        {
+          "x": 10,
+          "y": 13
+        },
+        {
+          "x": 11,
+          "y": 13
+        },
+        {
+          "x": 12,
+          "y": 13
+        },
+        {
+          "x": 13,
+          "y": 13
+        },
+        {
+          "x": 14,
+          "y": 13
+        },
+        {
+          "x": 15,
+          "y": 13
+        },
+        {
+          "x": 16,
+          "y": 13
+        },
+        {
+          "x": 17,
+          "y": 13
+        },
+        {
+          "x": 18,
+          "y": 13
+        },
+        {
+          "x": 19,
+          "y": 13
+        },
+        {
+          "x": 0,
+          "y": 14
+        },
+        {
+          "x": 1,
+          "y": 14
+        },
+        {
+          "x": 2,
+          "y": 14
+        },
+        {
+          "x": 3,
+          "y": 14
+        },
+        {
+          "x": 4,
+          "y": 14
+        },
+        {
+          "x": 5,
+          "y": 14
+        },
+        {
+          "x": 6,
+          "y": 14
+        },
+        {
+          "x": 7,
+          "y": 14
+        },
+        {
+          "x": 10,
+          "y": 14
+        },
+        {
+          "x": 11,
+          "y": 14
+        },
+        {
+          "x": 12,
+          "y": 14
+        },
+        {
+          "x": 13,
+          "y": 14
+        },
+        {
+          "x": 14,
+          "y": 14
+        },
+        {
+          "x": 15,
+          "y": 14
+        },
+        {
+          "x": 16,
+          "y": 14
+        },
+        {
+          "x": 17,
+          "y": 14
+        },
+        {
+          "x": 18,
+          "y": 14
+        },
+        {
+          "x": 19,
+          "y": 14
+        }
+      ],
+      "entities": [
+        {
+          "id": "home_parent",
+          "type": "npc",
+          "characterId": "parent",
+          "position": {
+            "x": 17,
+            "y": 10
+          },
+          "spriteId": "parent_home_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 726,
+              "y": 784,
+              "width": 104,
+              "height": 200
+            },
+            "display": {
+              "width": 42,
+              "height": 81
+            }
+          },
+          "interaction": {
+            "kind": "talk",
+            "frontPosition": {
+              "x": 17,
+              "y": 11,
+              "facing": "up"
+            },
+            "frontPositions": [
+              { "x": 17, "y": 11, "facing": "up" },
+              { "x": 16, "y": 10, "facing": "right" },
+              { "x": 18, "y": 10, "facing": "left" }
+            ],
+            "prompt": "按 E 交談",
+            "dialogueId": "prologue_parent_photo_01",
+            "dialogueWhenReadyId": "home_parent_checkin",
+            "conditionalFlag": "albumAwaitingParent",
+            "conditionalAnyFlags": [
+              "albumAwaitingParent",
+              "albumPhase3Complete",
+              "albumBattleComplete"
+            ],
+            "dialogueWhenFlagId": "ch1_album_parent_post_battle",
+            "requiredAnyFlags": [
+              "photo_choice_ask_first",
+              "photo_choice_family_only",
+              "photo_choice_post_now"
+            ],
+            "enabled": true
+          }
+        },
+        {
+          "id": "home_phone",
+          "type": "object",
+          "position": {
+            "x": 3,
+            "y": 2
+          },
+          "spriteId": "placeholder_phone",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查手機",
+            "message": "手機螢幕散發著不自然的微光。"
+          }
+        },
+        {
+          "id": "home_desk",
+          "type": "object",
+          "position": {
+            "x": 6,
+            "y": 2
+          },
+          "spriteId": "home_desk",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查書桌",
+            "message": "書桌上放著還沒整理完的筆記。"
+          }
+        },
+        {
+          "id": "home_computer",
+          "type": "object",
+          "position": {
+            "x": 7,
+            "y": 3
+          },
+          "spriteId": "home_computer",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 使用電腦",
+            "message": "電腦停在待機畫面，桌面上還開著整理照片的資料夾。"
+          }
+        },
+        {
+          "id": "home_school_bag",
+          "type": "object",
+          "position": {
+            "x": 5,
+            "y": 3
+          },
+          "spriteId": "home_school_bag",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查書包",
+            "message": "書包靠在桌邊，明天要用的東西都收在裡面。"
+          }
+        },
+        {
+          "id": "home_family_photo",
+          "type": "object",
+          "position": {
+            "x": 5,
+            "y": 2
+          },
+          "spriteId": "home_family_photo",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查家庭照片",
+            "message": "相框裡是家人一起留下的日常。"
+          }
+        },
+        {
+          "id": "home_calendar_fridge",
+          "type": "object",
+          "position": {
+            "x": 11,
+            "y": 3
+          },
+          "spriteId": "home_calendar_fridge",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查冰箱與行事曆",
+            "message": "冰箱旁的家庭行事曆記著大家的安排。"
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "id": "home_to_neighborhood",
+          "type": "exit",
+          "position": {
+            "x": 8,
+            "y": 14
+          },
+          "activation": "interact",
+          "prompt": "按 E 前往住宅街區",
+          "to": "neighborhood",
+          "targetPosition": {
+            "x": 12,
+            "y": 6
+          },
+          "targetDirection": "down",
+          "requiredAnyFlags": [
+            "photo_choice_ask_first",
+            "photo_choice_family_only",
+            "photo_choice_post_now"
+          ],
+          "lockedMessage": "先和 PARENT 說完照片分享的事，再離開家中。"
+        }
+      ],
+      "connections": []
+    },
+    {
+      "id": "neighborhood",
+      "type": "map",
+      "bgmId": "DAILY_EXPLORATION",
+      "displayName": "住宅街區",
+      "description": "住宅與街道沿著社區延伸，遠處散落著不尋常的照片碎片。",
+      "theme": "neighborhood",
+      "mapArt": {
+        "baseImage": "assets/maps/neighborhood/neighborhood_base.png",
+        "tilesetSource": "assets/maps/neighborhood/source/neighborhood_tileset.png",
+        "logicalSize": {
+          "width": 1448,
+          "height": 1086
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 30,
+        "height": 23
+      },
+      "spawn": {
+        "x": 12,
+        "y": 6
+      },
+      "spawnFacing": "down",
+      "collisions": [
+        {
+          "x": 18,
+          "y": 6
+        },
+        {
+          "x": 21,
+          "y": 10
+        },
+        {
+          "x": 22,
+          "y": 13
+        },
+        {
+          "x": 25,
+          "y": 15
+        }
+      ],
+      "collisionRects": [
+        {
+          "id": "northwest_houses",
+          "x": 0,
+          "y": 0,
+          "width": 23,
+          "height": 6
+        },
+        {
+          "id": "northeast_houses",
+          "x": 26,
+          "y": 0,
+          "width": 4,
+          "height": 6
+        },
+        {
+          "id": "southwest_houses",
+          "x": 0,
+          "y": 16,
+          "width": 23,
+          "height": 7
+        },
+        {
+          "id": "southeast_houses",
+          "x": 26,
+          "y": 16,
+          "width": 4,
+          "height": 7
+        },
+        {
+          "id": "east_house",
+          "x": 26,
+          "y": 10,
+          "width": 4,
+          "height": 4
+        },
+        {
+          "id": "park_west",
+          "x": 7,
+          "y": 10,
+          "width": 2,
+          "height": 4
+        },
+        {
+          "id": "park_center",
+          "x": 13,
+          "y": 10,
+          "width": 8,
+          "height": 4
+        }
+      ],
+      "entities": [
+        {
+          "id": "neighborhood_notice_board",
+          "type": "object",
+          "position": { "x": 13, "y": 9 },
+          "spriteId": "environment_notice_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 13, "y": 11, "facing": "up" },
+            "frontPositions": [{ "x": 13, "y": 11, "facing": "up" }, { "x": 14, "y": 11, "facing": "up" }],
+            "prompt": "按 E 查看社區公布欄",
+            "dialogueId": "env_neighborhood_board_first",
+            "repeatDialogueId": "env_neighborhood_board_repeat",
+            "observedFlag": "observedNeighborhoodBoard"
+          }
+        },
+        {
+          "id": "neighborhood_corner_notice_board",
+          "type": "object",
+          "position": { "x": 20, "y": 5 },
+          "spriteId": "environment_notice_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 20, "y": 6, "facing": "up" },
+            "frontPositions": [{ "x": 19, "y": 6, "facing": "up" }, { "x": 20, "y": 6, "facing": "up" }, { "x": 21, "y": 6, "facing": "up" }],
+            "prompt": "按 E 查看街角公布欄",
+            "dialogueId": "env_neighborhood_corner_board_first",
+            "repeatDialogueId": "env_neighborhood_corner_board_repeat",
+            "observedFlag": "observedNeighborhoodCornerBoard"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {"id":"neighborhood_sharer_01","enemyType":"SHARER","mapId":"neighborhood","x":5,"y":12,"spawnX":5,"spawnY":12,"direction":"right","movementSpeed":380,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":1,"y":10,"width":6,"height":4},"detectionRadius":4,"chaseStepMs":260,"moveDuration":{"min":800,"max":2200},"idleDuration":{"min":600,"max":1800},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"},
+        {"id":"neighborhood_tracker_01","enemyType":"TRACKER","mapId":"neighborhood","x":23,"y":12,"spawnX":23,"spawnY":12,"direction":"left","movementSpeed":400,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":21,"y":10,"width":5,"height":4},"detectionRadius":5,"chaseStepMs":250,"moveDuration":{"min":900,"max":2300},"idleDuration":{"min":700,"max":1900},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"}
+      ],
+      "triggers": [
+        {
+          "id": "neighborhood_to_home",
+          "type": "exit",
+          "position": {
+            "x": 12,
+            "y": 5
+          },
+          "activation": "interact",
+          "prompt": "按 E 返回家中",
+          "to": "home_map",
+          "targetPosition": {
+            "x": 8,
+            "y": 13
+          },
+          "targetDirection": "up"
+        },
+        {
+          "id": "neighborhood_to_photo_street",
+          "type": "exit",
+          "position": {
+            "x": 24,
+            "y": 0
+          },
+          "activation": "interact",
+          "prompt": "按 E 沿道路前往照片街道",
+          "to": "photo_street",
+          "targetPosition": {
+            "x": 3,
+            "y": 21
+          },
+          "targetDirection": "up"
+        }
+      ],
+      "connections": []
+    },
+    {
+      "id": "photo_street",
+      "type": "map",
+      "bgmId": "PHOTO_STREET",
+      "displayName": "照片街道",
+      "description": "大量照片碎片與異常雜訊散落在街道與廣場之間。",
+      "theme": "photo_street",
+      "mapArt": {
+        "baseImage": "assets/maps/photo_street/photo_street_base.png",
+        "tilesetSource": "assets/maps/photo_street/source/photo_street_tileset.png",
+        "logicalSize": {
+          "width": 1448,
+          "height": 1086
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 30,
+        "height": 23
+      },
+      "spawn": {
+        "x": 2,
+        "y": 13
+      },
+      "spawnFacing": "right",
+      "collisions": [
+        {
+          "x": 1,
+          "y": 7
+        },
+        {
+          "x": 5,
+          "y": 7
+        },
+        {
+          "x": 7,
+          "y": 6
+        },
+        {
+          "x": 14,
+          "y": 15
+        },
+        {
+          "x": 24,
+          "y": 12
+        },
+        {
+          "x": 25,
+          "y": 7
+        },
+        {
+          "x": 28,
+          "y": 6
+        }
+      ],
+      "collisionRects": [
+        {
+          "id": "northwest_houses",
+          "x": 0,
+          "y": 0,
+          "width": 25,
+          "height": 5
+        },
+        {
+          "id": "northeast_house",
+          "x": 28,
+          "y": 0,
+          "width": 2,
+          "height": 6
+        },
+        {
+          "id": "south_houses",
+          "x": 5,
+          "y": 16,
+          "width": 20,
+          "height": 7
+        },
+        {
+          "id": "southwest_block",
+          "x": 0,
+          "y": 16,
+          "width": 2,
+          "height": 7
+        },
+        {
+          "id": "southeast_block",
+          "x": 28,
+          "y": 16,
+          "width": 2,
+          "height": 7
+        },
+        {
+          "id": "plaza_notice_tree",
+          "x": 7,
+          "y": 8,
+          "width": 7,
+          "height": 2
+        },
+        {
+          "id": "plaza_north_benches",
+          "x": 16,
+          "y": 8,
+          "width": 6,
+          "height": 2
+        },
+        {
+          "id": "plaza_tree",
+          "x": 8,
+          "y": 10,
+          "width": 2,
+          "height": 2
+        },
+        {
+          "id": "plaza_east_benches",
+          "x": 21,
+          "y": 10,
+          "width": 3,
+          "height": 3
+        }
+      ],
+      "entities": [
+        {
+          "id": "photo_street_board",
+          "type": "object",
+          "position": { "x": 10, "y": 8 },
+          "spriteId": "environment_notice_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 10, "y": 10, "facing": "up" },
+            "prompt": "按 E 查看公布欄",
+            "dialogueId": "env_photo_street_board_first",
+            "repeatDialogueId": "env_photo_street_board_repeat",
+            "observedFlag": "observedPhotoStreetBoard"
+          }
+        },
+        {
+          "id": "photo_street_photo_board",
+          "type": "object",
+          "position": { "x": 13, "y": 8 },
+          "spriteId": "environment_photo_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 13, "y": 10, "facing": "up" },
+            "prompt": "按 E 查看照片公布欄",
+            "dialogueId": "env_photo_street_copy_board_first",
+            "repeatDialogueId": "env_photo_street_copy_board_repeat",
+            "observedFlag": "observedPhotoStreetPhotoBoard"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {
+          "id": "photo_street_sharer_01",
+          "enemyType": "SHARER",
+          "mapId": "photo_street",
+          "x": 14,
+          "y": 12,
+          "spawnX": 14,
+          "spawnY": 12,
+          "direction": "down",
+          "movementSpeed": 380,
+          "sprite": "assets/enemies/sharer/map_sheet.png",
+          "roamRadius": 5,
+          "roamArea": { "x": 11, "y": 10, "width": 8, "height": 5 },
+          "detectionRadius": 4,
+          "chaseStepMs": 260,
+          "moveDuration": { "min": 800, "max": 2200 },
+          "idleDuration": { "min": 600, "max": 1800 },
+          "state": "IDLE",
+          "encounterId": "sharer",
+          "defeated": false,
+          "respawnPolicy": "ONCE"
+        },
+        {
+          "id":"photo_street_tracker_01","enemyType":"TRACKER","mapId":"photo_street","x":26,"y":10,"spawnX":26,"spawnY":10,"direction":"left","movementSpeed":400,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":24,"y":8,"width":5,"height":6},"detectionRadius":5,"chaseStepMs":250,"moveDuration":{"min":900,"max":2300},"idleDuration":{"min":700,"max":1900},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"
+        }
+      ],
+      "triggers": [
+        {
+          "id": "photo_street_to_neighborhood",
+          "type": "exit",
+          "position": {
+            "x": 3,
+            "y": 22
+          },
+          "activation": "interact",
+          "prompt": "按 E 沿道路返回住宅街區",
+          "to": "neighborhood",
+          "targetPosition": {
+            "x": 24,
+            "y": 1
+          },
+          "targetDirection": "down"
+        },
+        {
+          "id": "photo_street_to_school_front",
+          "type": "exit",
+          "position": {
+            "x": 27,
+            "y": 17
+          },
+          "activation": "interact",
+          "prompt": "按 E 沿道路前往校門前",
+          "to": "school_front",
+          "targetPosition": {
+            "x": 15,
+            "y": 20
+          },
+          "targetDirection": "up"
+        }
+      ],
+      "connections": []
+    },
+    {
+      "id": "school_front",
+      "type": "map",
+      "bgmId": "DAILY_EXPLORATION",
+      "displayName": "校門前",
+      "description": "校門敞開，中央庭院一路通往教學樓入口。",
+      "theme": "school_front",
+      "mapArt": {
+        "baseImage": "assets/maps/school_front/school_front_base.png",
+        "tilesetSource": "assets/maps/school_front/source/school_front_tileset.png",
+        "logicalSize": {
+          "width": 1448,
+          "height": 1086
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 30,
+        "height": 23
+      },
+      "spawn": {
+        "x": 15,
+        "y": 20
+      },
+      "spawnFacing": "up",
+      "collisions": [
+        {
+          "x": 1,
+          "y": 13
+        },
+        {
+          "x": 6,
+          "y": 8
+        },
+        {
+          "x": 7,
+          "y": 12
+        },
+        {
+          "x": 21,
+          "y": 12
+        },
+        {
+          "x": 24,
+          "y": 8
+        },
+        {
+          "x": 27,
+          "y": 13
+        }
+      ],
+      "collisionRects": [
+        {
+          "id": "school_building",
+          "x": 3,
+          "y": 0,
+          "width": 27,
+          "height": 5
+        },
+        {
+          "id": "northwest_wall",
+          "x": 0,
+          "y": 5,
+          "width": 11,
+          "height": 2
+        },
+        {
+          "id": "northeast_wall",
+          "x": 19,
+          "y": 5,
+          "width": 11,
+          "height": 2
+        },
+        {
+          "id": "bike_shelter",
+          "x": 0,
+          "y": 7,
+          "width": 6,
+          "height": 3
+        },
+        {
+          "id": "west_garden",
+          "x": 1,
+          "y": 10,
+          "width": 6,
+          "height": 4
+        },
+        {
+          "id": "east_facilities",
+          "x": 21,
+          "y": 7,
+          "width": 9,
+          "height": 3
+        },
+        {
+          "id": "east_garden",
+          "x": 23,
+          "y": 10,
+          "width": 6,
+          "height": 4
+        },
+        {
+          "id": "southwest_wall",
+          "x": 0,
+          "y": 15,
+          "width": 12,
+          "height": 4
+        },
+        {
+          "id": "southeast_wall",
+          "x": 18,
+          "y": 15,
+          "width": 12,
+          "height": 4
+        }
+      ],
+      "entities": [
+        {
+          "id": "school_front_notice_board",
+          "type": "object",
+          "position": { "x": 22, "y": 9 },
+          "spriteId": "environment_notice_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 22, "y": 10, "facing": "up" },
+            "prompt": "按 E 查看學校公布欄",
+            "dialogueId": "env_school_front_board_first",
+            "repeatDialogueId": "env_school_front_board_repeat",
+            "observedFlag": "observedSchoolFrontBoard"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {
+          "id": "school_front_tracker_01",
+          "enemyType": "TRACKER",
+          "mapId": "school_front",
+          "x": 15,
+          "y": 12,
+          "spawnX": 15,
+          "spawnY": 12,
+          "direction": "up",
+          "movementSpeed": 420,
+          "sprite": "assets/enemies/tracker/map_sheet.png",
+          "roamRadius": 5,
+          "roamArea": { "x": 12, "y": 8, "width": 7, "height": 7 },
+          "detectionRadius": 5,
+          "chaseStepMs": 250,
+          "moveDuration": { "min": 900, "max": 2300 },
+          "idleDuration": { "min": 700, "max": 1900 },
+          "state": "IDLE",
+          "encounterId": "tracker",
+          "defeated": false,
+          "respawnPolicy": "ONCE"
+        },
+        {
+          "id":"school_front_sharer_01","enemyType":"SHARER","mapId":"school_front","x":9,"y":11,"spawnX":9,"spawnY":11,"direction":"right","movementSpeed":380,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":7,"y":9,"width":5,"height":5},"detectionRadius":4,"chaseStepMs":260,"moveDuration":{"min":800,"max":2200},"idleDuration":{"min":600,"max":1800},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"
+        }
+      ],
+      "triggers": [
+        {
+          "id": "school_front_to_photo_street",
+          "type": "exit",
+          "position": {
+            "x": 15,
+            "y": 22
+          },
+          "activation": "interact",
+          "prompt": "按 E 沿斑馬線返回照片街道",
+          "to": "photo_street",
+          "targetPosition": {
+            "x": 27,
+            "y": 18
+          },
+          "targetDirection": "up"
+        },
+        {
+          "id": "school_front_to_school_interior",
+          "type": "exit",
+          "position": {
+            "x": 15,
+            "y": 4
+          },
+          "activation": "interact",
+          "prompt": "按 E 進入校舍",
+          "to": "school_interior",
+          "targetPosition": {
+            "x": 15,
+            "y": 20
+          },
+          "targetDirection": "up"
+        }
+      ],
+      "connections": []
+    },
+    {
+      "id": "school_interior",
+      "type": "map",
+      "bgmId": "DAILY_EXPLORATION",
+      "displayName": "校舍內部",
+      "description": "教室與走廊圍繞中央通道延伸，上方傳來不穩定的照片雜訊。",
+      "theme": "school_interior",
+      "mapArt": {
+        "baseImage": "assets/maps/school_interior/school_interior_base.png",
+        "tilesetSource": "assets/maps/school_interior/source/school_interior_tileset.png",
+        "logicalSize": {
+          "width": 1448,
+          "height": 1086
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 30,
+        "height": 23
+      },
+      "spawn": {
+        "x": 15,
+        "y": 20
+      },
+      "spawnFacing": "up",
+      "collisions": [
+        {
+          "x": 12,
+          "y": 8
+        },
+        {
+          "x": 17,
+          "y": 8
+        },
+        {
+          "x": 12,
+          "y": 14
+        },
+        {
+          "x": 17,
+          "y": 14
+        },
+        {
+          "x": 10,
+          "y": 17
+        },
+        {
+          "x": 19,
+          "y": 17
+        }
+      ],
+      "collisionRects": [
+        {
+          "id": "outside_northwest",
+          "x": 0,
+          "y": 0,
+          "width": 12,
+          "height": 2
+        },
+        {
+          "id": "outside_northeast",
+          "x": 18,
+          "y": 0,
+          "width": 12,
+          "height": 2
+        },
+        {
+          "id": "outside_southwest",
+          "x": 0,
+          "y": 18,
+          "width": 12,
+          "height": 5
+        },
+        {
+          "id": "outside_southeast",
+          "x": 18,
+          "y": 18,
+          "width": 12,
+          "height": 5
+        },
+      {
+        "id": "kai_room_divider",
+        "x": 6,
+        "y": 4,
+        "width": 1,
+        "height": 3
+      },
+      {
+        "id": "upper_center_divider",
+        "x": 12,
+        "y": 4,
+        "width": 1,
+        "height": 3
+        },
+      {"id":"kai_room_south_wall_left","x":0,"y":8,"width":4,"height":1},
+      {"id":"kai_room_south_wall_right","x":7,"y":8,"width":5,"height":1},
+      {"id":"kai_seats_left","x":1,"y":5,"width":1,"height":2},
+      {"id":"kai_seats_center","x":3,"y":5,"width":1,"height":2},
+      {"id":"kai_seats_right","x":5,"y":5,"width":1,"height":2},
+      {
+        "id": "upper_photo_room",
+        "x": 7,
+        "y": 4,
+        "width": 4,
+        "height": 1
+        },
+        {
+          "id": "upper_library",
+          "x": 18,
+          "y": 2,
+          "width": 5,
+          "height": 3
+        },
+        {
+          "id": "upper_lockers",
+          "x": 25,
+          "y": 3,
+          "width": 4,
+          "height": 3
+        },
+        {
+          "id": "middle_washroom",
+          "x": 0,
+          "y": 8,
+          "width": 5,
+          "height": 4
+        },
+        {
+          "id": "middle_notice_area",
+          "x": 7,
+          "y": 8,
+          "width": 5,
+          "height": 3
+        },
+        {
+          "id": "middle_lockers",
+          "x": 18,
+          "y": 8,
+          "width": 5,
+          "height": 3
+        },
+        {
+          "id": "middle_classroom",
+          "x": 24,
+          "y": 8,
+          "width": 6,
+          "height": 5
+        },
+        {
+          "id": "lower_left_stairs",
+          "x": 0,
+          "y": 14,
+          "width": 4,
+          "height": 4
+        },
+        {
+          "id": "lower_left_cabinets",
+          "x": 7,
+          "y": 14,
+          "width": 5,
+          "height": 2
+        },
+        {
+          "id": "lower_right_facilities",
+          "x": 18,
+          "y": 14,
+          "width": 5,
+          "height": 2
+        },
+        {
+          "id": "lower_right_stairs",
+          "x": 26,
+          "y": 14,
+          "width": 4,
+          "height": 4
+        }
+      ],
+      "entities": [
+        {
+          "id": "school_kai",
+          "type": "npc",
+          "characterId": "kai",
+          "position": {
+            "x": 4,
+            "y": 4
+          },
+          "direction": "down",
+          "spriteId": "kai_school_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 271,
+              "y": 110,
+              "width": 78,
+              "height": 126
+            },
+            "display": {
+              "width": 38,
+              "height": 61
+            }
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 與 KAI 交談",
+            "dialogueId": "ch1_kai_intro",
+            "conditionalFlag": "sawPrankPhoto",
+            "dialogueWhenFlagId": "ch1_kai_intro_after_prank",
+            "enabled": true
+          }
+        },
+        {
+          "id": "school_mio",
+          "type": "npc",
+          "characterId": "mio",
+          "position": {
+            "x": 24,
+            "y": 7
+          },
+          "direction": "left",
+          "spriteId": "mio_school_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 791,
+              "y": 110,
+              "width": 78,
+              "height": 126
+            },
+            "display": {
+              "width": 38,
+              "height": 61
+            }
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 與 MIO 交談",
+            "dialogueId": "ch1_mio_intro",
+            "enabled": true
+          }
+        },
+        {
+          "id": "school_rin",
+          "type": "npc",
+          "characterId": "rin",
+          "position": {
+            "x": 20,
+            "y": 6
+          },
+          "direction": "down",
+          "spriteId": "rin_school_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 531,
+              "y": 110,
+              "width": 78,
+              "height": 126
+            },
+            "display": {
+              "width": 38,
+              "height": 61
+            }
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 與 RIN 交談",
+            "dialogueId": "ch1_rin_photo_check",
+            "conditionalFlag": "sideQuests.rinPhotoInspection.completed",
+            "dialogueWhenFlagId": "ch1_rin_photo_check_repeat",
+            "enabled": true
+          }
+        },
+        {
+          "id": "school_activity_board",
+          "type": "object",
+          "position": { "x": 8, "y": 8 },
+          "spriteId": "environment_notice_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 8, "y": 11, "facing": "up" },
+            "prompt": "按 E 查看走廊公布欄",
+            "dialogueId": "env_school_activity_board_first",
+            "repeatDialogueId": "env_school_activity_board_repeat",
+            "observedFlag": "observedSchoolActivityBoard"
+          }
+        },
+        {
+          "id": "school_prank_photo",
+          "type": "object",
+          "position": { "x": 8, "y": 4 },
+          "spriteId": "environment_prank_photo",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 8, "y": 5, "facing": "up" },
+            "prompt": "按 E 查看角落的照片",
+            "dialogueId": "env_school_prank_photo_first",
+            "repeatDialogueId": "env_school_prank_photo_repeat",
+            "observedFlag": "observedSchoolPrankPhoto",
+            "setFlag": "sawPrankPhoto"
+          }
+        },
+        {
+          "id": "teacher_information_board",
+          "type": "object",
+          "position": { "x": 19, "y": 14 },
+          "spriteId": "environment_teacher_board",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 19, "y": 16, "facing": "up" },
+            "prompt": "按 E 查看教師介紹",
+            "dialogueId": "env_teacher_board_first",
+            "repeatDialogueId": "env_teacher_board_repeat",
+            "observedFlag": "observedTeacherBoard"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {"id":"school_interior_sharer_01","enemyType":"SHARER","mapId":"school_interior","x":8,"y":12,"spawnX":8,"spawnY":12,"direction":"right","movementSpeed":380,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":5,"y":11,"width":7,"height":3},"detectionRadius":4,"chaseStepMs":260,"moveDuration":{"min":800,"max":2200},"idleDuration":{"min":600,"max":1800},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"},
+        {"id":"school_interior_tracker_01","enemyType":"TRACKER","mapId":"school_interior","x":20,"y":12,"spawnX":20,"spawnY":12,"direction":"left","movementSpeed":400,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":18,"y":11,"width":6,"height":3},"detectionRadius":5,"chaseStepMs":250,"moveDuration":{"min":900,"max":2300},"idleDuration":{"min":700,"max":1900},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"}
+      ],
+      "triggers": [
+        {
+          "id": "school_interior_to_school_front",
+          "type": "exit",
+          "position": {
+            "x": 15,
+            "y": 22
+          },
+          "activation": "interact",
+          "prompt": "按 E 離開校舍",
+          "to": "school_front",
+          "targetPosition": {
+            "x": 15,
+            "y": 5
+          },
+          "targetDirection": "down"
+        },
+        {
+          "id": "school_interior_to_memory_gallery",
+          "type": "exit",
+          "position": {
+            "x": 14,
+            "y": 0
+          },
+          "activation": "interact",
+          "prompt": "按 E 進入照片異常區",
+          "to": "memory_gallery",
+      "targetPosition": {
+          "x": 15,
+          "y": 21
+        },
+          "targetDirection": "up"
+        }
+      ],
+      "connections": []
+    },
+    {
+      "id": "data_world",
+      "type": "map",
+      "bgmId": "PHOTO_STREET",
+      "displayName": "資料世界",
+      "description": "照片與訊息化成漂浮的資料碎片，遠方有一條通往城鎮的路。",
+      "theme": "data",
+      "grid": {
+        "width": 6,
+        "height": 4
+      },
+      "spawn": {
+        "x": 1,
+        "y": 3
+      },
+      "collisions": [
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 5,
+          "y": 1
+        }
+      ],
+      "entities": [
+        {
+          "id": "data_photo_keeper",
+          "type": "npc",
+          "characterId": "photo_keeper",
+          "position": {
+            "x": 3,
+            "y": 1
+          },
+          "direction": "down",
+          "spriteId": "photo_keeper_data_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 1280,
+              "y": 105,
+              "width": 88,
+              "height": 135
+            },
+            "display": {
+              "width": 44,
+              "height": 68
+            }
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 與 PHOTO KEEPER 交談",
+            "dialogueId": "ch1_photo_keeper_intro",
+            "enabled": true
+          }
+        },
+        {
+          "id": "data_photo_kid",
+          "type": "npc",
+          "characterId": "photo_kid",
+          "position": {
+            "x": 4,
+            "y": 2
+          },
+          "direction": "left",
+          "spriteId": "photo_kid_data_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 1051,
+              "y": 110,
+              "width": 78,
+              "height": 126
+            },
+            "display": {
+              "width": 38,
+              "height": 61
+            }
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 與 PHOTO KID 交談",
+            "dialogueId": "ch1_photo_kid_intro",
+            "enabled": true
+          }
+        },
+        {
+          "id": "data_privacy_fragment",
+          "type": "object",
+          "position": {
+            "x": 2,
+            "y": 2
+          },
+          "spriteId": "placeholder_privacy_clue",
+          "interaction": {
+            "kind": "clue",
+            "prompt": "按 E 調查",
+            "clueId": "photo_metadata",
+            "successMessage": "發現隱私線索：照片也可能保留拍攝資訊。"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {"id":"data_world_sharer_01","enemyType":"SHARER","mapId":"data_world","x":1,"y":1,"spawnX":1,"spawnY":1,"direction":"down","movementSpeed":400,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":0,"y":0,"width":3,"height":3},"detectionRadius":3,"chaseStepMs":270,"moveDuration":{"min":800,"max":1800},"idleDuration":{"min":600,"max":1600},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"},
+        {"id":"data_world_tracker_01","enemyType":"TRACKER","mapId":"data_world","x":4,"y":1,"spawnX":4,"spawnY":1,"direction":"down","movementSpeed":420,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":4,"y":0,"width":2,"height":3},"detectionRadius":3,"chaseStepMs":260,"moveDuration":{"min":900,"max":1900},"idleDuration":{"min":700,"max":1700},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"}
+      ],
+      "triggers": [
+        {
+          "id": "data_to_home",
+          "type": "exit",
+          "position": {
+            "x": 0,
+            "y": 3
+          },
+          "activation": "interact",
+          "prompt": "按 E 返回家中",
+          "to": "home_map"
+        },
+        {
+          "id": "data_to_album_town",
+          "type": "exit",
+          "position": {
+            "x": 5,
+            "y": 3
+          },
+          "activation": "interact",
+          "prompt": "按 E 前往相簿城鎮",
+          "to": "album_town"
+        },
+        {
+          "id": "data_main_quest",
+          "type": "quest",
+          "position": {
+            "x": 3,
+            "y": 2
+          },
+          "activation": "enter",
+          "questId": "ch1_album_path",
+          "once": true,
+          "message": "任務已更新：前往相簿城鎮。"
+        }
+      ],
+      "connections": [
+        {
+          "to": "home_map",
+          "label": "返回家中",
+          "direction": "返回家中"
+        },
+        {
+          "to": "album_town",
+          "label": "沿著照片碎片前進",
+          "direction": "前往相簿城鎮"
+        }
+      ]
+    },
+    {
+      "id": "album_town",
+      "type": "map",
+      "bgmId": "PHOTO_STREET",
+      "displayName": "相簿城鎮",
+      "description": "照片碎片、分享程式與標記資料在街道間徘徊。",
+      "theme": "album",
+      "grid": {
+        "width": 6,
+        "height": 4
+      },
+      "spawn": {
+        "x": 1,
+        "y": 3
+      },
+      "collisions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 1
+        }
+      ],
+      "entities": [
+        {
+          "id": "album_side_path",
+          "type": "object",
+          "position": {
+            "x": 0,
+            "y": 2
+          },
+          "spriteId": "placeholder_side_path",
+          "interaction": {
+            "kind": "side_quest",
+            "prompt": "按 E 調查",
+            "message": "這條支路散落著尚未整理的照片碎片。"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {"id":"album_town_sharer_01","enemyType":"SHARER","mapId":"album_town","x":1,"y":1,"spawnX":1,"spawnY":1,"direction":"right","movementSpeed":400,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":0,"y":0,"width":3,"height":3},"detectionRadius":3,"chaseStepMs":270,"moveDuration":{"min":800,"max":1800},"idleDuration":{"min":600,"max":1600},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"},
+        {"id":"album_town_tracker_01","enemyType":"TRACKER","mapId":"album_town","x":4,"y":1,"spawnX":4,"spawnY":1,"direction":"left","movementSpeed":420,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":3,"y":0,"width":3,"height":3},"detectionRadius":3,"chaseStepMs":260,"moveDuration":{"min":900,"max":1900},"idleDuration":{"min":700,"max":1700},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"}
+      ],
+      "triggers": [
+        {
+          "id": "album_to_data_world",
+          "type": "exit",
+          "position": {
+            "x": 0,
+            "y": 3
+          },
+          "activation": "interact",
+          "prompt": "按 E 返回資料世界",
+          "to": "data_world"
+        },
+        {
+          "id": "album_photo_check",
+          "type": "puzzle",
+          "position": {
+            "x": 2,
+            "y": 3
+          },
+          "activation": "interact",
+          "prompt": "按 E 進行照片檢查",
+          "puzzleId": "photo_check"
+        },
+        {
+          "id": "album_photo_fragment",
+          "type": "battle",
+          "position": {
+            "x": 3,
+            "y": 3
+          },
+          "activation": "enter",
+          "enemyId": "photo_fragment",
+          "message": "照片碎片聚集成敵意資料。"
+        },
+        {
+          "id": "album_share_bug",
+          "type": "battle",
+          "position": {
+            "x": 4,
+            "y": 3
+          },
+          "activation": "enter",
+          "enemyId": "share_bug",
+          "message": "分享程式發生異常。"
+        },
+        {
+          "id": "album_tag_face",
+          "type": "battle",
+          "position": {
+            "x": 5,
+            "y": 2
+          },
+          "activation": "enter",
+          "enemyId": "tag_face",
+          "message": "人臉標記正在追蹤 PLAYER。"
+        },
+        {
+          "id": "album_memory_gate",
+          "type": "exit",
+          "position": {
+            "x": 5,
+            "y": 3
+          },
+          "activation": "interact",
+          "prompt": "按 E 前往回憶畫廊",
+          "to": "memory_gallery"
+        }
+      ],
+      "puzzleId": "photo_check",
+      "encounters": [
+        {
+          "id": "photo_fragment",
+          "label": "遭遇照片碎片"
+        },
+        {
+          "id": "share_bug",
+          "label": "遭遇分享蟲"
+        },
+        {
+          "id": "tag_face",
+          "label": "遭遇人臉標記"
+        },
+        {
+          "id": "album",
+          "label": "進入相簿房間"
+        }
+      ],
+      "connections": [
+        {
+          "to": "data_world",
+          "label": "回到資料入口",
+          "direction": "返回資料世界"
+        },
+        {
+          "to": "memory_gallery",
+          "label": "沿著發光的舊照片前進",
+          "direction": "前往回憶畫廊"
+        }
+      ]
+    },
+    {
+      "id": "memory_gallery",
+      "type": "map",
+      "bgmId": "MEMORY_GALLERY",
+      "act": "act_3",
+      "displayName": "回憶畫廊",
+      "description": "褪色照片懸浮在寂靜長廊中，每一格畫面都保留著尚未說完的回憶。",
+      "theme": "memory",
+      "mapArt": {
+        "baseImage": "assets/maps/memory_gallery/memory_gallery_base.png",
+        "tilesetSource": "assets/maps/memory_gallery/source/memory_gallery_tileset.png",
+        "logicalSize": {
+          "width": 1448,
+          "height": 1086
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {
+            "width": 1536,
+            "height": 1024
+          },
+          "frameSize": {
+            "width": 78,
+            "height": 126
+          },
+          "display": {
+            "width": 38,
+            "height": 61
+          },
+          "directions": {
+            "down": [
+              {
+                "x": 7,
+                "y": 110
+              },
+              {
+                "x": 87,
+                "y": 110
+              },
+              {
+                "x": 167,
+                "y": 110
+              }
+            ],
+            "left": [
+              {
+                "x": 7,
+                "y": 245
+              },
+              {
+                "x": 87,
+                "y": 245
+              },
+              {
+                "x": 167,
+                "y": 245
+              }
+            ],
+            "right": [
+              {
+                "x": 7,
+                "y": 374
+              },
+              {
+                "x": 87,
+                "y": 374
+              },
+              {
+                "x": 167,
+                "y": 374
+              }
+            ],
+            "up": [
+              {
+                "x": 7,
+                "y": 500
+              },
+              {
+                "x": 87,
+                "y": 500
+              },
+              {
+                "x": 167,
+                "y": 500
+              }
+            ]
+          }
+        }
+      },
+      "grid": {
+        "width": 30,
+        "height": 23
+      },
+      "spawn": {
+        "x": 15,
+        "y": 21
+      },
+      "collisions": [
+        {
+          "x": 12,
+          "y": 9
+        },
+        {
+          "x": 15,
+          "y": 8
+        },
+        {
+          "x": 18,
+          "y": 9
+        },
+        {
+          "x": 12,
+          "y": 12
+        },
+        {
+          "x": 15,
+          "y": 13
+        },
+        {
+          "x": 18,
+          "y": 12
+        },
+        {
+          "x": 15,
+          "y": 10
+        }
+      ],
+      "collisionRects": [
+        {
+          "id": "gallery_exterior_top_left",
+          "x": 0,
+          "y": 0,
+          "width": 12,
+          "height": 3
+        },
+        {
+          "id": "gallery_exterior_top_right",
+          "x": 18,
+          "y": 0,
+          "width": 12,
+          "height": 3
+        },
+        {
+          "id": "gallery_exterior_upper_left",
+          "x": 0,
+          "y": 3,
+          "width": 6,
+          "height": 2
+        },
+        {
+          "id": "gallery_exterior_upper_right",
+          "x": 24,
+          "y": 3,
+          "width": 6,
+          "height": 2
+        },
+        {
+          "id": "gallery_exterior_middle_left",
+          "x": 0,
+          "y": 5,
+          "width": 1,
+          "height": 9
+        },
+        {
+          "id": "gallery_exterior_middle_right",
+          "x": 29,
+          "y": 5,
+          "width": 1,
+          "height": 9
+        },
+        {
+          "id": "gallery_exterior_lower_left",
+          "x": 0,
+          "y": 14,
+          "width": 2,
+          "height": 5
+        },
+        {
+          "id": "gallery_exterior_lower_right",
+          "x": 28,
+          "y": 14,
+          "width": 2,
+          "height": 5
+        },
+        {
+          "id": "gallery_exterior_bottom_left",
+          "x": 0,
+          "y": 19,
+          "width": 8,
+          "height": 4
+        },
+        {
+          "id": "gallery_exterior_bottom_right",
+          "x": 22,
+          "y": 19,
+          "width": 8,
+          "height": 4
+        }
+      ],
+      "entities": [
+        {
+          "id": "gallery_keeper",
+          "type": "npc",
+          "characterId": "photo_keeper",
+          "position": {
+            "x": 20,
+            "y": 5
+          },
+          "direction": "left",
+          "spriteId": "photo_keeper_gallery_idle",
+          "mapSprite": {
+            "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+            "sheetSize": {"width": 1536, "height": 1024},
+            "frame": {"x": 1280, "y": 105, "width": 88, "height": 135},
+            "display": {"width": 44, "height": 68}
+          },
+          "interactionRadius": 1,
+          "interaction": {
+            "kind": "talk",
+            "prompt": "按 E 交談",
+            "dialogueId": "ch1_gallery_keeper_wait",
+            "dialogueWhenReadyId": "ch1_gallery_keeper_ready",
+            "requiredFlag": "allMemoriesComplete",
+            "enabled": true
+          }
+        },
+        {
+          "id": "memory_family",
+          "type": "object",
+          "displayLabel": "①",
+          "position": {
+            "x": 12,
+            "y": 9
+          },
+          "spriteId": "placeholder_memory_frame",
+          "interaction": {
+            "kind": "memory",
+            "memoryId": "memory_01_home",
+            "requiredFlag": "memoryInvestigationUnlocked",
+            "prompt": "按 E 調查回憶照片",
+            "message": "照片記下了家人相聚的時刻，也拍進了沒有被詢問的人。"
+          }
+        },
+        {
+          "id": "memory_school",
+          "type": "object",
+          "displayLabel": "②",
+          "position": {
+            "x": 18,
+            "y": 9
+          },
+          "spriteId": "placeholder_memory_frame",
+          "interaction": {
+            "kind": "memory",
+            "memoryId": "memory_02_park",
+            "requiredFlag": "memoryInvestigationUnlocked",
+            "prompt": "按 E 調查回憶照片",
+            "message": "制服與背景讓這張日常照片留下了可以辨認身分的線索。"
+          }
+        },
+        {
+          "id": "memory_shared",
+          "type": "object",
+          "displayLabel": "③",
+          "position": {
+            "x": 15,
+            "y": 13
+          },
+          "spriteId": "placeholder_memory_frame",
+          "interaction": {
+            "kind": "memory",
+            "memoryId": "memory_03_gym",
+            "requiredFlag": "memoryInvestigationUnlocked",
+            "prompt": "按 E 調查回憶照片",
+            "message": "同一張照片被反覆轉傳，原本的分享範圍已經變得模糊。"
+          }
+        },
+        {
+          "id": "memory_gallery_wall",
+          "type": "object",
+          "position": { "x": 8, "y": 17 },
+          "spriteId": "environment_memory_wall",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 8, "y": 18, "facing": "up" },
+            "prompt": "按 E 查看照片牆",
+            "dialogueId": "env_memory_wall_first",
+            "repeatDialogueId": "env_memory_wall_repeat",
+            "observedFlag": "observedMemoryGalleryWall"
+          }
+        },
+        {
+          "id": "memory_gallery_wall_right",
+          "type": "object",
+          "position": { "x": 21, "y": 17 },
+          "spriteId": "environment_memory_wall",
+          "interaction": {
+            "kind": "environment",
+            "noticeBoard": true,
+            "frontPosition": { "x": 21, "y": 18, "facing": "up" },
+            "prompt": "按 E 查看右側照片牆",
+            "dialogueId": "env_memory_wall_right_first",
+            "repeatDialogueId": "env_memory_wall_right_repeat",
+            "observedFlag": "observedMemoryGalleryWallRight"
+          }
+        }
+      ],
+      "roamingEnemies": [
+        {"id":"memory_gallery_sharer_01","enemyType":"SHARER","mapId":"memory_gallery","x":8,"y":10,"spawnX":8,"spawnY":10,"direction":"right","movementSpeed":380,"sprite":"assets/enemies/sharer/map_sheet.png","roamArea":{"x":3,"y":7,"width":8,"height":7},"detectionRadius":4,"chaseStepMs":260,"moveDuration":{"min":800,"max":2200},"idleDuration":{"min":600,"max":1800},"state":"IDLE","encounterId":"sharer","defeated":false,"respawnPolicy":"ONCE"},
+        {"id":"memory_gallery_tracker_01","enemyType":"TRACKER","mapId":"memory_gallery","x":22,"y":10,"spawnX":22,"spawnY":10,"direction":"left","movementSpeed":400,"sprite":"assets/enemies/tracker/map_sheet.png","roamArea":{"x":19,"y":7,"width":8,"height":7},"detectionRadius":5,"chaseStepMs":250,"moveDuration":{"min":900,"max":2300},"idleDuration":{"min":700,"max":1900},"state":"IDLE","encounterId":"tracker","defeated":false,"respawnPolicy":"ONCE"}
+      ],
+      "triggers": [
+        {
+          "id": "gallery_to_school_interior",
+          "type": "exit",
+          "position": {
+            "x": 15,
+            "y": 22
+          },
+          "activation": "interact",
+          "prompt": "按 E 返回校舍內部",
+          "to": "school_interior",
+          "targetPosition": {
+            "x": 14,
+            "y": 1
+          },
+          "targetDirection": "down"
+        },
+        {
+          "id": "gallery_act3_entry",
+          "type": "quest",
+          "position": {
+            "x": 15,
+            "y": 20
+          },
+          "activation": "enter",
+          "questId": "ch1_album_path",
+          "stageId": "enter_memory_gallery",
+          "once": true,
+          "message": "任務已更新：調查回憶畫廊中的照片。"
+        },
+        {
+          "id": "gallery_to_album_room",
+          "type": "exit",
+          "position": {
+            "x": 15,
+            "y": 1
+          },
+          "activation": "interact",
+          "prompt": "按 E 進入相簿房間",
+          "to": "album_room",
+          "targetPosition": {
+            "x": 3,
+            "y": 4
+          },
+          "targetDirection": "up",
+          "condition": {
+            "flag": "albumRoomUnlocked",
+            "equals": true
+          },
+          "lockedMessage": "入口沒有回應，需要先完成回憶調查並詢問 PHOTO KEEPER。"
+        }
+      ],
+      "connections": [
+        {
+          "to": "school_interior",
+          "label": "沿原路離開畫廊",
+          "direction": "返回校舍內部"
+        }
+      ]
+    },
+    {
+      "id": "album_room",
+      "type": "map",
+      "bgmId": "MEMORY_GALLERY",
+      "act": "act_3",
+      "displayName": "相簿房間",
+      "description": "封存的照片沿牆排列，ALBUM 的三層資料屏障在房間深處等待回應。",
+      "theme": "album_room",
+      "mapArt": {
+        "baseImage": "assets/maps/album_room/album_room_base.png",
+        "logicalSize": {"width": 1448, "height": 1086},
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": {"width": 1536, "height": 1024},
+          "frameSize": {"width": 78, "height": 126},
+          "display": {"width": 38, "height": 61},
+          "directions": {
+            "down": [{"x": 7, "y": 110}, {"x": 87, "y": 110}, {"x": 167, "y": 110}],
+            "left": [{"x": 7, "y": 245}, {"x": 87, "y": 245}, {"x": 167, "y": 245}],
+            "right": [{"x": 7, "y": 374}, {"x": 87, "y": 374}, {"x": 167, "y": 374}],
+            "up": [{"x": 7, "y": 500}, {"x": 87, "y": 500}, {"x": 167, "y": 500}]
+          }
+        }
+      },
+      "grid": {
+        "width": 7,
+        "height": 5
+      },
+      "spawn": {
+        "x": 3,
+        "y": 4
+      },
+      "spawnFacing": "up",
+      "collisions": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 5,
+          "y": 0
+        },
+        {
+          "x": 6,
+          "y": 0
+        },
+        {
+          "x": 0,
+          "y": 1
+        },
+        {
+          "x": 6,
+          "y": 1
+        },
+        {
+          "x": 2,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 2
+        }
+      ],
+      "entities": [
+        {
+          "id": "album_memory_core",
+          "type": "object",
+          "position": {
+            "x": 5,
+            "y": 1
+          },
+          "spriteId": "placeholder_album_memory",
+          "interaction": {
+            "kind": "inspect",
+            "prompt": "按 E 調查資料屏障",
+            "message": "屏障依序保留回憶、曝光與資料拼圖，等待你確認照片分享的界線。"
+          }
+        },
+        {
+          "id": "album_boss_map_entity",
+          "type": "npc",
+          "characterId": "album",
+          "position": {
+            "x": 3,
+            "y": 2
+          },
+          "direction": "down",
+          "spriteId": "album_map_idle",
+          "mapSprite": {
+            "sheet": "assets/bosses/album/map/album_map_sheet.png",
+            "sheetSize": {
+              "width": 1536,
+              "height": 1024
+            },
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "width": 768,
+              "height": 512
+            },
+            "display": {
+              "width": 150,
+              "height": 100
+            }
+          }
+        }
+      ],
+      "triggers": [
+        {
+          "id": "album_room_to_gallery",
+          "type": "exit",
+          "position": {
+            "x": 3,
+            "y": 4
+          },
+          "activation": "interact",
+          "prompt": "按 E 返回回憶畫廊",
+          "to": "memory_gallery",
+          "destinationWhen": {
+            "flag": "albumAwaitingParent",
+            "equals": true,
+            "prompt": "按 E 直接返回家中",
+            "to": "home_map",
+            "targetPosition": {
+              "x": 8,
+              "y": 13
+            },
+            "targetDirection": "up"
+          }
+        },
+        {
+      "id": "album_phase1_event",
+          "type": "boss",
+          "position": {
+            "x": 3,
+            "y": 2
+          },
+          "activation": "interact",
+          "prompt": "按 E 面對 ALBUM",
+          "bossId": "album",
+          "condition": {
+            "flag": "albumRoomUnlocked",
+            "equals": true
+          },
+          "lockedMessage": "資料屏障尚未回應。"
+        }
+      ],
+      "connections": [
+        {
+          "to": "memory_gallery",
+          "label": "離開相簿房間",
+          "direction": "返回回憶畫廊"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+/* CH1 pre-release responsive shell. Layout-only overrides; gameplay remains untouched. */
+html,
+body {
+  width: 100%;
+  min-width: 0;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+.app-shell {
+  width: 100%;
+  min-width: 0;
+  min-height: 100dvh;
+}
+
+.title-screen,
+.map-screen,
+.dialogue-scene,
+.battle-screen,
+.puzzle-screen,
+.reflection-screen,
+.chapter-summary {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.dialogue-text,
+.battle-log-panel,
+.puzzle-feedback,
+.summary-body,
+.reflection-screen label,
+.quest-entry {
+  overflow-wrap: anywhere;
+}
+
+/* Supported desktop / laptop landscape sizes use an app viewport, never page scroll. */
+@media (min-width: 900px) and (orientation: landscape) {
+  html,
+  body {
+    height: 100%;
+  }
+
+  .app-shell {
+    height: 100dvh;
+    min-height: 0;
+    padding-top: max(clamp(8px, 1.25vw, 24px), env(safe-area-inset-top));
+    padding-right: max(clamp(8px, 1.25vw, 24px), env(safe-area-inset-right));
+    padding-bottom: max(clamp(8px, 1.25vw, 24px), env(safe-area-inset-bottom));
+    padding-left: max(clamp(8px, 1.25vw, 24px), env(safe-area-inset-left));
+  }
+
+  .title-screen,
+  .map-screen,
+  .dialogue-scene,
+  .battle-screen,
+  .puzzle-screen,
+  .reflection-screen,
+  .chapter-summary {
+    min-height: 0;
+    max-height: 100%;
+  }
+
+  .title-screen:has(.save-tools:not([hidden])),
+  .reflection-screen {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+/* Height-aware laptop layout: 720p–900p. */
+@media (min-width: 900px) and (max-height: 900px) and (orientation: landscape) {
+  .title-screen {
+    padding: clamp(20px, 3.5vh, 38px) clamp(28px, 4vw, 48px);
+  }
+  .null-word { font-size: clamp(4rem, 12vh, 6.2rem); }
+  h1 small { margin-top: 12px; }
+  .tagline { margin: 16px auto 20px; line-height: 1.55; }
+  .main-menu { gap: 8px; }
+  .main-menu button { min-height: 42px; }
+  .status-text { margin-top: 12px; }
+  .step-label { margin-top: 16px; }
+  .save-tools { margin-top: 12px; padding: 10px; }
+  .feedback-settings { margin-top: 9px; padding: 8px; }
+
+  .map-screen {
+    height: 100%;
+    padding: clamp(10px, 2vh, 20px) clamp(14px, 2vw, 26px);
+  }
+  .map-header { gap: 16px; margin-bottom: 8px; }
+  .map-header h1 { font-size: clamp(1.55rem, 4vh, 2.5rem); }
+  .map-header p { margin: 2px 0; line-height: 1.45; }
+  .map-viewport { max-height: min(610px, 55vh); }
+  .map-interface { margin-top: 8px; }
+  .map-interface p { margin: 4px 0; }
+  .map-controls { grid-template-columns: repeat(3, 42px); grid-template-rows: repeat(2, 42px); }
+  .map-exits button,
+  .map-controls button { min-height: 42px; }
+  .guide-menu { margin-top: 6px; }
+  .guide-menu button { min-height: 42px; }
+  .map-hint { margin: 5px 0 0; }
+  .map-interaction-prompt,
+  .map-message { margin-top: 6px; padding: 6px 10px; }
+
+  .dialogue-scene { height: 100%; }
+  .dialogue-scene--overlay { inset: clamp(8px, 1.25vw, 18px); min-height: 0; }
+  .scene-header { padding: 11px 18px; }
+  .portrait-layer { inset: 44px 0 166px; }
+  .portrait img { max-height: min(500px, 68vh); }
+  .portrait[data-character-id="album"] img { height: min(500px, 68vh); }
+  .dialogue-box { bottom: 2%; min-height: 154px; max-height: 47%; overflow: visible; padding: 24px 24px 12px; }
+  .speaker-name { z-index: 6; }
+  .dialogue-text { min-height: 2.8em; line-height: 1.6; }
+  .dialogue-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dialogue-controls button { min-height: 42px; }
+  .input-hint { margin-top: 6px; }
+  .environment-dialogue-visual { top: 42px; height: calc(100% - 250px); }
+
+  .battle-screen {
+    height: 100%;
+    padding: clamp(10px, 1.8vh, 18px) clamp(14px, 2vw, 24px);
+  }
+  .battle-header p { margin: 0 0 3px; }
+  .battle-header h1 { font-size: clamp(1.65rem, 4.8vh, 3rem); }
+  .battle-field { min-height: clamp(150px, 25vh, 215px); }
+  .battle-enemy-art { height: clamp(140px, 24vh, 205px); }
+  .battle-info { margin: 8px 0; }
+  .battle-info section,
+  .battle-log-panel { padding: 9px 12px; }
+  .battle-info p { margin: 5px 0; }
+  .player-battle-card { grid-template-columns: 68px 1fr; }
+  .player-battle-card > img { width: 68px; height: 78px; }
+  .battle-commands { gap: 6px; }
+  .battle-commands button,
+  .battle-result button { min-height: 44px; }
+  .battle-log-panel { max-height: 150px; }
+  .battle-log-panel ol { line-height: 1.45; }
+
+  .puzzle-screen {
+    height: 100%;
+    padding: clamp(10px, 1.8vh, 18px) clamp(14px, 2vw, 24px);
+  }
+  .puzzle-screen header p { margin: 2px 0; line-height: 1.35; }
+  .puzzle-screen h1 { font-size: clamp(1.7rem, 4.5vh, 2.7rem); }
+  .photo-check-image { min-height: clamp(310px, 49vh, 420px); }
+  .puzzle-footer { padding: 9px 12px; }
+  .puzzle-footer p { margin: 5px 0; }
+  .puzzle-footer button { min-height: 42px; }
+  .photo-inspection-option { min-height: 44px; padding: 7px; }
+
+  .memory-card { max-height: calc(100dvh - 20px); padding: clamp(12px, 2vh, 20px); }
+  .memory-photo-frame { min-height: 150px; max-height: 42vh; margin: 10px 0; }
+  .memory-photo-frame img { max-height: 42vh; }
+  .memory-question { margin: 9px 0 7px; }
+  .memory-options { gap: 6px; }
+  .memory-options .memory-option { min-height: 44px; padding: 8px 11px; }
+  .memory-feedback { margin: 7px 0; }
+
+  .reflection-screen { height: 100%; padding: clamp(14px, 2.8vh, 30px); }
+  .reflection-screen h1 { font-size: clamp(1.8rem, 4.8vh, 2.8rem); }
+  .reflection-screen fieldset { margin: 10px 0; padding: 11px; }
+  .reflection-screen label { margin: 6px 0; padding: 7px; }
+  .reflection-actions { position: sticky; bottom: 0; padding: 7px 0; background: linear-gradient(transparent, #15142a 24%); }
+
+  .chapter-summary { height: 100%; padding: clamp(18px, 3vh, 34px); }
+  .summary-layout { min-height: 0; height: calc(100% - 54px); gap: clamp(20px, 3vw, 44px); }
+  .chapter-summary h1 { font-size: clamp(2rem, 6vh, 3.6rem); }
+  .summary-body { font-size: clamp(.92rem, 1.6vw, 1.08rem); line-height: 1.65; }
+  .summary-visual { min-height: 240px; height: min(58vh, 460px); }
+  .summary-footer button { min-height: 40px; }
+}
+
+/* Small landscape/tablet fallback. Internal panels may scroll; the page itself does not. */
+@media (max-width: 899px), (orientation: portrait) {
+  .app-shell { padding: 10px; }
+  .title-screen,
+  .map-screen,
+  .battle-screen,
+  .puzzle-screen,
+  .reflection-screen,
+  .chapter-summary { width: 100%; }
+  .dialogue-scene--overlay { inset: 8px; }
+}
+
+@media (max-width: 899px) and (orientation: landscape) {
+  html,
+  body { height: 100%; }
+  .app-shell { height: 100dvh; min-height: 0; }
+  .map-screen,
+  .battle-screen,
+  .puzzle-screen,
+  .reflection-screen,
+  .chapter-summary { height: 100%; min-height: 0; overflow-y: auto; }
+}
+
+/* CH1 is designed for desktop/landscape play; portrait gets a concise, fixed hint. */
+@media (orientation: portrait) and (max-width: 899px) {
+  body::after {
+    content: "建議使用橫向畫面遊玩";
+    position: fixed;
+    z-index: 9999;
+    inset: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    background: rgba(5, 11, 22, .97);
+    font-size: clamp(1.1rem, 5vw, 1.45rem);
+    font-weight: 800;
+    text-align: center;
+  }
+}
