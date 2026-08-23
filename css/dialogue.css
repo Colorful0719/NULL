@@ -43,3 +43,36 @@
   .dialogue-controls { margin-top: 8px; }
   .input-hint { line-height: 1.6; }
 }
+
+/* Desktop dialogue presentation: scale the complete conversation composition,
+   without scaling the app or changing tablet/touch layouts. */
+@media (min-width:1200px) and (orientation:landscape) and (hover:hover) and (pointer:fine) {
+  .dialogue-scene .portrait--left { left:clamp(4vw,6vw,10vw); width:min(38vw,650px); }
+  .dialogue-scene .portrait--right { right:clamp(4vw,6vw,10vw); width:min(35vw,590px); }
+  .dialogue-scene .portrait--left img { height:clamp(460px,76vh,820px); max-height:none; object-fit:contain; }
+  .dialogue-scene .portrait--right img { height:clamp(420px,68vh,740px); max-height:none; object-fit:contain; }
+  .dialogue-scene .dialogue-box {
+    left:50%; right:auto; bottom:clamp(24px,4vh,60px);
+    width:clamp(760px,78vw,1500px);
+    min-height:clamp(210px,26vh,290px); max-height:48vh;
+    padding:clamp(34px,4vh,46px) clamp(32px,2.4vw,48px) clamp(22px,2.8vh,32px);
+    transform:translateX(-50%);
+  }
+  .dialogue-scene .dialogue-text { min-height:3.4em; font-size:clamp(18px,1.25vw,24px); line-height:1.7; }
+  .dialogue-scene .speaker-name {
+    top:clamp(-34px,-3vh,-28px); min-width:clamp(180px,13vw,250px);
+    padding:clamp(12px,1.4vh,16px) clamp(22px,1.8vw,32px);
+    font-size:clamp(18px,1.35vw,26px);
+  }
+  .dialogue-scene .dialogue-controls { gap:clamp(10px,1vw,18px); margin-top:clamp(10px,1.5vh,18px); }
+  .dialogue-scene .dialogue-controls button,
+  .dialogue-scene .dialogue-choices button {
+    min-height:clamp(48px,5.2vh,58px); padding:10px clamp(20px,1.6vw,30px);
+    font-size:clamp(16px,1.05vw,20px);
+  }
+  .dialogue-scene .dialogue-choices { gap:clamp(10px,1.2vh,16px); margin:clamp(12px,1.5vh,18px) 0; }
+  .dialogue-scene .input-hint { margin-top:clamp(10px,1.4vh,16px); font-size:clamp(13px,.85vw,16px); }
+  .dialogue-scene--environment .dialogue-box {
+    left:50%; right:auto; width:min(78vw,1120px); transform:translateX(-50%);
+  }
+}

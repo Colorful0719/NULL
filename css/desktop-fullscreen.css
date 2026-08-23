@@ -85,29 +85,6 @@
     transform:none;
   }
   .dialogue-scene--overlay { inset:0; }
-  .dialogue-box {
-    left:50%;
-    right:auto;
-    bottom:clamp(20px,4vh,60px);
-    width:min(92vw,1500px);
-    min-height:clamp(190px,24vh,280px);
-    max-height:46vh;
-    transform:translateX(-50%);
-  }
-  .portrait { width:min(34vw,520px); }
-  .portrait--left { left:clamp(3%,5vw,8%); }
-  .portrait--right { right:clamp(3%,5vw,8%); }
-  .portrait img {
-    height:clamp(360px,62vh,760px);
-    max-height:none;
-    object-fit:contain;
-  }
-  .dialogue-scene--environment .dialogue-box {
-    left:50%;
-    right:auto;
-    width:min(90vw,1080px);
-    transform:translateX(-50%);
-  }
 
   .battle-screen {
     width:100%;
