@@ -75,7 +75,7 @@ export class Game {
     const choiceManager = new ChoiceManager(this.state);
     this.questManager=new QuestManager({definitions:this.data.quests,gameState:this.state,saveManager:this.saveManager});
     this.reflectionManager=new ReflectionManager({definitions:this.data.reflections,gameState:this.state,view:new ReflectionView(this.root),saveManager:this.saveManager,onStart:(definition)=>this.beginReflection(definition),onExit:()=>this.finishReflection()});
-    this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.startCh2()});
+    this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.beginCh2Opening()});
     this.audioManager.bindSettings(this.root);
     this.echoManager=new EchoManager({gameState:this.state,saveManager:this.saveManager,view:new EchoView(this.root),onOpen:()=>{this.state.set('mode',GAME_MODE.ECHO);this.state.set('playerMovementLocked',true);this.root.dataset.gameMode='echo';},onCommit:(record,session)=>this.handleEchoCommit(record,session),onClose:()=>{const sceneId=this.state.get('sceneId');if(this.data.scenes.find((scene)=>scene.id===sceneId)?.type==='map')this.mapManager.enter(sceneId);}});
     const battleView=new BattleView(this.root,this.data.characters,this.audioManager);
@@ -525,11 +525,18 @@ export class Game {
   beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);if(this.root?.dataset)this.root.dataset.gameMode='reflection';this.state.set('playerMovementLocked',true);this.saveManager.save();}
   finishReflection(){this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);this.saveManager.save();this.summaryManager.start();}
 
+  beginCh2Opening({resume=false}={}){
+    this.guidanceManager.startChapter2Opening({index:resume?this.state.get('flags.ch2OpeningIndex'):0,onComplete:()=>this.mapManager.view.transition(()=>this.startCh2())});
+  }
+
   startCh2(){
     const sceneId='ch2_community_event';
     const scene=this.data.scenes.find((item)=>item.id===sceneId&&item.type==='map');
     if(!scene)throw new Error('找不到第二章起始地圖。');
     this.state.set('flags.ch2Started',true);
+    this.state.set('flags.ch2OpeningSeen',true);
+    this.state.set('flags.ch2OpeningStarted',false);
+    this.state.set('flags.ch2OpeningIndex',null);
     this.state.set('chapter','CH2_SHARE');
     this.state.set('activeFlow.summary',null);
     this.state.set('exploration.returnContext',null);
@@ -587,7 +594,7 @@ export class Game {
     if(reflectionFlow?.id){this.startReflection(reflectionFlow.id);return;}
     const summaryFlow=this.state.get('activeFlow.summary');
     if(summaryFlow){this.summaryManager.start({index:summaryFlow.index??0});return;}
-    if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){this.startCh2();return;}
+    if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){if(this.state.get('flags.ch2OpeningStarted'))this.beginCh2Opening({resume:true});else this.summaryManager.start({final:true});return;}
     if(this.state.get('flags.albumReflectionComplete')&&!this.state.get('flags.ch2Started')){this.summaryManager.start();return;}
     const albumQuest=this.state.get('quests.ch1_album_path')??{};
     const albumResolved=(this.state.get('defeatedBosses')??[]).includes('album');

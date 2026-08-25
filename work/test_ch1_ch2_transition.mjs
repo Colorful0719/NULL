@@ -33,9 +33,24 @@ guideState.set('quests.ch2_explore_event',{status:'active',stageId:'explore_even
 const guide=new GuidanceManager({gameState:guideState,saveManager:{save(){}},view:{},scenes});
 assert.equal(guide.currentMain('ch2_community_event').objective,'逛逛活動會場。');
 
+const openingState=new GameState();
+openingState.set('flags.ch1Complete',true);
+const openingLines=[];
+let openingComplete=false;
+const openingGuide=new GuidanceManager({gameState:openingState,saveManager:{save(){}},view:{openIntro(line,index,total,handlers){openingLines.push({line,index,total,handlers});},closeIntro(){}},scenes});
+openingGuide.startChapter2Opening({onComplete:()=>{openingComplete=true;}});
+assert.equal(openingState.get('flags.ch2Started'),undefined,'opening must not start CH2 automatically');
+assert.equal(openingState.get('flags.ch2OpeningStarted'),true);
+assert.equal(openingLines[0].line,'你已經開始注意，\n那些藏在照片裡的資訊。');
+for(let index=0;index<5;index++)openingLines.at(-1).handlers.onContinue();
+assert.equal(openingComplete,true);
+assert.equal(openingState.get('flags.ch2OpeningSeen'),true);
+assert(openingLines.some((entry)=>entry.line==='CHAPTER 02\nSHARE\n分享'));
+
 const source=fs.readFileSync(new URL('../js/core/Game.js',import.meta.url),'utf8');
-assert(source.includes("if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){this.startCh2();return;}"));
+assert(source.includes("if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){if(this.state.get('flags.ch2OpeningStarted'))this.beginCh2Opening({resume:true});else this.summaryManager.start({final:true});return;}"));
 assert(source.includes("if(this.state.get('flags.albumReflectionComplete')&&!this.state.get('flags.ch2Started'))"));
+assert(fs.readFileSync(new URL('../js/views/ChapterSummaryView.js',import.meta.url),'utf8').includes("this.menu.textContent='前往下一章'"));
 assert(quests.some((quest)=>quest.id==='ch2_explore_event'&&quest.stages[0]?.id==='explore_event_area'));
 console.log('CH1 -> CH2 TRANSITION: PASS');
 console.log('EXISTING CH1-COMPLETE SAVE ACCESS: PASS');

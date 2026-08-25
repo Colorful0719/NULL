@@ -1,4 +1,5 @@
 const INTRO_LINES=['照片記錄了我們想留下的瞬間。','朋友、家人、學校、去過的地方……','我們拍下它們，也分享它們。','但當一張照片離開你的手中，\n你還知道它會去到哪裡嗎？','有些資訊從來沒有消失。','它們只是散落在不同的地方，\n等待被重新拼起來。','而最近，\n城市裡開始出現一些奇怪的照片……','《NULL》','第一章'];
+const CH2_OPENING_LINES=['你已經開始注意，\n那些藏在照片裡的資訊。','但看見，只是第一步。','當你親手按下「分享」——','資訊就開始離開你的手中。','CHAPTER 02\nSHARE\n分享'];
 
 export class GuidanceManager {
   constructor({gameState,saveManager,view,getMode,onIntroComplete,scenes=[]}){this.gameState=gameState;this.saveManager=saveManager;this.view=view;this.getMode=getMode;this.onIntroComplete=onIntroComplete;this.scenes=scenes;this.introIndex=0;this.modalOpen=false;this.pendingNotice=null;}
@@ -6,6 +7,10 @@ export class GuidanceManager {
   renderIntro(){this.view.openIntro(INTRO_LINES[this.introIndex],this.introIndex,INTRO_LINES.length,{onContinue:()=>this.nextIntro(),onSkip:()=>this.finishIntro()});}
   nextIntro(){if(this.introIndex<INTRO_LINES.length-1){this.introIndex+=1;this.renderIntro();return;}this.finishIntro();}
   finishIntro(){this.gameState.set('flags.storyIntroductionSeen',true);this.saveManager.save();this.view.closeIntro();this.onIntroComplete?.();}
+  startChapter2Opening({index=null,onComplete}={}){this.chapter2OpeningIndex=Math.max(0,Math.min(CH2_OPENING_LINES.length-1,index??this.gameState.get('flags.ch2OpeningIndex')??0));this.chapter2OpeningComplete=onComplete;this.gameState.set('flags.ch2OpeningStarted',true);this.gameState.set('flags.ch2OpeningIndex',this.chapter2OpeningIndex);this.saveManager.save();this.renderChapter2Opening();}
+  renderChapter2Opening(){this.view.openIntro(CH2_OPENING_LINES[this.chapter2OpeningIndex],this.chapter2OpeningIndex,CH2_OPENING_LINES.length,{onContinue:()=>this.nextChapter2Opening(),onSkip:()=>this.finishChapter2Opening(),showSkip:false});}
+  nextChapter2Opening(){if(this.chapter2OpeningIndex<CH2_OPENING_LINES.length-1){this.chapter2OpeningIndex+=1;this.gameState.set('flags.ch2OpeningIndex',this.chapter2OpeningIndex);this.saveManager.save();this.renderChapter2Opening();return;}this.finishChapter2Opening();}
+  finishChapter2Opening(){this.gameState.set('flags.ch2OpeningSeen',true);this.gameState.set('flags.ch2OpeningStarted',false);this.gameState.set('flags.ch2OpeningIndex',null);this.saveManager.save();this.view.closeIntro();this.chapter2OpeningComplete?.();}
   openControls({automatic=false,battle=false}={}){if(this.modalOpen)return;this.modalOpen=true;this.gameState.set('playerMovementLocked',true);if(automatic)this.gameState.set(`flags.${battle?'battleTutorialSeen':'controlsTutorialSeen'}`,true);this.saveManager.save();this.view.openControls({battle,onClose:()=>this.closeModal()});}
   openJournal(){if(this.modalOpen)return;this.modalOpen=true;this.gameState.set('playerMovementLocked',true);const groups=this.journal();const boardQuest=this.noticeBoardSideQuest();if(boardQuest)groups[boardQuest.completed?'completed':'side'].push(boardQuest);this.view.openJournal(groups,()=>this.closeModal());}
   closeModal(){this.modalOpen=false;this.view.closeModal();if(this.getMode?.()==='EXPLORATION')this.gameState.set('playerMovementLocked',false);this.saveManager.save();this.flushNotice();}
