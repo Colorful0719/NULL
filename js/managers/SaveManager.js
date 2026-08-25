@@ -1,7 +1,7 @@
 import { GAME_STATE_VERSION, initialGameState } from '../core/GameState.js?v=24p10';
 
 export const SAVE_KEY = 'nullPrivacyRpg.save.v1';
-export const LEGACY_GAME_STATE_VERSIONS = Object.freeze(['0.1.0','0.2.0']);
+export const LEGACY_GAME_STATE_VERSIONS = Object.freeze(['0.1.0','0.2.0','0.3.0']);
 
 const blockedKeys = new Set(['__proto__', 'constructor', 'prototype']);
 const isRecord = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);

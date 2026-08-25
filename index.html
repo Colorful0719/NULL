@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="./css/battle-redesign.css?v=battleui2">
   <link rel="stylesheet" href="./css/responsive.css?v=regressionfix1">
   <link rel="stylesheet" href="./css/desktop-fullscreen.css?v=tabletproportions1">
+  <link rel="stylesheet" href="./css/echo.css?v=ch2echo1">
 </head>
 <body>
   <main id="app" class="app-shell" data-game-mode="menu" aria-live="polite">
@@ -129,6 +130,9 @@
         <p id="memory-feedback" class="memory-feedback" role="status" hidden></p>
         <div class="memory-actions"><button id="memory-investigate" type="button">調查照片</button><button id="memory-submit" type="button" hidden>確認答案</button><button id="memory-next" type="button" hidden>下一題</button></div>
       </article>
+    </section>
+    <section id="echo-screen" class="echo-screen" aria-labelledby="echo-title" hidden>
+      <article class="echo-panel"><header class="echo-header"><div><p id="echo-mode">ECHO 貼文</p><h1 id="echo-title">分享預覽</h1></div><button type="button" data-echo-action="close">關閉</button></header><div class="echo-body"><figure class="echo-preview"><img id="echo-photo" alt="" hidden><figcaption id="echo-photo-fallback" class="echo-photo-fallback">尚未選擇照片</figcaption></figure><section class="echo-compose"><p id="echo-caption" class="echo-caption"></p><div id="echo-form" class="echo-form"></div></section></div><p id="echo-notification" class="echo-notification" role="status" hidden></p><footer class="echo-actions"><button type="button" data-echo-action="save">稍後發布</button><button type="button" data-echo-action="post">發布</button></footer></article>
     </section>
     <div id="memory-montage" class="memory-montage" aria-hidden="true" hidden><img id="memory-montage-image" alt=""></div>
     <section id="reflection-screen" class="reflection-screen" aria-labelledby="reflection-title" hidden>

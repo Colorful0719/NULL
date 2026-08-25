@@ -5,6 +5,7 @@ export const GAME_MODE = Object.freeze({
   BATTLE: 'BATTLE',
   MENU: 'MENU',
   REFLECTION: 'REFLECTION',
+  ECHO: 'ECHO',
 });
 
 export const GAME_MODES = Object.freeze(Object.values(GAME_MODE));

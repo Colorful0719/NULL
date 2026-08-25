@@ -1,6 +1,6 @@
 import { GAME_MODE } from './GameMode.js';
 
-export const GAME_STATE_VERSION = '0.3.0';
+export const GAME_STATE_VERSION = '0.4.0';
 
 export const initialGameState = Object.freeze({
   version: GAME_STATE_VERSION,
@@ -14,13 +14,14 @@ export const initialGameState = Object.freeze({
     returnContext: null,
     interactionTargetId: null
   },
-  activeFlow: { dialogue: null, puzzle: null, memory: null, reflection: null, summary: null },
+  activeFlow: { dialogue: null, puzzle: null, memory: null, reflection: null, summary: null, echo: null },
   player: { name: '主角', level: 1, hp: 100, maxHp: 100, sp: 50, maxSp: 50 },
   stats: { privacyAwareness: 0, digitalFootprint: 0, parentTrust: 50, communication: 0, agency: 0 },
   emotion: 'AWARENESS',
   flags: {},
   choices: [],
   quests: {},
+  echo: { drafts: [], posts: [], notifications: [], nextOrder: 1 },
   noticeBoardState: {},
   privacyClues: [],
   inventory: [],

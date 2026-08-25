@@ -23,6 +23,8 @@ import { GuidanceManager } from '../managers/GuidanceManager.js?v=boardside1';
 import { GuidanceView } from '../views/GuidanceView.js?v=touch1';
 import { ChapterSummaryManager } from '../managers/ChapterSummaryManager.js?v=ending1';
 import { ChapterSummaryView } from '../views/ChapterSummaryView.js?v=ending1';
+import { EchoManager } from '../managers/EchoManager.js?v=ch2echo1';
+import { EchoView } from '../views/EchoView.js?v=ch2echo1';
 
 export class Game {
   constructor(root) {
@@ -75,6 +77,7 @@ export class Game {
     this.reflectionManager=new ReflectionManager({definitions:this.data.reflections,gameState:this.state,view:new ReflectionView(this.root),saveManager:this.saveManager,onStart:(definition)=>this.beginReflection(definition),onExit:()=>this.finishReflection()});
     this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.returnToMainMenu()});
     this.audioManager.bindSettings(this.root);
+    this.echoManager=new EchoManager({gameState:this.state,saveManager:this.saveManager,view:new EchoView(this.root),onOpen:()=>{this.state.set('mode',GAME_MODE.ECHO);this.state.set('playerMovementLocked',true);this.root.dataset.gameMode='echo';},onClose:()=>{const sceneId=this.state.get('sceneId');if(this.data.scenes.find((scene)=>scene.id===sceneId)?.type==='map')this.mapManager.enter(sceneId);}});
     const battleView=new BattleView(this.root,this.data.characters,this.audioManager);
     this.battleManager = new BattleManager({ gameState:this.state, enemies:this.data.enemies, bosses:this.data.bosses, view:battleView, saveManager:this.saveManager, onStart:(context,enemy)=>this.beginBattle(context,enemy),onExit:(battle,context)=>this.finishBattle(battle,context) });
     this.puzzleManager = new PuzzleManager({puzzles:this.data.puzzles,gameState:this.state,view:new PuzzleView(this.root),saveManager:this.saveManager,onStart:(context,puzzle)=>this.beginPuzzle(context,puzzle),onComplete:(puzzle,context)=>this.completePuzzle(puzzle,context),onExit:(puzzle,context,completed)=>this.finishPuzzle(puzzle,context,completed)});
@@ -319,7 +322,7 @@ export class Game {
   beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);if(this.root?.dataset)this.root.dataset.gameMode='reflection';this.state.set('playerMovementLocked',true);this.saveManager.save();}
   finishReflection(){this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);this.saveManager.save();this.summaryManager.start();}
 
-  returnToMainMenu(){['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
+  returnToMainMenu(){['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
 
   handleAction(action) {
     if (action === 'start') {
@@ -353,6 +356,8 @@ export class Game {
   resumeFromState(){
     const activeBattle=this.state.get('flags.activeBattle');
     if(activeBattle){this.battleManager.restore(activeBattle);return;}
+    const echoFlow=this.state.get('activeFlow.echo');
+    if(echoFlow?.config){this.echoManager.open(echoFlow.config);return;}
     const dialogueFlow=this.state.get('activeFlow.dialogue');
     if(dialogueFlow?.id){const sceneName=this.data.scenes.find((item)=>item.id===dialogueFlow.context?.returnContext?.sceneId)?.displayName??'事件場景';this.dialogueManager.start(dialogueFlow.id,sceneName,dialogueFlow.context??{});return;}
     const puzzleFlow=this.state.get('activeFlow.puzzle');
