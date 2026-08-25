@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { GameState } from '../js/core/GameState.js';
 import { EchoManager } from '../js/managers/EchoManager.js';
-import { ECHO_PHOTO_ASSETS } from '../js/echo/EchoAssets.js';
+import { ECHO_PHOTO_ASSETS, resolveEchoPhoto } from '../js/echo/EchoAssets.js';
 import { migrateGameState } from '../js/managers/SaveManager.js';
 
 class MemorySave { constructor(state){this.state=state;this.saved=[];} save(){this.saved.push(this.state.get());} }
@@ -10,6 +10,11 @@ const state=new GameState();const save=new MemorySave(state);const view=new Fake
 const echo=new EchoManager({gameState:state,saveManager:save,view,onOpen:()=>locked=true,onClose:()=>restored=true});
 
 assert.deepEqual(Object.keys(ECHO_PHOTO_ASSETS),['CH2-MIO-PHOTO-01','CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01']);
+assert.ok(Object.values(ECHO_PHOTO_ASSETS).every((src)=>src?.startsWith('./assets/images/ch2/echo/')));
+assert.ok(resolveEchoPhoto('CH2-MIO-PHOTO-01').src.endsWith('ch2_mio_photo_01.png'));
+assert.ok(resolveEchoPhoto('CH2-MIO-PHOTO-02').src.endsWith('ch2_mio_photo_02.png'));
+assert.ok(resolveEchoPhoto('CH2-GROUP-PHOTO-01').src.endsWith('ch2_group_photo_01.png'));
+assert.equal(resolveEchoPhoto('CH2-NOT-REGISTERED').src,null);
 echo.open({id:'story-1',mode:'STORY',photo:'CH2-MIO-PHOTO-01',location:{value:'GENERAL_AREA'},timing:{value:'SHARE_NOW'},audience:{value:'FRIENDS'},contacts:[{id:'mio',label:'MIO'},{id:'kai',label:'KAI'}]});
 assert.equal(view.opened,true);assert.equal(view.session.mode,'STORY');assert.equal(view.session.photo.id,'CH2-MIO-PHOTO-01');assert.equal(view.session.location,'GENERAL_AREA');assert.equal(view.session.audience,'FRIENDS');assert.equal(locked,true);assert.equal(state.get('activeFlow.echo.id'),'story-1');
 assert.equal(echo.select('location','CURRENT_LOCATION'),true);assert.equal(echo.select('timing','SHARE_LATER'),true);assert.equal(echo.select('audience','SELECTED'),true);assert.equal(echo.toggleSelected('mio'),true);assert.deepEqual(view.session.selectedAudience,['mio']);
