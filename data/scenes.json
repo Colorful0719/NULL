@@ -3212,7 +3212,7 @@
         {
           "id":"ch2_mio","type":"npc","characterId":"mio","displayLabel":"MIO","position":{"x":19,"y":12},"spriteId":"mio_ch2_idle",
           "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":791,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
-          "interaction":{"kind":"talk","frontPosition":{"x":19,"y":11,"facing":"down"},"prompt":"按 E 交談","enabled":true,"dialogueId":"ch2_act1_mio_photo_plan"}
+          "interaction":{"kind":"talk","frontPosition":{"x":19,"y":11,"facing":"down"},"prompt":"按 E 交談","enabled":true,"dialogueId":"ch2_act1_mio_photo_plan","requiredFlag":"ch2Act1MioMet","dialogueWhenReadyId":"ch2_act1_mio_repeat","conditionalFlag":"ch2MioExactConsequencePending","dialogueWhenFlagId":"ch2_optional_mio_exact_consequence"}
         },
         {"id":"ch2_event_board","type":"object","landmarkId":"event_board","displayLabel":"活動公布欄","position":{"x":5,"y":19},"spriteId":"ch2_event_board","interaction":{"kind":"ch2_landmark","flag":"ch2EventBoardKnown","frontPosition":{"x":5,"y":20,"facing":"up"},"prompt":"按 E 查看活動公布欄","message":"活動公布欄列著今天的舞台節目與攤位時間。"}},
         {"id":"ch2_event_map","type":"object","landmarkId":"event_map","displayLabel":"會場地圖","position":{"x":19,"y":19},"spriteId":"ch2_event_map","interaction":{"kind":"ch2_landmark","flag":"ch2EventMapKnown","frontPosition":{"x":19,"y":20,"facing":"up"},"prompt":"按 E 查看會場地圖","message":"會場地圖標示著入口、拍照區，以及中央的集合地點。"}},
@@ -3222,6 +3222,8 @@
         {"id":"ch2_rest_area","type":"object","landmarkId":"rest_area","displayLabel":"休息區","position":{"x":25,"y":14},"spriteId":"ch2_rest_area","interaction":{"kind":"inspect","frontPosition":{"x":22,"y":14,"facing":"right"},"prompt":"按 E 查看休息區","message":"桌椅整齊地排在遮棚下。"}},
         {"id":"ch2_group_photo_area","type":"object","landmarkId":"group_photo_area","displayLabel":"團體照區","position":{"x":4,"y":3},"spriteId":"ch2_group_photo_area","interaction":{"kind":"inspect","frontPosition":{"x":4,"y":6,"facing":"up"},"prompt":"按 E 查看團體照區","message":"花架前方預留了團體拍照的位置。"}},
         {"id":"ch2_stage","type":"object","landmarkId":"stage","displayLabel":"舞台","position":{"x":14,"y":3},"spriteId":"ch2_stage","interaction":{"kind":"inspect","frontPosition":{"x":14,"y":5,"facing":"up"},"prompt":"按 E 查看舞台","message":"舞台設備已經準備完成。"}}
+        ,{"id":"ch2_game_reward_booth","type":"object","displayLabel":"限定獎勵攤位","position":{"x":9,"y":13},"spriteId":"ch2_event_booth","interaction":{"kind":"ch2_optional","eventId":"game_reward_survey","frontPosition":{"x":11,"y":13,"facing":"left"},"prompt":"按 E 查看限定獎勵攤位"}}
+        ,{"id":"ch2_online_follower","type":"npc","characterId":"event_visitor","displayLabel":"活動參加者","position":{"x":17,"y":11},"spriteId":"ch2_event_visitor","mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":1051,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},"interaction":{"kind":"ch2_optional","eventId":"looking_for_mio","hiddenUntilFlag":"ch2Act1EchoDecided","hiddenWhenFlag":"mioFollowerEncountered","frontPosition":{"x":17,"y":12,"facing":"up"},"prompt":"按 E 交談"}}
       ],
       "roamingEnemies": [],
       "triggers": [
@@ -3233,6 +3235,15 @@
         },
         {
           "id":"ch2_act1_fast_consequence","type":"event","position":{"x":6,"y":15},"activation":"enter","condition":{"flag":"ch2Act1EchoDecided","equals":true},"eventId":"ch2_act1_fast_consequence","once":true
+        },
+        {
+          "id":"ch2_survey_delayed_consequence","type":"event","position":{"x":12,"y":13},"activation":"enter","condition":{"flag":"surveyCompleted","equals":true},"eventId":"ch2_survey_delayed_consequence","once":true
+        },
+        {
+          "id":"ch2_survey_delayed_consequence_north","type":"event","position":{"x":11,"y":12},"activation":"enter","condition":{"flag":"surveyCompleted","equals":true},"eventId":"ch2_survey_delayed_consequence","once":true
+        },
+        {
+          "id":"ch2_survey_delayed_consequence_south","type":"event","position":{"x":11,"y":14},"activation":"enter","condition":{"flag":"surveyCompleted","equals":true},"eventId":"ch2_survey_delayed_consequence","once":true
         }
       ],
       "connections": []

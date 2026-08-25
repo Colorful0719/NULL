@@ -111,6 +111,25 @@ export class Game {
   }
 
   handleMapInteraction(target) {
+    if(target.interaction?.kind==='ch2_optional'){
+      let dialogueId='';
+      if(target.interaction.eventId==='game_reward_survey'){
+        this.state.set('flags.surveyDiscovered',true);
+        dialogueId=this.state.get('flags.surveyCompleted')?'ch2_optional_survey_done':'ch2_optional_survey_promo';
+      }
+      if(target.interaction.eventId==='looking_for_mio'){
+        if(this.state.get('flags.mioFollowerEncountered'))dialogueId='ch2_optional_follower_done';
+        else if(this.state.get('flags.act1Timing')==='later')dialogueId='ch2_optional_follower_later';
+        else if(this.state.get('flags.act1LocationMode')==='current')dialogueId='ch2_optional_follower_current_now';
+        else if(this.state.get('flags.act1LocationMode')==='none')dialogueId='ch2_optional_follower_none_now';
+        else dialogueId='ch2_optional_follower_general_now';
+      }
+      if(dialogueId){
+        const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id,characterId:target.characterId};
+        this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_optional',overlay:true,returnContext});
+      }
+      this.saveManager.save();return '';
+    }
     if(target.interaction?.kind==='ch2_landmark'){
       if(target.interaction.flag)this.state.set(`flags.${target.interaction.flag}`,true);
       if(this.state.get('flags.ch2FindKaiStarted')&&['ch2EventMapKnown','ch2MeetingPointKnown'].includes(target.interaction.flag))this.state.set('flags.ch2KaiCanMeet',true);
@@ -132,6 +151,16 @@ export class Game {
       this.questManager.advance('ch2_explore_event','find_kai');
       const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
       this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_act1_consequence',overlay:true,returnContext});
+      return '';
+    }
+    if(target.interaction?.kind==='act_event'&&target.interaction.eventId==='ch2_survey_delayed_consequence'){
+      if(this.state.get('flags.surveyThirdPartyContact'))return '';
+      const shared=this.state.get('flags.surveyDataShared')??[];
+      const basis=shared.includes('school')?'school':shared.includes('email')?'email':shared.includes('account')?'account':'generic';
+      const dialogueId=`ch2_optional_survey_contact_${basis}`;
+      this.state.set('flags.surveyThirdPartyContact',{received:true,basedOn:basis});
+      const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
+      this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_optional_consequence',overlay:true,returnContext});
       return '';
     }
     if(target.interaction?.kind==='quest'){this.questManager.start(target.questId);if(target.stageId)this.questManager.advance(target.questId,target.stageId);return target.interaction.message??'任務已更新。';}
@@ -207,6 +236,26 @@ export class Game {
       this.questManager.advance('ch2_explore_event','meet_kai');
       this.questManager.advance('ch2_explore_event','act1_complete');
       questMessage='ACT 1 完成：大家已在活動會場集合。';
+    }
+    if(dialogue?.id==='ch2_optional_survey_complete'&&!this.state.get('flags.surveyRewardReceived')){
+      const fields=['name','email','phone','birthday','school','account'];
+      const shared=fields.filter((field)=>this.state.get(`flags.surveyShare${field[0].toUpperCase()}${field.slice(1)}`));
+      this.state.set('flags.surveyCompleted',true);
+      this.state.set('flags.surveyDataShared',shared);
+      this.state.set('flags.surveyOptionalFieldsSkipped',fields.some((field)=>!shared.includes(field)));
+      this.state.set('flags.surveyRewardReceived',true);
+      const reward=this.state.get('flags.surveyRewardType');
+      if(reward==='coins')this.state.update('currency.gameCoins',(value=0)=>value+100);
+      else if(reward){const rewardId=reward==='equipment'?'ch2_rare_equipment':'ch2_limited_skin';this.state.update('inventory',(items=[])=>items.includes(rewardId)?items:[...items,rewardId]);}
+      questMessage='可選事件完成：限定遊戲獎勵已領取。';
+    }
+    if(dialogue?.id?.startsWith('ch2_optional_follower_')&&dialogue.id!=='ch2_optional_follower_done'){
+      this.state.set('flags.mioFollowerEncountered',true);
+      if(dialogue.id==='ch2_optional_follower_ask_mio'||['ch2_follower_general','ch2_follower_refuse'].includes(choice?.id))this.state.set('flags.mioFollowerConsequenceComplete',true);
+    }
+    if(dialogue?.id==='ch2_optional_mio_exact_consequence'){
+      this.state.set('flags.ch2MioExactConsequencePending',false);
+      this.state.set('flags.mioFollowerConsequenceComplete',true);
     }
     if(dialogue?.id==='ch1_album_parent_post_battle'){
       this.state.set('flags.albumParentPostBattleComplete',true);

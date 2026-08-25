@@ -62,7 +62,7 @@ export class MapView {
       tile.setAttribute('aria-hidden', 'true');
       return tile;
     }));
-    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>!entity.interaction?.hiddenUntilFlag||this.gameState?.get(`flags.${entity.interaction.hiddenUntilFlag}`)).map((entity) => {
+    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>(!entity.interaction?.hiddenUntilFlag||this.gameState?.get(`flags.${entity.interaction.hiddenUntilFlag}`))&&(!entity.interaction?.hiddenWhenFlag||!this.gameState?.get(`flags.${entity.interaction.hiddenWhenFlag}`))).map((entity) => {
       const sprite = document.createElement('span');
       sprite.className = `map-entity map-entity--${entity.type}`;
       if(entity.interaction?.kind)sprite.classList.add(`map-entity--interaction-${entity.interaction.kind}`);

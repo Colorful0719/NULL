@@ -327,6 +327,51 @@
       "participants":[{"characterId":"kai","position":"left","expression":"happy"},{"characterId":"mio","position":"right","expression":"neutral"}],
       "lines":[{"speakerId":"kai","expression":"happy","text":"找到你們了。這張地圖和集合地點還真的有用。"},{"speakerId":"kai","expression":"thinking","text":"所以你們剛剛發給誰看？"},{"speakerId":"mio","expression":"neutral","text":"朋友啊。"},{"speakerId":"kai","expression":"thinking","text":"哪些朋友？"}],
       "choices":[],"endText":"ACT 1 完成。關於「朋友」的問題，留待下一階段。"
+    },
+    {
+      "id":"ch2_act1_mio_repeat","label":"活動會場","sceneId":"ch2_community_event","participants":[{"characterId":"mio","position":"left","expression":"happy"}],
+      "lines":[{"speakerId":"mio","expression":"happy","text":"活動會場還有很多地方可以逛，我先在這裡看看。"}],"choices":[],"endText":"你回到活動會場。"
+    },
+    {
+      "id":"ch2_optional_survey_promo","label":"限定遊戲獎勵","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],
+      "lines":[{"speakerId":"player","expression":"thinking","text":"《星域遠征 Online》限定獎勵：完成簡短問卷，就能選擇一項獎勵。"},{"speakerId":"player","expression":"neutral","text":"遊戲點數、稀有裝備，或限定造型。"}],
+      "choices":["ch2_survey_reward_coins","ch2_survey_reward_equipment","ch2_survey_reward_skin"]
+    },
+    {
+      "id":"ch2_optional_survey_intro","label":"遊戲獎勵問卷","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],
+      "lines":[{"speakerId":"player","expression":"thinking","text":"問卷說明：所有內容都是遊戲角色資料，不會要求輸入玩家本人的真實資料。"},{"speakerId":"player","expression":"neutral","text":"前面是遊戲偏好、遊玩頻率、年齡區間和使用平台；後面的附加欄位都可以略過。"}],
+      "choices":["ch2_survey_begin","ch2_survey_cancel"]
+    },
+    {"id":"ch2_optional_survey_name","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供虛構玩家角色的姓名？"}],"choices":["ch2_survey_name_share","ch2_survey_name_skip"]},
+    {"id":"ch2_optional_survey_email","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供虛構角色使用的聯絡信箱？"}],"choices":["ch2_survey_email_share","ch2_survey_email_skip"]},
+    {"id":"ch2_optional_survey_phone","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供虛構角色的電話？"}],"choices":["ch2_survey_phone_share","ch2_survey_phone_skip"]},
+    {"id":"ch2_optional_survey_birthday","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供虛構角色的生日？"}],"choices":["ch2_survey_birthday_share","ch2_survey_birthday_skip"]},
+    {"id":"ch2_optional_survey_school","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供遊戲世界中的學校資料？"}],"choices":["ch2_survey_school_share","ch2_survey_school_skip"]},
+    {"id":"ch2_optional_survey_account","label":"問卷 · 附加欄位","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"是否提供虛構的遊戲帳號 ID？"}],"choices":["ch2_survey_account_share","ch2_survey_account_skip"]},
+    {
+      "id":"ch2_optional_survey_complete","label":"問卷完成","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"happy"}],
+      "lines":[{"speakerId":"player","expression":"happy","text":"問卷已送出，選擇的限定獎勵也已加入。"}],"choices":[],"endText":"獎勵已領取。"
+    },
+    {"id":"ch2_optional_survey_done","label":"限定遊戲獎勵","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"neutral"}],"lines":[{"speakerId":"player","expression":"neutral","text":"這份問卷已完成，獎勵也已經領取。"}],"choices":[],"endText":"你離開攤位。"},
+    {"id":"ch2_optional_survey_contact_school","label":"新訊息","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"surprised"}],"lines":[{"speakerId":"player","expression":"surprised","text":"收到一則「學生限定活動」訊息，內容提到了問卷中提供的學校資料。"}],"choices":[],"endText":"第三方訊息已記錄。"},
+    {"id":"ch2_optional_survey_contact_email","label":"新訊息","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"surprised"}],"lines":[{"speakerId":"player","expression":"surprised","text":"收到一則寄到問卷聯絡信箱的特別優惠。"}],"choices":[],"endText":"第三方訊息已記錄。"},
+    {"id":"ch2_optional_survey_contact_account","label":"新訊息","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"surprised"}],"lines":[{"speakerId":"player","expression":"surprised","text":"遊戲帳號收到一則依照遊玩偏好整理的推薦訊息。"}],"choices":[],"endText":"第三方訊息已記錄。"},
+    {"id":"ch2_optional_survey_contact_generic","label":"新訊息","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"player","expression":"thinking","text":"問卷攤位送來一般獎勵目錄更新，沒有提到你略過的附加資料。"}],"choices":[],"endText":"第三方訊息已記錄。"},
+    {
+      "id":"ch2_optional_follower_current_now","label":"活動參加者","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],
+      "lines":[{"speakerId":"event_visitor","expression":"neutral","text":"你是不是跟 MIO 一起的？我看到她剛剛發的照片。"},{"speakerId":"event_visitor","expression":"neutral","text":"貼文標了拍照區。她現在還在那附近嗎？"}],"choices":["ch2_follower_exact","ch2_follower_general","ch2_follower_ask_first","ch2_follower_refuse"]
+    },
+    {"id":"ch2_optional_follower_general_now","label":"活動參加者","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"event_visitor","expression":"neutral","text":"你是不是跟 MIO 一起的？我看到她剛剛發的照片。"},{"speakerId":"event_visitor","expression":"neutral","text":"我只知道她在這個活動會場。你知道她在哪一區嗎？"}],"choices":["ch2_follower_exact","ch2_follower_general","ch2_follower_ask_first","ch2_follower_refuse"]},
+    {"id":"ch2_optional_follower_none_now","label":"活動參加者","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"event_visitor","expression":"neutral","text":"你是不是跟 MIO 一起的？我看到她剛剛發的照片。"},{"speakerId":"event_visitor","expression":"neutral","text":"貼文沒有標位置，不過背景的帳棚和旗幟很像這個會場。她在這裡嗎？"}],"choices":["ch2_follower_exact","ch2_follower_general","ch2_follower_ask_first","ch2_follower_refuse"]},
+    {"id":"ch2_optional_follower_later","label":"活動參加者","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"thinking"}],"lines":[{"speakerId":"event_visitor","expression":"neutral","text":"你是不是跟 MIO 一起的？我剛看到她之前存下來的照片。"},{"speakerId":"event_visitor","expression":"neutral","text":"照片看得出是在活動會場，但她現在可能已經不在原本的位置了。你知道她在哪嗎？"}],"choices":["ch2_follower_exact","ch2_follower_general","ch2_follower_ask_first","ch2_follower_refuse"]},
+    {
+      "id":"ch2_optional_follower_ask_mio","label":"先詢問 MIO","sceneId":"ch2_community_event","participants":[{"characterId":"mio","position":"left","expression":"thinking"},{"characterId":"player","position":"right","expression":"neutral"}],
+      "lines":[{"speakerId":"player","expression":"neutral","text":"有人看見你的貼文，問我你在哪裡。你認識他嗎？"},{"speakerId":"mio","expression":"surprised","text":"誰？我不認識。先不要告訴他我的位置。"},{"speakerId":"player","expression":"neutral","text":"好，我會跟他說。"},{"speakerId":"event_visitor","expression":"neutral","text":"了解，那我不打擾了。"}],"choices":[],"endText":"活動參加者接受回覆後離開。"
+    },
+    {"id":"ch2_optional_follower_done","label":"活動參加者","sceneId":"ch2_community_event","participants":[{"characterId":"player","position":"right","expression":"neutral"}],"lines":[{"speakerId":"event_visitor","expression":"neutral","text":"謝謝，剛才的事情我知道了。"}],"choices":[],"endText":"對話結束。"},
+    {
+      "id":"ch2_optional_mio_exact_consequence","label":"MIO","sceneId":"ch2_community_event","participants":[{"characterId":"mio","position":"left","expression":"surprised"},{"characterId":"player","position":"right","expression":"nervous"}],
+      "lines":[{"speakerId":"mio","expression":"surprised","text":"剛剛有人突然跑來找我。是你告訴他我在這裡嗎？"},{"speakerId":"player","expression":"nervous","text":"嗯，他說看過你的貼文。"},{"speakerId":"mio","expression":"thinking","text":"下次先跟我說一下。我不一定希望沒見過的人知道我的精確位置。"}],"choices":[],"endText":"MIO 說明了自己的想法。"
     }
   ]
 }
