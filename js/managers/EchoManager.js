@@ -16,7 +16,7 @@ export class EchoManager {
       location:this.#initial(config.location,LOCATION_VALUES,'NO_LOCATION'),timing:this.#initial(config.timing,TIMING_VALUES,'SHARE_NOW'),
       audience:this.#initial(config.audience,AUDIENCE_VALUES,'FRIENDS'),selectedAudience:[...(config.selectedAudience??[])],
       selectedOptions:[...(config.selectedOptions??[])],controls:this.#controls(config.controls),audienceOptions:clone(config.audienceOptions??{}),
-      contacts:clone(config.contacts??[]),sourceEventId:config.sourceEventId??null
+      contacts:clone(config.contacts??[]),allowSave:config.allowSave!==false,sourceEventId:config.sourceEventId??null
     };
     this.gameState.set('activeFlow.echo',{id:this.session.id,config:clone(config)});this.onOpen?.(this.session);this.#render();return clone(this.session);
   }
@@ -24,7 +24,7 @@ export class EchoManager {
   select(kind,value){if(!this.session)return false;const allowed=kind==='location'?LOCATION_VALUES:kind==='timing'?TIMING_VALUES:kind==='audience'?AUDIENCE_VALUES:null;if(!allowed?.includes(value))return false;const rule=this.session.controls[kind];if(rule&&!rule.enabled||rule?.locked)return false;this.session[kind]=value;if(kind==='audience'&&value!=='SELECTED')this.session.selectedAudience=[];this.#render();return true;}
   toggleSelected(id){if(!this.session||this.session.audience!=='SELECTED'||!this.session.contacts.some((item)=>item.id===id))return false;const list=this.session.selectedAudience;this.session.selectedAudience=list.includes(id)?list.filter((value)=>value!==id):[...list,id];this.#render();return true;}
   publish(){return this.#commit('POSTED');}
-  saveForLater(){this.session.timing='SHARE_LATER';return this.#commit('DRAFT');}
+  saveForLater(){if(!this.session?.allowSave)return null;this.session.timing='SHARE_LATER';return this.#commit('DRAFT');}
   changeAudience(postId,audience,selectedAudience=[]){if(!AUDIENCE_VALUES.includes(audience))return false;const updated=this.#updateHistory(postId,(post)=>({...post,audience,selectedAudience:audience==='SELECTED'?[...selectedAudience]:[]}));if(updated)this.#notify('分享對象已更新。',postId);return updated;}
   deletePost(postId){const updated=this.#updateHistory(postId,(post)=>({...post,deleted:true,status:'DELETED'}));if(updated)this.#notify('貼文已刪除。',postId);return updated;}
   history(){const state=this.gameState.get('echo')??{};return [...(state.posts??[]),...(state.drafts??[])].sort((a,b)=>a.order-b.order);}

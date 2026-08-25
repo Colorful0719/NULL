@@ -3207,7 +3207,7 @@
         {
           "id":"ch2_rin","type":"npc","characterId":"rin","displayLabel":"RIN","position":{"x":16,"y":10},"spriteId":"rin_ch2_idle",
           "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":531,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
-          "interaction":{"kind":"talk","frontPosition":{"x":16,"y":11,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+          "interaction":{"kind":"talk","frontPosition":{"x":16,"y":11,"facing":"up"},"prompt":"按 E 交談","enabled":true,"dialogueId":"ch2_rin_wait","requiredFlag":"ch2ConsentForeshadowSeen","dialogueWhenReadyId":"ch2_act2_meet_rin"}
         },
         {
           "id":"ch2_mio","type":"npc","characterId":"mio","displayLabel":"MIO","position":{"x":19,"y":12},"spriteId":"mio_ch2_idle",
@@ -3218,12 +3218,14 @@
         {"id":"ch2_event_map","type":"object","landmarkId":"event_map","displayLabel":"會場地圖","position":{"x":19,"y":19},"spriteId":"ch2_event_map","interaction":{"kind":"ch2_landmark","flag":"ch2EventMapKnown","frontPosition":{"x":19,"y":20,"facing":"up"},"prompt":"按 E 查看會場地圖","message":"會場地圖標示著入口、拍照區，以及中央的集合地點。"}},
         {"id":"ch2_meeting_point","type":"object","landmarkId":"meeting_point","displayLabel":"集合地點","position":{"x":14,"y":18},"spriteId":"ch2_meeting_point","interaction":{"kind":"ch2_landmark","flag":"ch2MeetingPointKnown","frontPosition":{"x":14,"y":19,"facing":"up"},"prompt":"按 E 查看集合地點","message":"指標寫著「集合地點」。從會場入口沿中央步道就能抵達。"}},
         {"id":"ch2_photo_spot","type":"object","landmarkId":"photo_spot","displayLabel":"拍照區","position":{"x":3,"y":14},"spriteId":"ch2_photo_spot","interaction":{"kind":"echo","eventId":"ch2_act1_mio_story","requiredFlag":"ch2Act1MioMet","frontPosition":{"x":6,"y":14,"facing":"left"},"prompt":"按 E 和 MIO 拍照"}},
-        {"id":"ch2_public_screen","type":"object","landmarkId":"public_screen","displayLabel":"公共螢幕","position":{"x":26,"y":9},"spriteId":"ch2_public_screen","interaction":{"kind":"inspect","frontPosition":{"x":23,"y":9,"facing":"right"},"prompt":"按 E 查看公共螢幕","message":"公共螢幕正在播放活動圖樣。"}},
+        {"id":"ch2_public_screen","type":"object","landmarkId":"public_screen","displayLabel":"公共螢幕","position":{"x":26,"y":9},"spriteId":"ch2_public_screen","interaction":{"kind":"inspect","frontPosition":{"x":23,"y":9,"facing":"right"},"prompt":"按 E 查看公共螢幕","message":"公共螢幕公開播放活動時間、舞台節目與會場公告，讓所有參加者都能找到需要的資訊。"}},
         {"id":"ch2_rest_area","type":"object","landmarkId":"rest_area","displayLabel":"休息區","position":{"x":25,"y":14},"spriteId":"ch2_rest_area","interaction":{"kind":"inspect","frontPosition":{"x":22,"y":14,"facing":"right"},"prompt":"按 E 查看休息區","message":"桌椅整齊地排在遮棚下。"}},
-        {"id":"ch2_group_photo_area","type":"object","landmarkId":"group_photo_area","displayLabel":"團體照區","position":{"x":4,"y":3},"spriteId":"ch2_group_photo_area","interaction":{"kind":"inspect","frontPosition":{"x":4,"y":6,"facing":"up"},"prompt":"按 E 查看團體照區","message":"花架前方預留了團體拍照的位置。"}},
+        {"id":"ch2_group_photo_area","type":"object","landmarkId":"group_photo_area","displayLabel":"團體照區","position":{"x":4,"y":3},"spriteId":"ch2_group_photo_area","interaction":{"kind":"ch2_story","eventId":"ch2_act3_group_photo","requiredFlag":"ch2Act2Complete","frontPosition":{"x":4,"y":6,"facing":"up"},"prompt":"按 E 一起拍照"}},
         {"id":"ch2_stage","type":"object","landmarkId":"stage","displayLabel":"舞台","position":{"x":14,"y":3},"spriteId":"ch2_stage","interaction":{"kind":"inspect","frontPosition":{"x":14,"y":5,"facing":"up"},"prompt":"按 E 查看舞台","message":"舞台設備已經準備完成。"}}
         ,{"id":"ch2_game_reward_booth","type":"object","displayLabel":"限定獎勵攤位","position":{"x":9,"y":13},"spriteId":"ch2_event_booth","interaction":{"kind":"ch2_optional","eventId":"game_reward_survey","frontPosition":{"x":11,"y":13,"facing":"left"},"prompt":"按 E 查看限定獎勵攤位"}}
         ,{"id":"ch2_online_follower","type":"npc","characterId":"event_visitor","displayLabel":"活動參加者","position":{"x":17,"y":11},"spriteId":"ch2_event_visitor","mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":1051,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},"interaction":{"kind":"ch2_optional","eventId":"looking_for_mio","hiddenUntilFlag":"ch2Act1EchoDecided","hiddenWhenFlag":"mioFollowerEncountered","frontPosition":{"x":17,"y":12,"facing":"up"},"prompt":"按 E 交談"}}
+        ,{"id":"ch2_act2_photo_booth","type":"object","displayLabel":"活動照片攤位","position":{"x":20,"y":7},"spriteId":"ch2_event_booth","interaction":{"kind":"ch2_story","eventId":"ch2_act2_photo_post","requiredFlag":"ch2Act1Complete","frontPosition":{"x":21,"y":7,"facing":"left"},"prompt":"按 E 查看照片"}}
+        ,{"id":"ch2_consent_foreshadow","type":"npc","characterId":"event_visitor","displayLabel":"活動參加者","position":{"x":22,"y":10},"spriteId":"ch2_event_visitor","mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":1051,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},"interaction":{"kind":"ch2_story","eventId":"ch2_consent_foreshadow","hiddenUntilFlag":"ch2Act2PostCompleted","hiddenWhenFlag":"ch2ConsentForeshadowSeen","frontPosition":{"x":22,"y":11,"facing":"up"},"prompt":"按 E 聽聽對話"}}
       ],
       "roamingEnemies": [],
       "triggers": [
@@ -3244,7 +3246,11 @@
         },
         {
           "id":"ch2_survey_delayed_consequence_south","type":"event","position":{"x":11,"y":14},"activation":"enter","condition":{"flag":"surveyCompleted","equals":true},"eventId":"ch2_survey_delayed_consequence","once":true
-        }
+        },
+        {"id":"ch2_act2_consequence_east","type":"event","position":{"x":22,"y":7},"activation":"enter","condition":{"flag":"ch2Act2PostCompleted","equals":true},"eventId":"ch2_act2_consequence","once":true},
+        {"id":"ch2_act2_consequence_south","type":"event","position":{"x":21,"y":8},"activation":"enter","condition":{"flag":"ch2Act2PostCompleted","equals":true},"eventId":"ch2_act2_consequence","once":true},
+        {"id":"ch2_act3_consequence_east","type":"event","position":{"x":5,"y":6},"activation":"enter","condition":{"flag":"ch2GroupPhotoPostCompleted","equals":true},"eventId":"ch2_act3_consequence","once":true},
+        {"id":"ch2_act3_consequence_west","type":"event","position":{"x":3,"y":6},"activation":"enter","condition":{"flag":"ch2GroupPhotoPostCompleted","equals":true},"eventId":"ch2_act3_consequence","once":true}
       ],
       "connections": []
     }

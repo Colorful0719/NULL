@@ -111,6 +111,19 @@ export class Game {
   }
 
   handleMapInteraction(target) {
+    if(target.interaction?.kind==='ch2_story'){
+      const eventId=target.interaction.eventId;
+      if(eventId==='ch2_act2_photo_post'&&this.state.get('flags.ch2Act2PostCompleted'))return '這張活動照片已經分享過了。';
+      if(eventId==='ch2_act3_group_photo'&&this.state.get('flags.ch2GroupPhotoPostCompleted'))return '團體照已經處理完成。';
+      const dialogueId=eventId==='ch2_act2_photo_post'?'ch2_act2_photo_intro':eventId==='ch2_consent_foreshadow'?'ch2_consent_foreshadow':eventId==='ch2_act3_group_photo'?'ch2_act3_group_photo_choice':'';
+      if(dialogueId){
+        if(eventId==='ch2_act2_photo_post')this.questManager.advance('ch2_explore_event','act2_photo');
+        if(eventId==='ch2_act3_group_photo')this.questManager.advance('ch2_explore_event','act3_share');
+        const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
+        this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_story',overlay:true,returnContext});
+      }
+      return '';
+    }
     if(target.interaction?.kind==='ch2_optional'){
       let dialogueId='';
       if(target.interaction.eventId==='game_reward_survey'){
@@ -161,6 +174,24 @@ export class Game {
       this.state.set('flags.surveyThirdPartyContact',{received:true,basedOn:basis});
       const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
       this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_optional_consequence',overlay:true,returnContext});
+      return '';
+    }
+    if(target.interaction?.kind==='act_event'&&target.interaction.eventId==='ch2_act2_consequence'){
+      if(this.state.get('flags.ch2Act2ConsequenceSeen'))return '';
+      const audience=this.state.get('flags.act2Audience')??'private';
+      this.state.set('flags.ch2Act2ConsequenceSeen',true);
+      this.questManager.advance('ch2_explore_event','act2_consequence');
+      const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
+      this.dialogueManager.start(`ch2_act2_consequence_${audience}`,this.mapManager.scene.displayName,{kind:'ch2_act2_consequence',overlay:true,returnContext});
+      return '';
+    }
+    if(target.interaction?.kind==='act_event'&&target.interaction.eventId==='ch2_act3_consequence'){
+      if(this.state.get('flags.ch2Act3ConsequenceSeen'))return '';
+      const conflict=Boolean(this.state.get('flags.consentConflict'));
+      this.state.set('flags.ch2Act3ConsequenceSeen',true);
+      this.questManager.advance('ch2_explore_event','act3_repair');
+      const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
+      this.dialogueManager.start(conflict?'ch2_act3_consent_conflict':'ch2_act3_no_conflict',this.mapManager.scene.displayName,{kind:'ch2_act3_consequence',overlay:true,returnContext});
       return '';
     }
     if(target.interaction?.kind==='quest'){this.questManager.start(target.questId);if(target.stageId)this.questManager.advance(target.questId,target.stageId);return target.interaction.message??'任務已更新。';}
@@ -235,7 +266,18 @@ export class Game {
       this.state.set('flags.ch2Act1Complete',true);
       this.questManager.advance('ch2_explore_event','meet_kai');
       this.questManager.advance('ch2_explore_event','act1_complete');
-      questMessage='ACT 1 完成：大家已在活動會場集合。';
+      this.questManager.advance('ch2_explore_event','act2_explore');
+      questMessage='主線任務已更新：和 MIO、KAI 繼續逛活動會場。';
+    }
+    if(dialogue?.id==='ch2_consent_foreshadow'){
+      this.state.set('flags.ch2ConsentForeshadowSeen',true);
+      this.questManager.advance('ch2_explore_event','meet_rin');
+      questMessage='主線任務已更新：在活動會場找到 RIN。';
+    }
+    if(dialogue?.id==='ch2_act2_meet_rin'){
+      this.state.set('flags.ch2Act2Complete',true);
+      this.questManager.advance('ch2_explore_event','group_photo');
+      questMessage='ACT 2 完成：和大家前往團體拍照區。';
     }
     if(dialogue?.id==='ch2_optional_survey_complete'&&!this.state.get('flags.surveyRewardReceived')){
       const fields=['name','email','phone','birthday','school','account'];
@@ -275,6 +317,38 @@ export class Game {
       }
     }
     this.state.set('activeFlow.dialogue',null);
+    if(dialogue?.id==='ch2_act2_photo_intro'){
+      this.openAct2Echo();
+      return;
+    }
+    if(['ch2_act3_consent_preferences','ch2_act3_continue_to_post'].includes(dialogue?.id)){
+      this.openAct3Echo();
+      return;
+    }
+    if(dialogue?.id==='ch2_act3_repair_changed'){
+      const postId=this.state.get('flags.groupPhotoPostId');
+      this.echoManager.changeAudience(postId,'SELECTED',['player','mio','kai','rin']);
+      this.state.set('flags.groupPhotoAudience','selected');
+      this.state.set('flags.consentConflict',false);
+      this.state.set('flags.consentConflictUnresolved',false);
+      questMessage='已修改團體照的分享對象。';
+    }
+    if(dialogue?.id==='ch2_act3_repair_deleted'){
+      this.echoManager.deletePost(this.state.get('flags.groupPhotoPostId'));
+      this.state.set('flags.postDeleted',true);
+      this.state.set('flags.consentConflict',false);
+      this.state.set('flags.consentConflictUnresolved',false);
+      questMessage='團體照貼文已刪除。';
+    }
+    if(dialogue?.id==='ch2_act3_repair_kept'){
+      this.state.set('flags.consentConflictUnresolved',true);
+      questMessage='團體照的分享範圍分歧仍未解決。';
+    }
+    if(['ch2_act3_no_conflict','ch2_act3_repair_changed','ch2_act3_repair_deleted','ch2_act3_repair_kept'].includes(dialogue?.id)){
+      this.state.set('flags.ch2Act3Complete',true);
+      this.questManager.advance('ch2_explore_event','prepare_to_leave');
+      questMessage=[questMessage,'主線任務已更新：準備離開活動會場。'].filter(Boolean).join('\n');
+    }
     const next=choice?.next??dialogue?.next;
     if(next?.type==='puzzle'){
       this.puzzleManager.start(next.id,{kind:'dialogue',returnContext,afterDialogueId:next.afterDialogueId,questMessage});
@@ -303,13 +377,47 @@ export class Game {
   }
 
   handleEchoCommit(record,session){
-    if(session?.sourceEventId!=='ch2_act1_mio_story')return;
-    const locations={CURRENT_LOCATION:'current',GENERAL_AREA:'general',NO_LOCATION:'none'};
-    this.state.set('flags.act1LocationMode',locations[record.location]??'none');
-    this.state.set('flags.act1Timing',record.timing==='SHARE_LATER'?'later':'now');
-    this.state.set('flags.act1Audience','friends');
-    this.state.set('flags.ch2Act1EchoDecided',true);
-    this.questManager.advance('ch2_explore_event','observe_consequence');
+    const audience={PUBLIC:'public',FRIENDS:'friends',SELECTED:'selected',PRIVATE:'private'};
+    if(session?.sourceEventId==='ch2_act1_mio_story'){
+      const locations={CURRENT_LOCATION:'current',GENERAL_AREA:'general',NO_LOCATION:'none'};
+      this.state.set('flags.act1LocationMode',locations[record.location]??'none');
+      this.state.set('flags.act1Timing',record.timing==='SHARE_LATER'?'later':'now');
+      this.state.set('flags.act1Audience','friends');
+      this.state.set('flags.ch2Act1EchoDecided',true);
+      this.questManager.advance('ch2_explore_event','observe_consequence');
+      return;
+    }
+    if(session?.sourceEventId==='ch2_act2_mio_post'){
+      this.state.set('flags.act2Audience',audience[record.audience]??'private');
+      this.state.set('flags.act2SelectedAudience',[...(record.selectedAudience??[])]);
+      this.state.set('flags.act2PostCompleted',true);
+      this.state.set('flags.ch2Act2PostCompleted',true);
+      this.state.set('flags.act2PostId',record.id);
+      this.questManager.advance('ch2_explore_event','act2_consequence');
+      return;
+    }
+    if(session?.sourceEventId==='ch2_act3_group_post'){
+      const selected=[...(record.selectedAudience??[])];
+      const groupAudience=audience[record.audience]??'private';
+      const conflict=record.audience==='PUBLIC'||record.audience==='FRIENDS'||(record.audience==='SELECTED'&&selected.includes('rin')===false);
+      this.state.set('flags.groupPhotoAudience',groupAudience);
+      this.state.set('flags.groupPhotoSelectedAudience',selected);
+      this.state.set('flags.groupPhotoPostId',record.id);
+      this.state.set('flags.groupPhotoExposed',record.audience==='PUBLIC');
+      this.state.set('flags.postDeleted',false);
+      this.state.set('flags.consentConflict',conflict);
+      this.state.set('flags.consentConflictUnresolved',conflict);
+      this.state.set('flags.ch2GroupPhotoPostCompleted',true);
+      this.questManager.advance('ch2_explore_event','act3_repair');
+    }
+  }
+
+  openAct2Echo(){
+    this.echoManager.open({id:'ch2-act2-mio-post',mode:'POST',photo:'CH2-MIO-PHOTO-02',caption:'MIO 在活動會場拍下的照片。',location:{value:'NO_LOCATION'},timing:{value:'SHARE_NOW'},audience:{value:'FRIENDS'},allowSave:false,controls:{location:{visible:false,enabled:false,locked:true},timing:{visible:false,enabled:false,locked:true},audience:{visible:true,enabled:true}},contacts:[{id:'player',label:'PLAYER · Close Friend'},{id:'kai',label:'KAI · Classmate'},{id:'rin',label:'RIN · Club Member'},{id:'old_classmate',label:'舊同學 · Old Classmate'},{id:'event_contact',label:'活動聯絡人 · Event Contact'}],sourceEventId:'ch2_act2_mio_post'});
+  }
+
+  openAct3Echo(){
+    this.echoManager.open({id:'ch2-act3-group-post',mode:'POST',photo:'CH2-GROUP-PHOTO-01',caption:'大家在社區活動會場拍下的團體照。',location:{value:'NO_LOCATION'},timing:{value:'SHARE_NOW'},audience:{value:'FRIENDS'},allowSave:false,controls:{location:{visible:false,enabled:false,locked:true},timing:{visible:false,enabled:false,locked:true},audience:{visible:true,enabled:true}},contacts:[{id:'player',label:'PLAYER · Close Friend'},{id:'mio',label:'MIO · Close Friend'},{id:'kai',label:'KAI · Classmate'},{id:'rin',label:'RIN · Club Member'}],sourceEventId:'ch2_act3_group_post'});
   }
 
   startPuzzleFromMap(id){

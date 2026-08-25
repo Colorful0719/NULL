@@ -24,5 +24,10 @@
   {"id":"ch2_follower_exact","label":"告知精確位置","set":{"flags.mioLocationResponse":"exact","flags.mioLocationShared":true,"flags.mioConsentAsked":false,"flags.ch2MioExactConsequencePending":true},"resultText":"你告訴對方 MIO 所在的精確位置。"},
   {"id":"ch2_follower_general","label":"只提供大概區域","set":{"flags.mioLocationResponse":"general","flags.mioLocationShared":true,"flags.mioConsentAsked":false},"resultText":"你只說 MIO 在活動會場裡，沒有提供更精確的位置。"},
   {"id":"ch2_follower_ask_first","label":"先詢問 MIO","set":{"flags.mioLocationResponse":"ask_first","flags.mioLocationShared":false,"flags.mioConsentAsked":true},"resultText":"你先聯絡 MIO。","next":{"type":"dialogue","id":"ch2_optional_follower_ask_mio"}},
-  {"id":"ch2_follower_refuse","label":"不提供","set":{"flags.mioLocationResponse":"refuse","flags.mioLocationShared":false,"flags.mioConsentAsked":false},"resultText":"你沒有提供 MIO 的位置。"}
+  {"id":"ch2_follower_refuse","label":"不提供","set":{"flags.mioLocationResponse":"refuse","flags.mioLocationShared":false,"flags.mioConsentAsked":false},"resultText":"你沒有提供 MIO 的位置。"},
+  {"id":"ch2_consent_ask_first","label":"先詢問大家","set":{"flags.consentAsked":true},"resultText":"你先詢問照片中每個人可以接受的分享範圍。","next":{"type":"dialogue","id":"ch2_act3_consent_preferences"}},
+  {"id":"ch2_consent_continue","label":"直接繼續","set":{"flags.consentAsked":false},"resultText":"你直接進入分享設定。","next":{"type":"dialogue","id":"ch2_act3_continue_to_post"}},
+  {"id":"ch2_consent_change_audience","label":"修改分享對象","set":{"flags.groupPhotoRepairChoice":"change_audience"},"resultText":"你把貼文改成只給照片中的夥伴觀看。","next":{"type":"dialogue","id":"ch2_act3_repair_changed"}},
+  {"id":"ch2_consent_delete_post","label":"刪除貼文","set":{"flags.groupPhotoRepairChoice":"delete_post"},"resultText":"你刪除了貼文。","next":{"type":"dialogue","id":"ch2_act3_repair_deleted"}},
+  {"id":"ch2_consent_keep_post","label":"保持原樣","set":{"flags.groupPhotoRepairChoice":"keep"},"resultText":"你決定暫時保持原本的分享設定。","next":{"type":"dialogue","id":"ch2_act3_repair_kept"}}
 ]}

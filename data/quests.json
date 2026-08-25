@@ -113,7 +113,15 @@
         {"id":"observe_consequence","displayName":"留意會場反應","objective":"繼續在會場走走，看看發布後的變化。"},
         {"id":"find_kai","displayName":"尋找 KAI","objective":"利用會場地圖或集合點找到 KAI。"},
         {"id":"meet_kai","displayName":"與 KAI 集合","objective":"到集合點附近和 KAI 交談。"},
-        {"id":"act1_complete","displayName":"ACT 1 完成","objective":"大家已在活動會場集合。"}
+        {"id":"act1_complete","displayName":"ACT 1 完成","objective":"大家已在活動會場集合。"},
+        {"id":"act2_explore","displayName":"繼續逛活動會場","objective":"和 MIO、KAI 繼續逛活動會場。"},
+        {"id":"act2_photo","displayName":"準備第二則貼文","objective":"到活動攤位看看 MIO 想分享的照片。"},
+        {"id":"act2_consequence","displayName":"留意觀看者反應","objective":"繼續探索，看看不同分享對象帶來的反應。"},
+        {"id":"meet_rin","displayName":"與 RIN 會合","objective":"在活動會場找到 RIN。"},
+        {"id":"group_photo","displayName":"前往團體拍照區","objective":"和大家去團體拍照區。"},
+        {"id":"act3_share","displayName":"決定團體照分享方式","objective":"決定是否先詢問，並選擇團體照的分享對象。"},
+        {"id":"act3_repair","displayName":"回應分享範圍","objective":"回應大家對團體照分享範圍的想法。"},
+        {"id":"prepare_to_leave","displayName":"準備離開活動會場","objective":"準備離開活動會場。"}
       ]
     }
   ]

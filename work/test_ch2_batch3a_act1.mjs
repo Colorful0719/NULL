@@ -11,7 +11,7 @@ const scene=scenes.find((item)=>item.id==='ch2_community_event');
 const quest=quests.find((item)=>item.id==='ch2_explore_event');
 
 assert(scene&&quest,'CH2 scene and quest must exist');
-assert.deepEqual(quest.stages.map((item)=>item.id),['explore_event_area','meet_mio','go_photo_spot','share_echo_story','observe_consequence','find_kai','meet_kai','act1_complete']);
+assert.deepEqual(quest.stages.slice(0,8).map((item)=>item.id),['explore_event_area','meet_mio','go_photo_spot','share_echo_story','observe_consequence','find_kai','meet_kai','act1_complete']);
 for(const id of ['event_board','event_map','meeting_point'])assert(scene.entities.some((item)=>item.landmarkId===id&&item.interaction?.kind==='ch2_landmark'));
 const mio=scene.entities.find((item)=>item.id==='ch2_mio');
 const kai=scene.entities.find((item)=>item.id==='ch2_kai');
