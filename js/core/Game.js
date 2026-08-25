@@ -75,7 +75,7 @@ export class Game {
     const choiceManager = new ChoiceManager(this.state);
     this.questManager=new QuestManager({definitions:this.data.quests,gameState:this.state,saveManager:this.saveManager});
     this.reflectionManager=new ReflectionManager({definitions:this.data.reflections,gameState:this.state,view:new ReflectionView(this.root),saveManager:this.saveManager,onStart:(definition)=>this.beginReflection(definition),onExit:()=>this.finishReflection()});
-    this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.returnToMainMenu()});
+    this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.startCh2()});
     this.audioManager.bindSettings(this.root);
     this.echoManager=new EchoManager({gameState:this.state,saveManager:this.saveManager,view:new EchoView(this.root),onOpen:()=>{this.state.set('mode',GAME_MODE.ECHO);this.state.set('playerMovementLocked',true);this.root.dataset.gameMode='echo';},onCommit:(record,session)=>this.handleEchoCommit(record,session),onClose:()=>{const sceneId=this.state.get('sceneId');if(this.data.scenes.find((scene)=>scene.id===sceneId)?.type==='map')this.mapManager.enter(sceneId);}});
     const battleView=new BattleView(this.root,this.data.characters,this.audioManager);
@@ -525,6 +525,22 @@ export class Game {
   beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);if(this.root?.dataset)this.root.dataset.gameMode='reflection';this.state.set('playerMovementLocked',true);this.saveManager.save();}
   finishReflection(){this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);this.saveManager.save();this.summaryManager.start();}
 
+  startCh2(){
+    const sceneId='ch2_community_event';
+    const scene=this.data.scenes.find((item)=>item.id===sceneId&&item.type==='map');
+    if(!scene)throw new Error('找不到第二章起始地圖。');
+    this.state.set('flags.ch2Started',true);
+    this.state.set('chapter','CH2_SHARE');
+    this.state.set('activeFlow.summary',null);
+    this.state.set('exploration.returnContext',null);
+    this.questManager.start('ch2_explore_event');
+    this.questManager.advance('ch2_explore_event','explore_event_area');
+    this.mapManager.assetCache.preloadScene(scene);
+    this.mapManager.enter(sceneId,{resetToSpawn:true});
+    this.saveManager.save();
+    this.mapManager.view.showMessage?.('主線任務：逛逛活動會場。');
+  }
+
   returnToMainMenu(){['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
 
   handleAction(action) {
@@ -571,8 +587,8 @@ export class Game {
     if(reflectionFlow?.id){this.startReflection(reflectionFlow.id);return;}
     const summaryFlow=this.state.get('activeFlow.summary');
     if(summaryFlow){this.summaryManager.start({index:summaryFlow.index??0});return;}
-    if(this.state.get('flags.ch1Complete')){this.summaryManager.start({final:true});return;}
-    if(this.state.get('flags.albumReflectionComplete')){this.summaryManager.start();return;}
+    if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){this.startCh2();return;}
+    if(this.state.get('flags.albumReflectionComplete')&&!this.state.get('flags.ch2Started')){this.summaryManager.start();return;}
     const albumQuest=this.state.get('quests.ch1_album_path')??{};
     const albumResolved=(this.state.get('defeatedBosses')??[]).includes('album');
     const albumParentPending=!this.state.get('flags.albumParentPostBattleComplete')&&Boolean(this.state.get('flags.albumAwaitingParent')||this.state.get('flags.albumPhase3Complete')||this.state.get('flags.albumBattleComplete')||albumResolved||(albumQuest.completedStages??[]).includes('complete_album_profile_phase')||albumQuest.stageId==='complete_album_profile_phase');

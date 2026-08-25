@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { Game } from '../js/core/Game.js';
+import { GameState } from '../js/core/GameState.js';
+import { GuidanceManager } from '../js/managers/GuidanceManager.js';
+
+const scenes=JSON.parse(fs.readFileSync(new URL('../data/scenes.json',import.meta.url),'utf8')).scenes;
+const quests=JSON.parse(fs.readFileSync(new URL('../data/quests.json',import.meta.url),'utf8')).quests;
+const state=new GameState();
+state.set('flags.ch1Complete',true);
+state.set('chapter','CH1_COMPLETE');
+const calls=[];
+const game=Object.create(Game.prototype);
+game.state=state;
+game.data={scenes};
+game.saveManager={save(){calls.push('save');}};
+game.questManager={start(id){calls.push(`start:${id}`);},advance(id,stage){calls.push(`advance:${id}:${stage}`);}};
+game.mapManager={assetCache:{preloadScene(scene){calls.push(`preload:${scene.id}`);return Promise.resolve(true);}},enter(id,options){calls.push(`enter:${id}:${options.resetToSpawn}`);state.set('sceneId',id);},view:{showMessage(message){calls.push(`message:${message}`);}}};
+game.startCh2();
+assert.equal(state.get('flags.ch1Complete'),true);
+assert.equal(state.get('flags.ch2Started'),true);
+assert.equal(state.get('chapter'),'CH2_SHARE');
+assert.equal(state.get('sceneId'),'ch2_community_event');
+assert(calls.includes('start:ch2_explore_event'));
+assert(calls.includes('advance:ch2_explore_event:explore_event_area'));
+assert(calls.includes('preload:ch2_community_event'));
+assert(calls.includes('enter:ch2_community_event:true'));
+
+const guideState=new GameState();
+guideState.set('flags.ch1Complete',true);
+guideState.set('flags.ch2Started',true);
+guideState.set('quests.ch2_explore_event',{status:'active',stageId:'explore_event_area',completedStages:['explore_event_area']});
+const guide=new GuidanceManager({gameState:guideState,saveManager:{save(){}},view:{},scenes});
+assert.equal(guide.currentMain('ch2_community_event').objective,'逛逛活動會場。');
+
+const source=fs.readFileSync(new URL('../js/core/Game.js',import.meta.url),'utf8');
+assert(source.includes("if(this.state.get('flags.ch1Complete')&&!this.state.get('flags.ch2Started')){this.startCh2();return;}"));
+assert(source.includes("if(this.state.get('flags.albumReflectionComplete')&&!this.state.get('flags.ch2Started'))"));
+assert(quests.some((quest)=>quest.id==='ch2_explore_event'&&quest.stages[0]?.id==='explore_event_area'));
+console.log('CH1 -> CH2 TRANSITION: PASS');
+console.log('EXISTING CH1-COMPLETE SAVE ACCESS: PASS');
+console.log('CH2 INITIAL QUEST: PASS');
