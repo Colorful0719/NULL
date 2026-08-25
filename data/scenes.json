@@ -1246,6 +1246,27 @@
             "y": 21
           },
           "targetDirection": "up"
+        },
+        {
+          "id": "neighborhood_to_ch2_community_event",
+          "type": "exit",
+          "position": {
+            "x": 24,
+            "y": 22
+          },
+          "activation": "interact",
+          "prompt": "按 E 前往社區活動區",
+          "to": "ch2_community_event",
+          "targetPosition": {
+            "x": 14,
+            "y": 20
+          },
+          "targetDirection": "up",
+          "condition": {
+            "flag": "ch1Complete",
+            "equals": true
+          },
+          "lockedMessage": "完成第一章後才能前往社區活動區。"
         }
       ],
       "connections": []
@@ -3125,6 +3146,93 @@
           "direction": "返回回憶畫廊"
         }
       ]
+    },
+    {
+      "id": "ch2_community_event",
+      "type": "map",
+      "chapterId": "ch2_share",
+      "bgmId": "DAILY_EXPLORATION",
+      "displayName": "社區活動區",
+      "description": "社區活動會場已經布置完成，人群尚未完全聚集。",
+      "theme": "community_event",
+      "mapArt": {
+        "baseImage": "assets/maps/ch2_community_event/community_event_area.png",
+        "logicalSize": {
+          "width": 1422,
+          "height": 1106
+        },
+        "tileSize": 48,
+        "gridVisible": false,
+        "playerSprite": {
+          "sheet": "assets/sprites/ch1/source/ch1_character_spritesheet.png",
+          "sheetSize": { "width": 1536, "height": 1024 },
+          "frameSize": { "width": 78, "height": 126 },
+          "display": { "width": 38, "height": 61 },
+          "directions": {
+            "down": [{"x":7,"y":110},{"x":87,"y":110},{"x":167,"y":110}],
+            "left": [{"x":7,"y":245},{"x":87,"y":245},{"x":167,"y":245}],
+            "right": [{"x":7,"y":374},{"x":87,"y":374},{"x":167,"y":374}],
+            "up": [{"x":7,"y":500},{"x":87,"y":500},{"x":167,"y":500}]
+          }
+        }
+      },
+      "grid": { "width": 30, "height": 23 },
+      "spawn": { "x": 14, "y": 20 },
+      "spawnFacing": "up",
+      "collisions": [],
+      "collisionRects": [
+        {"id":"north_border","x":0,"y":0,"width":30,"height":1},
+        {"id":"west_border","x":0,"y":1,"width":1,"height":22},
+        {"id":"east_border","x":29,"y":1,"width":1,"height":22},
+        {"id":"south_wall_left","x":1,"y":22,"width":13,"height":1},
+        {"id":"south_wall_right","x":16,"y":22,"width":13,"height":1},
+        {"id":"group_photo_garden","x":1,"y":1,"width":6,"height":5},
+        {"id":"stage_structure","x":11,"y":1,"width":7,"height":4},
+        {"id":"cafe_area","x":21,"y":1,"width":8,"height":6},
+        {"id":"west_upper_stalls","x":3,"y":7,"width":4,"height":4},
+        {"id":"center_left_stalls","x":8,"y":6,"width":4,"height":4},
+        {"id":"center_right_stalls","x":17,"y":6,"width":4,"height":4},
+        {"id":"public_screen_structure","x":24,"y":7,"width":5,"height":4},
+        {"id":"west_lower_garden","x":1,"y":12,"width":5,"height":5},
+        {"id":"lower_left_stalls","x":7,"y":13,"width":4,"height":4},
+        {"id":"lower_right_stalls","x":18,"y":13,"width":4,"height":4},
+        {"id":"east_rest_area","x":23,"y":12,"width":6,"height":5}
+      ],
+      "entities": [
+        {
+          "id":"ch2_kai","type":"npc","characterId":"kai","displayLabel":"KAI","position":{"x":11,"y":12},"spriteId":"kai_ch2_idle",
+          "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":271,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
+          "interaction":{"kind":"talk","frontPosition":{"x":11,"y":13,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+        },
+        {
+          "id":"ch2_rin","type":"npc","characterId":"rin","displayLabel":"RIN","position":{"x":16,"y":10},"spriteId":"rin_ch2_idle",
+          "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":531,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
+          "interaction":{"kind":"talk","frontPosition":{"x":16,"y":11,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+        },
+        {
+          "id":"ch2_mio","type":"npc","characterId":"mio","displayLabel":"MIO","position":{"x":19,"y":12},"spriteId":"mio_ch2_idle",
+          "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":791,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
+          "interaction":{"kind":"talk","frontPosition":{"x":19,"y":13,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+        },
+        {"id":"ch2_event_board","type":"object","landmarkId":"event_board","displayLabel":"活動公布欄","position":{"x":5,"y":19},"spriteId":"ch2_event_board","interaction":{"kind":"inspect","frontPosition":{"x":5,"y":20,"facing":"up"},"prompt":"按 E 查看活動公布欄","message":"活動公布欄已設置完成。"}},
+        {"id":"ch2_event_map","type":"object","landmarkId":"event_map","displayLabel":"會場地圖","position":{"x":19,"y":19},"spriteId":"ch2_event_map","interaction":{"kind":"inspect","frontPosition":{"x":19,"y":20,"facing":"up"},"prompt":"按 E 查看會場地圖","message":"會場地圖標示著各個活動區域。"}},
+        {"id":"ch2_meeting_point","type":"object","landmarkId":"meeting_point","displayLabel":"集合地點","position":{"x":14,"y":18},"spriteId":"ch2_meeting_point","interaction":{"kind":"inspect","frontPosition":{"x":14,"y":19,"facing":"up"},"prompt":"按 E 查看集合地點","message":"這裡是會場中央的集合地點。"}},
+        {"id":"ch2_photo_spot","type":"object","landmarkId":"photo_spot","displayLabel":"拍照區","position":{"x":3,"y":14},"spriteId":"ch2_photo_spot","interaction":{"kind":"inspect","frontPosition":{"x":3,"y":15,"facing":"up"},"prompt":"按 E 查看拍照區","message":"拍照區目前還沒有人使用。"}},
+        {"id":"ch2_public_screen","type":"object","landmarkId":"public_screen","displayLabel":"公共螢幕","position":{"x":26,"y":9},"spriteId":"ch2_public_screen","interaction":{"kind":"inspect","frontPosition":{"x":23,"y":9,"facing":"right"},"prompt":"按 E 查看公共螢幕","message":"公共螢幕正在播放活動圖樣。"}},
+        {"id":"ch2_rest_area","type":"object","landmarkId":"rest_area","displayLabel":"休息區","position":{"x":25,"y":14},"spriteId":"ch2_rest_area","interaction":{"kind":"inspect","frontPosition":{"x":22,"y":14,"facing":"right"},"prompt":"按 E 查看休息區","message":"桌椅整齊地排在遮棚下。"}},
+        {"id":"ch2_group_photo_area","type":"object","landmarkId":"group_photo_area","displayLabel":"團體照區","position":{"x":4,"y":3},"spriteId":"ch2_group_photo_area","interaction":{"kind":"inspect","frontPosition":{"x":4,"y":6,"facing":"up"},"prompt":"按 E 查看團體照區","message":"花架前方預留了團體拍照的位置。"}},
+        {"id":"ch2_stage","type":"object","landmarkId":"stage","displayLabel":"舞台","position":{"x":14,"y":3},"spriteId":"ch2_stage","interaction":{"kind":"inspect","frontPosition":{"x":14,"y":5,"facing":"up"},"prompt":"按 E 查看舞台","message":"舞台設備已經準備完成。"}}
+      ],
+      "roamingEnemies": [],
+      "triggers": [
+        {
+          "id":"ch2_start_explore","type":"quest","position":{"x":14,"y":19},"activation":"enter","questId":"ch2_explore_event","stageId":"explore_event_area","message":"主線任務已更新：逛逛活動會場。","once":true
+        },
+        {
+          "id":"ch2_community_to_neighborhood","type":"exit","landmarkId":"main_entrance","position":{"x":14,"y":22},"activation":"interact","prompt":"按 E 返回住宅街區","to":"neighborhood","targetPosition":{"x":24,"y":21},"targetDirection":"up"
+        }
+      ],
+      "connections": []
     }
   ]
 }

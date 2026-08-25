@@ -95,6 +95,19 @@
           "objective": "已完成。"
         }
       ]
+    },
+    {
+      "id": "ch2_explore_event",
+      "type": "MAIN",
+      "displayName": "逛逛活動會場",
+      "description": "先熟悉社區活動區的環境。",
+      "stages": [
+        {
+          "id": "explore_event_area",
+          "displayName": "逛逛活動會場",
+          "objective": "逛逛活動會場。"
+        }
+      ]
     }
   ]
 }
