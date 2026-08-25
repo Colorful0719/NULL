@@ -87,7 +87,7 @@ const validateMapScenes = (dataset, scenes) => {
     assertUniqueIds(dataset, scene, triggers, 'Trigger');
     triggers.forEach((trigger) => {
       assertMapPoint(dataset, scene, trigger.position, `Trigger「${trigger.id}」`);
-      if (!['exit', 'quest', 'puzzle', 'battle', 'boss'].includes(trigger.type)) throw new DataLoadError(dataset, `Trigger「${trigger.id}」的 type 無效。`);
+      if (!['exit', 'quest', 'puzzle', 'battle', 'boss', 'event'].includes(trigger.type)) throw new DataLoadError(dataset, `Trigger「${trigger.id}」的 type 無效。`);
       if (!['enter', 'interact'].includes(trigger.activation)) throw new DataLoadError(dataset, `Trigger「${trigger.id}」的 activation 無效。`);
       if (trigger.activation === 'interact' && typeof trigger.prompt !== 'string') throw new DataLoadError(dataset, `Trigger「${trigger.id}」缺少繁中互動提示。`);
       if (trigger.type === 'exit' && (!sceneIds.has(trigger.to) || trigger.to === scene.id)) throw new DataLoadError(dataset, `出口 Trigger「${trigger.id}」指向無效場景。`);

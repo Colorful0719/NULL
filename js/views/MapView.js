@@ -2,8 +2,9 @@ import { CameraController } from '../controllers/CameraController.js?v=v25c1';
 import { DEBUG_MAP } from '../config/DebugConfig.js?v=v25d1';
 
 export class MapView {
-  constructor(root) {
+  constructor(root, gameState = null) {
     this.root = root;
+    this.gameState = gameState;
     this.screen = root.querySelector('#map-screen');
     this.grid = root.querySelector('#map-grid');
     this.viewport = root.querySelector('#map-viewport');
@@ -61,7 +62,7 @@ export class MapView {
       tile.setAttribute('aria-hidden', 'true');
       return tile;
     }));
-    this.entityLayer?.replaceChildren(...(scene.entities ?? []).map((entity) => {
+    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>!entity.interaction?.hiddenUntilFlag||this.gameState?.get(`flags.${entity.interaction.hiddenUntilFlag}`)).map((entity) => {
       const sprite = document.createElement('span');
       sprite.className = `map-entity map-entity--${entity.type}`;
       if(entity.interaction?.kind)sprite.classList.add(`map-entity--interaction-${entity.interaction.kind}`);

@@ -77,13 +77,13 @@ export class Game {
     this.reflectionManager=new ReflectionManager({definitions:this.data.reflections,gameState:this.state,view:new ReflectionView(this.root),saveManager:this.saveManager,onStart:(definition)=>this.beginReflection(definition),onExit:()=>this.finishReflection()});
     this.summaryManager=new ChapterSummaryManager({gameState:this.state,saveManager:this.saveManager,view:new ChapterSummaryView(this.root),audioManager:this.audioManager,onMenu:()=>this.returnToMainMenu()});
     this.audioManager.bindSettings(this.root);
-    this.echoManager=new EchoManager({gameState:this.state,saveManager:this.saveManager,view:new EchoView(this.root),onOpen:()=>{this.state.set('mode',GAME_MODE.ECHO);this.state.set('playerMovementLocked',true);this.root.dataset.gameMode='echo';},onClose:()=>{const sceneId=this.state.get('sceneId');if(this.data.scenes.find((scene)=>scene.id===sceneId)?.type==='map')this.mapManager.enter(sceneId);}});
+    this.echoManager=new EchoManager({gameState:this.state,saveManager:this.saveManager,view:new EchoView(this.root),onOpen:()=>{this.state.set('mode',GAME_MODE.ECHO);this.state.set('playerMovementLocked',true);this.root.dataset.gameMode='echo';},onCommit:(record,session)=>this.handleEchoCommit(record,session),onClose:()=>{const sceneId=this.state.get('sceneId');if(this.data.scenes.find((scene)=>scene.id===sceneId)?.type==='map')this.mapManager.enter(sceneId);}});
     const battleView=new BattleView(this.root,this.data.characters,this.audioManager);
     this.battleManager = new BattleManager({ gameState:this.state, enemies:this.data.enemies, bosses:this.data.bosses, view:battleView, saveManager:this.saveManager, onStart:(context,enemy)=>this.beginBattle(context,enemy),onExit:(battle,context)=>this.finishBattle(battle,context) });
     this.puzzleManager = new PuzzleManager({puzzles:this.data.puzzles,gameState:this.state,view:new PuzzleView(this.root),saveManager:this.saveManager,onStart:(context,puzzle)=>this.beginPuzzle(context,puzzle),onComplete:(puzzle,context)=>this.completePuzzle(puzzle,context),onExit:(puzzle,context,completed)=>this.finishPuzzle(puzzle,context,completed)});
     this.memoryView=new MemoryInvestigationView(this.root);
     this.memoryManager=new MemoryInvestigationManager({definitions:this.data.memories,gameState:this.state,view:this.memoryView,saveManager:this.saveManager,onStart:(context,memory)=>this.beginMemory(context,memory),onComplete:(memory,context)=>this.completeMemory(memory,context),onExit:(memory,context)=>this.finishMemory(memory,context)});
-    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onEnter:(scene)=>{this.root.dataset.gameMode='exploration';this.audioManager.playBGM(scene.bgmId??'DAILY_EXPLORATION');this.guidanceManager.onExploration(scene.id);} });
+    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root,this.state), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onEnter:(scene)=>{this.root.dataset.gameMode='exploration';this.audioManager.playBGM(scene.bgmId??'DAILY_EXPLORATION');this.guidanceManager.onExploration(scene.id);} });
     this.dialogueManager = new DialogueManager({ data: this.data, view, choiceManager, saveManager: this.saveManager, onStart:(context,dialogue)=>this.beginDialogue(context,dialogue),onComplete: () => this.syncSaveUi(),onFinish:(context,dialogue,choice)=>this.finishDialogue(context,dialogue,choice) });
     this.sceneManager = new SceneManager({ gameState: this.state, dialogueManager: this.dialogueManager });
     this.inputManager = new InputManager({ root: this.root, dialogueManager: this.dialogueManager, getMapManager: () => this.mapManager,onControls:()=>this.guidanceManager.openControls(),onJournal:()=>this.guidanceManager.openJournal(),isModalOpen:()=>this.guidanceManager.modalOpen });
@@ -111,6 +111,29 @@ export class Game {
   }
 
   handleMapInteraction(target) {
+    if(target.interaction?.kind==='ch2_landmark'){
+      if(target.interaction.flag)this.state.set(`flags.${target.interaction.flag}`,true);
+      if(this.state.get('flags.ch2FindKaiStarted')&&['ch2EventMapKnown','ch2MeetingPointKnown'].includes(target.interaction.flag))this.state.set('flags.ch2KaiCanMeet',true);
+      this.saveManager.save();
+      return target.interaction.message??'已記下這個會場地標。';
+    }
+    if(target.interaction?.kind==='echo'&&target.interaction.eventId==='ch2_act1_mio_story'){
+      if(this.state.get('flags.ch2Act1EchoDecided'))return '這張限時內容已經處理過了。';
+      this.questManager.advance('ch2_explore_event','share_echo_story');
+      this.echoManager.open({id:'ch2-act1-mio-story',mode:'STORY',photo:'CH2-MIO-PHOTO-01',caption:'MIO 在社區活動拍照區留下的照片。',location:{value:'GENERAL_AREA'},timing:{value:'SHARE_NOW'},audience:{value:'FRIENDS'},controls:{location:{visible:true,enabled:true},timing:{visible:true,enabled:true},audience:{visible:true,enabled:false,locked:true}},sourceEventId:'ch2_act1_mio_story'});
+      return '';
+    }
+    if(target.interaction?.kind==='act_event'&&target.interaction.eventId==='ch2_act1_fast_consequence'){
+      const timing=this.state.get('flags.act1Timing');
+      const location=this.state.get('flags.act1LocationMode');
+      const dialogueId=timing==='later'?'ch2_act1_consequence_later':location==='current'?'ch2_act1_consequence_current_now':location==='none'?'ch2_act1_consequence_none_now':'ch2_act1_consequence_general_now';
+      this.state.set('flags.ch2FindKaiStarted',true);
+      if(this.state.get('flags.ch2EventMapKnown')||this.state.get('flags.ch2MeetingPointKnown'))this.state.set('flags.ch2KaiCanMeet',true);
+      this.questManager.advance('ch2_explore_event','find_kai');
+      const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
+      this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_act1_consequence',overlay:true,returnContext});
+      return '';
+    }
     if(target.interaction?.kind==='quest'){this.questManager.start(target.questId);if(target.stageId)this.questManager.advance(target.questId,target.stageId);return target.interaction.message??'任務已更新。';}
     if(target.interaction?.kind==='memory'){
       const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};
@@ -171,7 +194,20 @@ export class Game {
     if(context.kind==='environment'&&context.setFlag)this.state.set(`flags.${context.setFlag}`,true);
     const noticeDiscovery=context.noticeBoardId?this.questManager.recordNoticeBoard?.(context.noticeBoardMapId??sceneId,context.noticeBoardId,context.noticeBoardCount??1):null;
     if(galleryKeeperComplete)this.state.set('flags.photoKeeperFinalDialogueComplete',true);
-    let questMessage=galleryKeeperComplete&&!galleryKeeperAlreadyComplete?this.questManager.completeGalleryKeeper():(context.kind==='interaction'&&returnContext?.characterId?this.questManager.recordNpcTalk(returnContext.characterId):(context.questMessage??''));
+    const ch2Act1Dialogue=dialogue?.id?.startsWith('ch2_act1_');
+    let questMessage=galleryKeeperComplete&&!galleryKeeperAlreadyComplete?this.questManager.completeGalleryKeeper():(context.kind==='interaction'&&returnContext?.characterId&&!ch2Act1Dialogue?this.questManager.recordNpcTalk(returnContext.characterId):(context.questMessage??''));
+    if(dialogue?.id==='ch2_act1_mio_photo_plan'){
+      this.state.set('flags.ch2Act1MioMet',true);
+      this.questManager.advance('ch2_explore_event','meet_mio');
+      this.questManager.advance('ch2_explore_event','go_photo_spot');
+      questMessage='主線任務已更新：和 MIO 到拍照區。';
+    }
+    if(dialogue?.id==='ch2_act1_kai_meet'){
+      this.state.set('flags.ch2Act1Complete',true);
+      this.questManager.advance('ch2_explore_event','meet_kai');
+      this.questManager.advance('ch2_explore_event','act1_complete');
+      questMessage='ACT 1 完成：大家已在活動會場集合。';
+    }
     if(dialogue?.id==='ch1_album_parent_post_battle'){
       this.state.set('flags.albumParentPostBattleComplete',true);
       this.state.set('flags.albumBattleComplete',true);
@@ -215,6 +251,16 @@ export class Game {
     else if(questMessage)this.mapManager.view.showMessage?.(questMessage);
     if(noticeDiscovery?.isNew){const sideObjective=this.guidanceManager?.noticeBoardSideObjective(sceneId);if(sideObjective)this.guidanceManager?.queueNotice(`支線任務：${sideObjective}`);}
     this.guidanceManager?.flushNotice();
+  }
+
+  handleEchoCommit(record,session){
+    if(session?.sourceEventId!=='ch2_act1_mio_story')return;
+    const locations={CURRENT_LOCATION:'current',GENERAL_AREA:'general',NO_LOCATION:'none'};
+    this.state.set('flags.act1LocationMode',locations[record.location]??'none');
+    this.state.set('flags.act1Timing',record.timing==='SHARE_LATER'?'later':'now');
+    this.state.set('flags.act1Audience','friends');
+    this.state.set('flags.ch2Act1EchoDecided',true);
+    this.questManager.advance('ch2_explore_event','observe_consequence');
   }
 
   startPuzzleFromMap(id){

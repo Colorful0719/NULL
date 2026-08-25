@@ -6,8 +6,8 @@ const AUDIENCE_VALUES = ['PUBLIC', 'FRIENDS', 'SELECTED', 'PRIVATE'];
 const clone = (value) => structuredClone(value);
 
 export class EchoManager {
-  constructor({ gameState, saveManager, view, onOpen, onClose }) {
-    this.gameState=gameState;this.saveManager=saveManager;this.view=view;this.onOpen=onOpen;this.onClose=onClose;this.session=null;
+  constructor({ gameState, saveManager, view, onOpen, onClose, onCommit }) {
+    this.gameState=gameState;this.saveManager=saveManager;this.view=view;this.onOpen=onOpen;this.onClose=onClose;this.onCommit=onCommit;this.session=null;
   }
   open(config={}) {
     const mode=config.mode==='STORY'?'STORY':'POST';
@@ -32,7 +32,7 @@ export class EchoManager {
   #initial(config,values,fallback){const value=typeof config==='string'?config:config?.value;return values.includes(value)?value:fallback;}
   #controls(controls={}){const normalize=(value)=>({visible:value?.visible!==false,enabled:value?.enabled!==false,locked:Boolean(value?.locked)});return {location:normalize(controls.location),timing:normalize(controls.timing),audience:normalize(controls.audience)};}
   #record(status){const echo=this.gameState.get('echo')??{drafts:[],posts:[],notifications:[],nextOrder:1};const order=echo.nextOrder??1;const record={id:this.session.id,contentId:this.session.photo?.id??null,type:this.session.mode,location:this.session.location,timing:this.session.timing,audience:this.session.audience,selectedAudience:[...this.session.selectedAudience],status,posted:status==='POSTED',deleted:false,timestamp:new Date().toISOString(),order,sourceEventId:this.session.sourceEventId};const key=status==='POSTED'?'posts':'drafts';echo[key]=[...(echo[key]??[]),record];echo.nextOrder=order+1;this.gameState.set('echo',echo);return record;}
-  #commit(status){if(!this.session)return null;if(this.session.audience==='SELECTED'&&!this.session.selectedAudience.length){this.view.notify('請至少選擇一位觀看對象。');return null;}const record=this.#record(status);this.#notify(status==='POSTED'?'已發布到 ECHO。':'已儲存，之後可以再發布。',record.id);this.saveManager.save();this.close();return record;}
+  #commit(status){if(!this.session)return null;if(this.session.audience==='SELECTED'&&!this.session.selectedAudience.length){this.view.notify('請至少選擇一位觀看對象。');return null;}const record=this.#record(status);this.#notify(status==='POSTED'?'已發布到 ECHO。':'已儲存，之後可以再發布。',record.id);this.onCommit?.(clone(record),clone(this.session));this.saveManager.save();this.close();return record;}
   #updateHistory(id,updater){const echo=this.gameState.get('echo');let found=false;for(const key of ['posts','drafts'])echo[key]=(echo[key]??[]).map((post)=>{if(post.id!==id)return post;found=true;return updater(post);});if(found){this.gameState.set('echo',echo);this.saveManager.save();}return found;}
   #notify(message,postId=null){const items=this.gameState.get('echo.notifications')??[];this.gameState.set('echo.notifications',[...items,{id:`echo-notice-${items.length+1}`,message,postId,order:items.length+1}]);this.view.notify(message);}
   #render(){this.view.open(this.session,{onClose:()=>this.close(),onSelect:(kind,value)=>this.select(kind,value),onToggleSelected:(id)=>this.toggleSelected(id),onPost:()=>this.publish(),onSave:()=>this.saveForLater()});}

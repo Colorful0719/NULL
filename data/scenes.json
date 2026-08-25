@@ -3200,9 +3200,9 @@
       ],
       "entities": [
         {
-          "id":"ch2_kai","type":"npc","characterId":"kai","displayLabel":"KAI","position":{"x":11,"y":12},"spriteId":"kai_ch2_idle",
+          "id":"ch2_kai","type":"npc","characterId":"kai","displayLabel":"KAI","position":{"x":14,"y":17},"spriteId":"kai_ch2_idle",
           "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":271,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
-          "interaction":{"kind":"talk","frontPosition":{"x":11,"y":13,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+          "interaction":{"kind":"talk","hiddenUntilFlag":"ch2KaiCanMeet","frontPosition":{"x":14,"y":16,"facing":"down"},"prompt":"按 E 交談","enabled":true,"dialogueId":"ch2_act1_kai_meet"}
         },
         {
           "id":"ch2_rin","type":"npc","characterId":"rin","displayLabel":"RIN","position":{"x":16,"y":10},"spriteId":"rin_ch2_idle",
@@ -3212,12 +3212,12 @@
         {
           "id":"ch2_mio","type":"npc","characterId":"mio","displayLabel":"MIO","position":{"x":19,"y":12},"spriteId":"mio_ch2_idle",
           "mapSprite":{"sheet":"assets/sprites/ch1/source/ch1_character_spritesheet.png","sheetSize":{"width":1536,"height":1024},"frame":{"x":791,"y":110,"width":78,"height":126},"display":{"width":38,"height":61}},
-          "interaction":{"kind":"talk","frontPosition":{"x":19,"y":13,"facing":"up"},"prompt":"按 E 交談","enabled":true}
+          "interaction":{"kind":"talk","frontPosition":{"x":19,"y":11,"facing":"down"},"prompt":"按 E 交談","enabled":true,"dialogueId":"ch2_act1_mio_photo_plan"}
         },
-        {"id":"ch2_event_board","type":"object","landmarkId":"event_board","displayLabel":"活動公布欄","position":{"x":5,"y":19},"spriteId":"ch2_event_board","interaction":{"kind":"inspect","frontPosition":{"x":5,"y":20,"facing":"up"},"prompt":"按 E 查看活動公布欄","message":"活動公布欄已設置完成。"}},
-        {"id":"ch2_event_map","type":"object","landmarkId":"event_map","displayLabel":"會場地圖","position":{"x":19,"y":19},"spriteId":"ch2_event_map","interaction":{"kind":"inspect","frontPosition":{"x":19,"y":20,"facing":"up"},"prompt":"按 E 查看會場地圖","message":"會場地圖標示著各個活動區域。"}},
-        {"id":"ch2_meeting_point","type":"object","landmarkId":"meeting_point","displayLabel":"集合地點","position":{"x":14,"y":18},"spriteId":"ch2_meeting_point","interaction":{"kind":"inspect","frontPosition":{"x":14,"y":19,"facing":"up"},"prompt":"按 E 查看集合地點","message":"這裡是會場中央的集合地點。"}},
-        {"id":"ch2_photo_spot","type":"object","landmarkId":"photo_spot","displayLabel":"拍照區","position":{"x":3,"y":14},"spriteId":"ch2_photo_spot","interaction":{"kind":"inspect","frontPosition":{"x":3,"y":15,"facing":"up"},"prompt":"按 E 查看拍照區","message":"拍照區目前還沒有人使用。"}},
+        {"id":"ch2_event_board","type":"object","landmarkId":"event_board","displayLabel":"活動公布欄","position":{"x":5,"y":19},"spriteId":"ch2_event_board","interaction":{"kind":"ch2_landmark","flag":"ch2EventBoardKnown","frontPosition":{"x":5,"y":20,"facing":"up"},"prompt":"按 E 查看活動公布欄","message":"活動公布欄列著今天的舞台節目與攤位時間。"}},
+        {"id":"ch2_event_map","type":"object","landmarkId":"event_map","displayLabel":"會場地圖","position":{"x":19,"y":19},"spriteId":"ch2_event_map","interaction":{"kind":"ch2_landmark","flag":"ch2EventMapKnown","frontPosition":{"x":19,"y":20,"facing":"up"},"prompt":"按 E 查看會場地圖","message":"會場地圖標示著入口、拍照區，以及中央的集合地點。"}},
+        {"id":"ch2_meeting_point","type":"object","landmarkId":"meeting_point","displayLabel":"集合地點","position":{"x":14,"y":18},"spriteId":"ch2_meeting_point","interaction":{"kind":"ch2_landmark","flag":"ch2MeetingPointKnown","frontPosition":{"x":14,"y":19,"facing":"up"},"prompt":"按 E 查看集合地點","message":"指標寫著「集合地點」。從會場入口沿中央步道就能抵達。"}},
+        {"id":"ch2_photo_spot","type":"object","landmarkId":"photo_spot","displayLabel":"拍照區","position":{"x":3,"y":14},"spriteId":"ch2_photo_spot","interaction":{"kind":"echo","eventId":"ch2_act1_mio_story","requiredFlag":"ch2Act1MioMet","frontPosition":{"x":6,"y":14,"facing":"left"},"prompt":"按 E 和 MIO 拍照"}},
         {"id":"ch2_public_screen","type":"object","landmarkId":"public_screen","displayLabel":"公共螢幕","position":{"x":26,"y":9},"spriteId":"ch2_public_screen","interaction":{"kind":"inspect","frontPosition":{"x":23,"y":9,"facing":"right"},"prompt":"按 E 查看公共螢幕","message":"公共螢幕正在播放活動圖樣。"}},
         {"id":"ch2_rest_area","type":"object","landmarkId":"rest_area","displayLabel":"休息區","position":{"x":25,"y":14},"spriteId":"ch2_rest_area","interaction":{"kind":"inspect","frontPosition":{"x":22,"y":14,"facing":"right"},"prompt":"按 E 查看休息區","message":"桌椅整齊地排在遮棚下。"}},
         {"id":"ch2_group_photo_area","type":"object","landmarkId":"group_photo_area","displayLabel":"團體照區","position":{"x":4,"y":3},"spriteId":"ch2_group_photo_area","interaction":{"kind":"inspect","frontPosition":{"x":4,"y":6,"facing":"up"},"prompt":"按 E 查看團體照區","message":"花架前方預留了團體拍照的位置。"}},
@@ -3230,6 +3230,9 @@
         },
         {
           "id":"ch2_community_to_neighborhood","type":"exit","landmarkId":"main_entrance","position":{"x":14,"y":22},"activation":"interact","prompt":"按 E 返回住宅街區","to":"neighborhood","targetPosition":{"x":24,"y":21},"targetDirection":"up"
+        },
+        {
+          "id":"ch2_act1_fast_consequence","type":"event","position":{"x":6,"y":15},"activation":"enter","condition":{"flag":"ch2Act1EchoDecided","equals":true},"eventId":"ch2_act1_fast_consequence","once":true
         }
       ],
       "connections": []

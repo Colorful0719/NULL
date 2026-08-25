@@ -291,6 +291,42 @@
       ],
       "choices": [],
       "endText": "MIO 提醒你：溝通也是保護隱私的方式。"
+    },
+    {
+      "id":"ch2_act1_mio_photo_plan","label":"第二章 · 活動會場","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"mio","position":"left","expression":"happy"},{"characterId":"player","position":"right","expression":"neutral"}],
+      "lines":[{"speakerId":"mio","expression":"happy","text":"你也到了！我剛才看到那邊有個拍照區。"},{"speakerId":"mio","expression":"thinking","text":"一起去看看吧？我想拍一張活動會場的照片。"},{"speakerId":"player","expression":"happy","text":"好，我們去拍照區。"}],
+      "choices":[],"endText":"MIO 先到拍照區附近等你。"
+    },
+    {
+      "id":"ch2_act1_consequence_current_now","label":"ECHO · 即時反應","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"mio","position":"left","expression":"surprised"},{"characterId":"kai","position":"right","expression":"nervous"}],
+      "conditionalPreludes":[{"flag":"ch2EventMapKnown","equals":true,"lines":[{"speakerId":"kai","expression":"thinking","text":"我看到你們標的集合地點了，我往那邊走。"}]},{"flag":"ch2EventMapKnown","equals":false,"lines":[{"speakerId":"mio","expression":"thinking","text":"入口那邊好像有活動地圖，也許能用它說明集合地點。"}]}],
+      "lines":[{"speakerId":"mio","expression":"surprised","text":"已經有人問我是不是就在拍照區旁邊了。反應也太快了吧。"},{"speakerId":"kai","expression":"nervous","text":"你們到底在哪？"},{"speakerId":"kai","expression":"thinking","text":"我進來了，但這裡比我想像中大。"}],"choices":[],"endText":"KAI 正在會場裡尋找你們。"
+    },
+    {
+      "id":"ch2_act1_consequence_general_now","label":"ECHO · 即時反應","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"mio","position":"left","expression":"thinking"},{"characterId":"kai","position":"right","expression":"nervous"}],
+      "conditionalPreludes":[{"flag":"ch2EventMapKnown","equals":true,"lines":[{"speakerId":"kai","expression":"thinking","text":"我看到你們標的集合地點了，我往那邊走。"}]},{"flag":"ch2EventMapKnown","equals":false,"lines":[{"speakerId":"mio","expression":"thinking","text":"入口那邊好像有活動地圖，也許能用它說明集合地點。"}]}],
+      "lines":[{"speakerId":"mio","expression":"thinking","text":"大家知道我在活動會場，但還不知道我們在會場的哪一區。"},{"speakerId":"kai","expression":"nervous","text":"你們到底在哪？"},{"speakerId":"kai","expression":"thinking","text":"我進來了，但這裡比我想像中大。"}],"choices":[],"endText":"KAI 正在會場裡尋找你們。"
+    },
+    {
+      "id":"ch2_act1_consequence_none_now","label":"ECHO · 即時反應","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"mio","position":"left","expression":"surprised"},{"characterId":"kai","position":"right","expression":"nervous"}],
+      "conditionalPreludes":[{"flag":"ch2EventMapKnown","equals":true,"lines":[{"speakerId":"kai","expression":"thinking","text":"我看到你們標的集合地點了，我往那邊走。"}]},{"flag":"ch2EventMapKnown","equals":false,"lines":[{"speakerId":"mio","expression":"thinking","text":"入口那邊好像有活動地圖，也許能用它說明集合地點。"}]}],
+      "lines":[{"speakerId":"mio","expression":"surprised","text":"我沒有標位置，還是有人從帳棚和活動旗幟猜到我在會場。"},{"speakerId":"kai","expression":"nervous","text":"你們到底在哪？"},{"speakerId":"kai","expression":"thinking","text":"我進來了，但這裡比我想像中大。"}],"choices":[],"endText":"KAI 正在會場裡尋找你們。"
+    },
+    {
+      "id":"ch2_act1_consequence_later","label":"ECHO · 稍後發布","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"mio","position":"left","expression":"happy"},{"characterId":"kai","position":"right","expression":"nervous"}],
+      "conditionalPreludes":[{"flag":"ch2EventMapKnown","equals":true,"lines":[{"speakerId":"kai","expression":"thinking","text":"我看到你們標的集合地點了，我往那邊走。"}]},{"flag":"ch2EventMapKnown","equals":false,"lines":[{"speakerId":"mio","expression":"thinking","text":"入口那邊好像有活動地圖，也許能用它說明集合地點。"}]}],
+      "lines":[{"speakerId":"mio","expression":"happy","text":"先存起來也好。等離開拍照區後再發布，照片就不會立刻說出我們的位置。"},{"speakerId":"kai","expression":"nervous","text":"你們到底在哪？"},{"speakerId":"kai","expression":"thinking","text":"我進來了，但這裡比我想像中大。"}],"choices":[],"endText":"KAI 正在會場裡尋找你們。"
+    },
+    {
+      "id":"ch2_act1_kai_meet","label":"第二章 · 集合地點","sceneId":"ch2_community_event",
+      "participants":[{"characterId":"kai","position":"left","expression":"happy"},{"characterId":"mio","position":"right","expression":"neutral"}],
+      "lines":[{"speakerId":"kai","expression":"happy","text":"找到你們了。這張地圖和集合地點還真的有用。"},{"speakerId":"kai","expression":"thinking","text":"所以你們剛剛發給誰看？"},{"speakerId":"mio","expression":"neutral","text":"朋友啊。"},{"speakerId":"kai","expression":"thinking","text":"哪些朋友？"}],
+      "choices":[],"endText":"ACT 1 完成。關於「朋友」的問題，留待下一階段。"
     }
   ]
 }

@@ -58,6 +58,7 @@ export class MapManager {
   activateEnterTrigger(){
     const trigger=(this.scene?.triggers??[]).find((item)=>item.activation==='enter'&&item.position.x===this.position.x&&item.position.y===this.position.y);
     if(!trigger)return false;
+    if(!this.meetsCondition(trigger))return false;
     if(trigger.once&&this.gameState.get(`flags.triggers.${trigger.id}`))return false;
     if(trigger.once)this.gameState.set(`flags.triggers.${trigger.id}`,true);
     if(trigger.type==='battle'){
@@ -69,6 +70,11 @@ export class MapManager {
     }
     if(trigger.type==='quest'){
       const message=this.onInteract?.({...trigger,source:'trigger',interaction:{kind:'quest',message:trigger.message}});
+      if(message)this.view.showMessage?.(message);
+      this.saveManager.save();return true;
+    }
+    if(trigger.type==='event'){
+      const message=this.onInteract?.({...trigger,source:'trigger',interaction:{kind:'act_event',eventId:trigger.eventId}});
       if(message)this.view.showMessage?.(message);
       this.saveManager.save();return true;
     }
@@ -112,6 +118,7 @@ export class MapManager {
   refreshInteraction() {
     const facing = this.gameState.get('exploration.facing') ?? 'down';
     this.currentInteraction = this.scene ? InteractionSystem.findTarget(this.scene, this.position, facing) : null;
+    if(this.currentInteraction?.interaction?.hiddenUntilFlag&&!this.gameState.get(`flags.${this.currentInteraction.interaction.hiddenUntilFlag}`))this.currentInteraction=null;
     if(this.currentInteraction?.interaction?.kind!=='talk'&&this.currentInteraction?.interaction?.requiredFlag&&!this.gameState.get(`flags.${this.currentInteraction.interaction.requiredFlag}`))this.currentInteraction=null;
     this.gameState.set('exploration.interactionTargetId', this.currentInteraction?.id ?? null);
     const destination=this.currentInteraction?.type==='exit'?this.resolveDestination(this.currentInteraction):null;
@@ -131,7 +138,7 @@ export class MapManager {
     return position && Number.isInteger(position.x) && Number.isInteger(position.y)
       && position.x >= 0 && position.y >= 0 && position.x < this.grid.width && position.y < this.grid.height;
   }
-  isCollision(position) { const interactionFront=(this.scene?.entities??[]).some((entity)=>{const fronts=entity.interaction?.frontPositions??(entity.interaction?.frontPosition?[entity.interaction.frontPosition]:[]);return fronts.some((front)=>front.x===position.x&&front.y===position.y);});if(interactionFront)return false;return (this.scene?.collisions ?? []).some((point) => point.x === position.x && point.y === position.y) || (this.scene?.collisionRects ?? []).some((rect)=>position.x>=rect.x&&position.x<rect.x+rect.width&&position.y>=rect.y&&position.y<rect.y+rect.height) || (this.scene?.entities ?? []).some((entity) => ['npc','object'].includes(entity.type) && entity.position.x === position.x && entity.position.y === position.y); }
+  isCollision(position) { const visible=(entity)=>!entity.interaction?.hiddenUntilFlag||this.gameState.get(`flags.${entity.interaction.hiddenUntilFlag}`);const interactionFront=(this.scene?.entities??[]).filter(visible).some((entity)=>{const fronts=entity.interaction?.frontPositions??(entity.interaction?.frontPosition?[entity.interaction.frontPosition]:[]);return fronts.some((front)=>front.x===position.x&&front.y===position.y);});if(interactionFront)return false;return (this.scene?.collisions ?? []).some((point) => point.x === position.x && point.y === position.y) || (this.scene?.collisionRects ?? []).some((rect)=>position.x>=rect.x&&position.x<rect.x+rect.width&&position.y>=rect.y&&position.y<rect.y+rect.height) || (this.scene?.entities ?? []).filter(visible).some((entity) => ['npc','object'].includes(entity.type) && entity.position.x === position.x && entity.position.y === position.y); }
   persistExploration() {
     this.gameState.set(`exploration.mapPositions.${this.scene.id}`, this.position);
     this.saveManager.save();
