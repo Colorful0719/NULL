@@ -41,6 +41,13 @@ export class DialogueView {
 
   renderEnvironment(dialogue){const source=dialogue.environmentImage??'';if(!this.environmentVisual||!this.environmentImage)return;this.environmentVisual.hidden=!source;this.environmentImage.src=source;this.environmentImage.alt=dialogue.environmentAlt??`${dialogue.label}照片展示`;}
 
+  playPhotoFlash(){
+    this.scene.classList.remove('is-photo-flash');
+    void this.scene.offsetWidth;
+    this.scene.classList.add('is-photo-flash');
+    this.scene.addEventListener('animationend',()=>this.scene.classList.remove('is-photo-flash'),{once:true});
+  }
+
   renderLine(line, character) {
     this.nameElement.textContent = character.displayName;
     clearInterval(this.typeTimer);

@@ -1,6 +1,6 @@
 const sceneAssetUrls = (scene) => {
   const urls = [scene?.mapArt?.baseImage, scene?.mapArt?.objectImage, scene?.mapArt?.playerSprite?.sheet];
-  for (const entity of scene?.entities ?? []) urls.push(entity.mapSprite?.sheet);
+  for (const entity of scene?.entities ?? []) urls.push(entity.mapSprite?.sheet,entity.image,entity.interactionIcon,entity.closeupAsset);
   for (const enemy of scene?.roamingEnemies ?? []) urls.push(enemy.sprite);
   return [...new Set(urls.filter(Boolean))];
 };
@@ -45,4 +45,3 @@ export class MapAssetCache {
 
   has(url) { return this.entries.has(url); }
 }
-

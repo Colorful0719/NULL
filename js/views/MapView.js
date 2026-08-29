@@ -34,6 +34,7 @@ export class MapView {
     });
   }
   render(scene, position, onExit, onEncounter, onPuzzle) {
+    this.scene=scene;
     this.screen.dataset.theme = scene.theme;
     this.screen.dataset.debugMap = String(DEBUG_MAP);
     this.grid.style.setProperty('--map-columns', scene.grid?.width ?? 6);
@@ -62,31 +63,8 @@ export class MapView {
       tile.setAttribute('aria-hidden', 'true');
       return tile;
     }));
-    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>(!entity.interaction?.hiddenUntilFlag||this.gameState?.get(`flags.${entity.interaction.hiddenUntilFlag}`))&&(!entity.interaction?.hiddenWhenFlag||!this.gameState?.get(`flags.${entity.interaction.hiddenWhenFlag}`))).map((entity) => {
-      const sprite = document.createElement('span');
-      sprite.className = `map-entity map-entity--${entity.type}`;
-      if(entity.interaction?.kind)sprite.classList.add(`map-entity--interaction-${entity.interaction.kind}`);
-      sprite.dataset.entityId = entity.id;
-      sprite.style.setProperty('--entity-x', entity.position.x);
-      sprite.style.setProperty('--entity-y', entity.position.y);
-      const label = entity.displayLabel??(entity.characterId ? entity.characterId.replaceAll('_', ' ').toUpperCase() : '物件');
-      if(entity.mapSprite){
-        const {sheet,sheetSize,frame,display}=entity.mapSprite;
-        const scale=(display?.width??frame.width)/frame.width;
-        sprite.classList.add('map-entity--sprite');
-        sprite.style.width=`${display?.width??frame.width}px`;
-        sprite.style.height=`${display?.height??Math.round(frame.height*scale)}px`;
-        sprite.style.backgroundImage=`url("${sheet}")`;
-        sprite.style.backgroundSize=`${sheetSize.width*scale}px ${sheetSize.height*scale}px`;
-        sprite.style.backgroundPosition=`-${frame.x*scale}px -${frame.y*scale}px`;
-      }else sprite.textContent = label;
-      const friendlyCharacters=['parent','kai','rin','mio','photo_kid','photo_keeper'];
-      if(entity.type==='npc'&&friendlyCharacters.includes(entity.characterId)){
-        const nameTag=document.createElement('span');nameTag.className='map-friendly-label';nameTag.textContent=label;sprite.append(nameTag);
-      }
-      sprite.setAttribute('aria-label', entity.type==='npc'?`${label} 地圖角色`:`${label} 可互動物件`);
-      return sprite;
-    }));
+    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>this.isEntityVisible(entity)).map((entity) => this.createEntitySprite(entity)));
+    this.entityVisibilityKey=this.visibleEntityKey(scene);
     this.renderDebug(scene);
     this.lastGrid=scene.grid;this.showMessage('');
     const buttons=scene.connections.map((connection) => {
@@ -98,6 +76,73 @@ export class MapView {
     });
     if(scene.puzzleId){ const puzzle=document.createElement('button'); puzzle.type='button'; puzzle.textContent='進行照片檢查'; puzzle.className='puzzle-button'; puzzle.addEventListener('click',()=>onPuzzle(scene.puzzleId)); buttons.unshift(puzzle); }
     this.exits.replaceChildren(...buttons);
+  }
+  isEntityVisible(entity){const interaction=entity.interaction??{};const all=(interaction.visibleWhenAllFlags??[]).every((flag)=>this.gameState?.get(`flags.${flag}`));return all&&(!interaction.hiddenUntilFlag||this.gameState?.get(`flags.${interaction.hiddenUntilFlag}`))&&(!interaction.hiddenWhenFlag||!this.gameState?.get(`flags.${interaction.hiddenWhenFlag}`));}
+  visibleEntityKey(scene=this.scene){return(scene?.entities??[]).filter((entity)=>this.isEntityVisible(entity)).map((entity)=>entity.id).join('|');}
+  refreshEntityVisibility(scene=this.scene){
+    if(!scene||this.visibleEntityKey(scene)===this.entityVisibilityKey)return false;
+    this.entityLayer?.querySelectorAll(':scope > .map-entity').forEach((node)=>node.remove());
+    const sprites=(scene.entities??[]).filter((entity)=>this.isEntityVisible(entity)).map((entity)=>this.createEntitySprite(entity));
+    this.entityLayer?.prepend(...sprites);this.entityVisibilityKey=this.visibleEntityKey(scene);return true;
+  }
+  createEntitySprite(entity){
+      const sprite = document.createElement('span');
+      sprite.className = `map-entity map-entity--${entity.type}`;
+      if(entity.interaction?.kind)sprite.classList.add(`map-entity--interaction-${entity.interaction.kind}`);
+      sprite.dataset.entityId = entity.id;
+      const iconWorldAnchor=entity.visualBounds&&entity.iconAnchor?{
+        x:entity.visualBounds.x+entity.visualBounds.width*entity.iconAnchor.x,
+        y:entity.visualBounds.y+entity.visualBounds.height*entity.iconAnchor.y
+      }:null;
+      sprite.style.setProperty('--entity-x', iconWorldAnchor?iconWorldAnchor.x-.5:entity.position.x);
+      sprite.style.setProperty('--entity-y', iconWorldAnchor?iconWorldAnchor.y-.5:entity.position.y);
+      const label = entity.displayLabel??(entity.characterId ? entity.characterId.replaceAll('_', ' ').toUpperCase() : '物件');
+      if(entity.mapSprite){
+        const {sheet,sheetSize,frame,display,animation}=entity.mapSprite;
+        if(animation){
+          sprite.classList.add('map-entity--sprite','map-entity--animated-sprite');
+          sprite.style.width=`${display?.width??animation.frameWidth}px`;
+          sprite.style.height=`${display?.height??animation.frameHeight}px`;
+          sprite.style.backgroundImage=`url("${sheet}")`;
+          sprite.dataset.direction=animation.defaultDirection??'down';sprite.dataset.state='IDLE';
+          this.applyAnimatedNpcFrame(sprite,entity.mapSprite,{direction:animation.defaultDirection??'down',state:'IDLE',frame:animation.idleColumn??1});
+        }else{
+        const scale=(display?.width??frame.width)/frame.width;
+        sprite.classList.add('map-entity--sprite');
+        sprite.style.width=`${display?.width??frame.width}px`;
+        sprite.style.height=`${display?.height??Math.round(frame.height*scale)}px`;
+        sprite.style.backgroundImage=`url("${sheet}")`;
+        sprite.style.backgroundSize=`${sheetSize.width*scale}px ${sheetSize.height*scale}px`;
+        sprite.style.backgroundPosition=`-${frame.x*scale}px -${frame.y*scale}px`;
+        }
+      }else if(entity.image){
+        sprite.classList.add('map-entity--image');
+        sprite.style.backgroundImage=`url("${entity.image}")`;
+      }else sprite.textContent = label;
+      const friendlyCharacters=['parent','kai','rin','mio','photo_kid','photo_keeper'];
+      if(entity.type==='npc'&&friendlyCharacters.includes(entity.characterId)){
+        const nameTag=document.createElement('span');nameTag.className='map-friendly-label';nameTag.textContent=label;sprite.append(nameTag);
+      }
+      if(entity.interactionIcon){sprite.classList.add('map-entity--has-interaction-icon');if(iconWorldAnchor)sprite.classList.add('map-entity--world-icon-anchor');sprite.style.setProperty('--interaction-icon-offset-x',`${entity.interactionIconOffset?.x??0}px`);sprite.style.setProperty('--interaction-icon-offset-y',`${entity.interactionIconOffset?.y??8}px`);const icon=document.createElement('img');icon.className='map-interaction-icon';icon.src=entity.interactionIcon;icon.alt='可互動';sprite.append(icon);}
+      sprite.setAttribute('aria-label', entity.type==='npc'?`${label} 地圖角色`:`${label} 可互動物件`);
+      return sprite;
+  }
+  updateRoamingNpc(entity,npc){
+    const sprite=this.entityLayer?.querySelector(`.map-entity[data-entity-id="${entity.id}"]`);if(!sprite)return;
+    sprite.style.setProperty('--entity-x',entity.position.x);sprite.style.setProperty('--entity-y',entity.position.y);
+    const animation=entity.mapSprite?.animation;if(!animation)return;
+    this.applyAnimatedNpcFrame(sprite,entity.mapSprite,npc);
+    sprite.dataset.direction=npc.direction;sprite.dataset.state=npc.state;
+  }
+  applyAnimatedNpcFrame(sprite,mapSprite,npc){
+    const animation=mapSprite.animation,rows=animation.directionRows??{down:0,left:1,right:2,up:3};
+    const column=npc.state==='IDLE'?(animation.idleColumn??1):(npc.frame??0),row=rows[npc.direction]??0;
+    const frameWidth=animation.frameWidth,frameHeight=animation.frameHeight;
+    const originX=animation.frameOrigin?.x??0,originY=animation.frameOrigin?.y??0;
+    const scaleX=(mapSprite.display?.width??frameWidth)/frameWidth;
+    const scaleY=(mapSprite.display?.height??frameHeight)/frameHeight;
+    sprite.style.backgroundSize=`${mapSprite.sheetSize.width*scaleX}px ${mapSprite.sheetSize.height*scaleY}px`;
+    sprite.style.backgroundPosition=`-${(originX+column*frameWidth)*scaleX}px -${(originY+row*frameHeight)*scaleY}px`;
   }
   move(position, facing = 'down', {blocked=false}={}) {
     this.player.style.setProperty('--player-x', position.x);

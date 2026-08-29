@@ -1,7 +1,8 @@
 export const ECHO_PHOTO_ASSETS = Object.freeze({
   'CH2-MIO-PHOTO-01': './assets/images/ch2/echo/ch2_mio_photo_01.png',
   'CH2-MIO-PHOTO-02': './assets/images/ch2/echo/ch2_mio_photo_02.png',
-  'CH2-GROUP-PHOTO-01': './assets/images/ch2/echo/ch2_group_photo_01.png'
+  'CH2-GROUP-PHOTO-01': './assets/images/ch2/echo/ch2_group_photo_01.png',
+  'CH2-GAME-REWARD-BOOTH-BG': './assets/images/ch2/environment/ch2_game_reward_booth_bg.png'
 });
 
 export const resolveEchoPhoto = (photo) => {

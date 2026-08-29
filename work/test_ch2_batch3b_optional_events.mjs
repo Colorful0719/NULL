@@ -13,7 +13,7 @@ const follower=scene.entities.find((item)=>item.id==='ch2_online_follower');
 const consequence=scene.triggers.find((item)=>item.id==='ch2_survey_delayed_consequence');
 assert(booth&&follower&&consequence);
 assert.equal(booth.interaction.kind,'ch2_optional');
-assert.equal(follower.interaction.hiddenUntilFlag,'ch2Act1EchoDecided');
+assert.equal(follower.interaction.hiddenUntilFlag,'ch2LookingForMioEligible');
 assert.equal(follower.interaction.hiddenWhenFlag,'mioFollowerEncountered');
 assert.equal(consequence.type,'event');
 
@@ -24,7 +24,7 @@ const consequenceTriggers=scene.triggers.filter((item)=>item.eventId==='ch2_surv
 assert.equal(consequenceTriggers.length,3);
 for(const trigger of consequenceTriggers)assert.equal(blocked(trigger.position),false);
 
-for(const id of ['ch2_optional_survey_promo','ch2_optional_survey_intro','ch2_optional_survey_name','ch2_optional_survey_email','ch2_optional_survey_phone','ch2_optional_survey_birthday','ch2_optional_survey_school','ch2_optional_survey_account','ch2_optional_survey_complete','ch2_optional_follower_current_now','ch2_optional_follower_general_now','ch2_optional_follower_none_now','ch2_optional_follower_later','ch2_optional_follower_ask_mio','ch2_optional_mio_exact_consequence'])assert(dialogues.some((item)=>item.id===id),`missing dialogue ${id}`);
+for(const id of ['ch2_optional_survey_promo','ch2_optional_survey_intro','ch2_optional_survey_name','ch2_optional_survey_email','ch2_optional_survey_phone','ch2_optional_survey_birthday','ch2_optional_survey_school','ch2_optional_survey_account','ch2_optional_survey_complete','ch2_optional_survey_contact_phone','ch2_optional_follower_current_now','ch2_optional_follower_general_now','ch2_optional_follower_none_now','ch2_optional_follower_later','ch2_optional_follower_ask_mio','ch2_optional_mio_exact_consequence'])assert(dialogues.some((item)=>item.id===id),`missing dialogue ${id}`);
 
 const state=new GameState();const manager=new ChoiceManager(state);
 const apply=(id)=>manager.apply(choices.find((item)=>item.id===id));
@@ -38,9 +38,15 @@ assert.equal(state.get('flags.mioLocationShared'),false);
 assert.equal(state.get('flags.mioConsentAsked'),true);
 
 const source=fs.readFileSync(new URL('../js/core/Game.js',import.meta.url),'utf8');
+const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const stateSources=source+JSON.stringify(choices);
 for(const token of ['surveyDiscovered','surveyCompleted','surveyRewardType','surveyDataShared','surveyOptionalFieldsSkipped','surveyRewardReceived','surveyThirdPartyContact','mioFollowerEncountered','mioLocationResponse','mioLocationShared','mioConsentAsked'])assert(stateSources.includes(token),`missing state ${token}`);
 for(const forbidden of ['setTimeout(180)','privacy score','SAFE / UNSAFE'])assert(!source.includes(forbidden));
+for(const field of ['nickname','ageRange','platform','email','phone','school','birthday','gameId'])assert(html.includes(`name="${field}"`),`manual survey needs ${field}`);
+assert(source.includes('new FormData(form)'),'survey must accept temporary manual input');
+assert(source.includes("const fields=['nickname','ageRange','platform','email','phone','school','birthday','gameId']"),'survey must persist category presence only');
+assert(source.includes('form?.reset()'),'raw form values must be cleared on close');
+for(const rawKey of ['surveyEmailValue','surveyPhoneValue','surveySchoolValue','surveyBirthdayValue','surveyNicknameValue','surveyGameIdValue'])assert(!source.includes(rawKey),`raw PII key ${rawKey} must not be persisted`);
 const ch2Quest=read('data/quests.json').quests.find((item)=>item.id==='ch2_explore_event');
 assert(!JSON.stringify(ch2Quest).includes('surveyCompleted'));
 assert(!JSON.stringify(ch2Quest).includes('mioFollowerEncountered'));

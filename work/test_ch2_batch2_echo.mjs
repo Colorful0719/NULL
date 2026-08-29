@@ -9,8 +9,8 @@ class FakeView { open(session,handlers){this.session=structuredClone(session);th
 const state=new GameState();const save=new MemorySave(state);const view=new FakeView();let locked=false;let restored=false;
 const echo=new EchoManager({gameState:state,saveManager:save,view,onOpen:()=>locked=true,onClose:()=>restored=true});
 
-assert.deepEqual(Object.keys(ECHO_PHOTO_ASSETS),['CH2-MIO-PHOTO-01','CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01']);
-assert.ok(Object.values(ECHO_PHOTO_ASSETS).every((src)=>src?.startsWith('./assets/images/ch2/echo/')));
+for(const id of ['CH2-MIO-PHOTO-01','CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01'])assert.ok(Object.hasOwn(ECHO_PHOTO_ASSETS,id));
+for(const id of ['CH2-MIO-PHOTO-01','CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01'])assert.ok(ECHO_PHOTO_ASSETS[id]?.startsWith('./assets/images/ch2/echo/'));
 assert.ok(resolveEchoPhoto('CH2-MIO-PHOTO-01').src.endsWith('ch2_mio_photo_01.png'));
 assert.ok(resolveEchoPhoto('CH2-MIO-PHOTO-02').src.endsWith('ch2_mio_photo_02.png'));
 assert.ok(resolveEchoPhoto('CH2-GROUP-PHOTO-01').src.endsWith('ch2_group_photo_01.png'));

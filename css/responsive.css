@@ -106,9 +106,8 @@ body {
   .dialogue-scene { height: 100%; }
   .dialogue-scene--overlay { inset: clamp(8px, 1.25vw, 18px); min-height: 0; }
   .scene-header { padding: 11px 18px; }
-  .portrait-layer { inset: 44px 0 166px; }
-  .portrait img { max-height: min(500px, 68vh); }
-  .portrait[data-character-id="album"] img { height: min(500px, 68vh); }
+  .portrait-layer { inset: 44px 4% 166px; }
+  .portrait img { width: auto; height: auto; max-width: 100%; max-height: 100%; }
   .dialogue-box { bottom: 2%; min-height: 154px; max-height: 47%; overflow: visible; padding: 24px 24px 12px; }
   .speaker-name { z-index: 6; }
   .dialogue-text { min-height: 2.8em; line-height: 1.6; }

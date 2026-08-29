@@ -19,7 +19,7 @@ const stages=quests.find((quest)=>quest.id==='ch2_explore_event').stages.map((st
 for(const id of ['act2_explore','act2_photo','act2_consequence','meet_rin','group_photo','act3_share','act3_repair','prepare_to_leave'])assert(stages.includes(id),id);
 
 const gameSource=fs.readFileSync(new URL('../js/core/Game.js',import.meta.url),'utf8');
-for(const token of ['CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01','act2SelectedAudience','groupPhotoExposed','consentConflictUnresolved','changeAudience(postId','deletePost(this.state'])assert(gameSource.includes(token),token);
+for(const token of ['CH2-MIO-PHOTO-02','CH2-GROUP-PHOTO-01','act2SelectedAudience','groupPhotoExposed','consentConflictUnresolved','openAct3AudienceRepair','deletePost(this.state'])assert(gameSource.includes(token),token);
 assert(gameSource.includes("allowSave:false"));
 
 const state=new GameState();
