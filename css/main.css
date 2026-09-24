@@ -38,6 +38,8 @@ body::before {
   backdrop-filter: blur(12px);
   clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
 }
+.final-entry-screen{width:min(92vw,680px);padding:clamp(36px,7vw,72px);text-align:center;border:1px solid var(--line);background:var(--panel);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.final-entry-screen[hidden]{display:none}.final-entry-screen h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.15}.final-entry-screen>p:last-child{color:var(--muted);font-size:clamp(1rem,2vw,1.2rem)}
 .eyebrow, .step-label { color: var(--muted); font-size: .74rem; letter-spacing: .22em; }
 h1 { margin: 14px 0; font-weight: 800; line-height: .95; }
 .null-word { display: block; font: 800 clamp(4rem, 17vw, 7.5rem)/.8 ui-monospace, monospace; letter-spacing: -.08em; text-shadow: 4px 0 var(--violet), -3px 0 rgba(98,231,255,.65); }
@@ -56,3 +58,4 @@ h1 small { display: block; margin-top: 20px; font-size: clamp(1.45rem, 5vw, 2rem
 button:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
 @media (max-width: 520px) { .title-screen { padding: 34px 24px; } h1 small { letter-spacing: .12em; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+.portrait--temporary-null{display:block!important;align-self:end;width:clamp(150px,24vw,300px);height:min(68vh,620px);background:radial-gradient(ellipse at 50% 24%,rgba(225,250,255,.9) 0 6%,rgba(120,148,241,.75) 12%,transparent 14%),linear-gradient(180deg,transparent 14%,rgba(152,196,255,.78) 15% 29%,rgba(89,90,202,.66) 48%,rgba(51,40,126,.48) 82%,transparent 93%);clip-path:polygon(35% 10%,65% 10%,72% 18%,69% 27%,82% 41%,72% 86%,62% 100%,38% 100%,28% 86%,18% 41%,31% 27%,28% 18%);filter:drop-shadow(0 0 16px #c8f4ff) drop-shadow(0 0 42px rgba(102,119,255,.85));animation:null-portrait-breathe 2.5s ease-in-out infinite}.portrait--temporary-null.is-muted{opacity:.48}.portrait--temporary-null.is-speaking{opacity:1}@keyframes null-portrait-breathe{50%{filter:drop-shadow(0 0 24px #e4fcff) drop-shadow(0 0 58px rgba(116,126,255,.92));transform:translateY(-4px)}}@media(prefers-reduced-motion:reduce){.portrait--temporary-null{animation:none}}

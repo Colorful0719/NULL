@@ -3,6 +3,7 @@ export const GAME_MODE = Object.freeze({
   DIALOGUE: 'DIALOGUE',
   PUZZLE: 'PUZZLE',
   BATTLE: 'BATTLE',
+  NULL_BOSS: 'NULL_BOSS',
   MENU: 'MENU',
   REFLECTION: 'REFLECTION',
   ECHO: 'ECHO',

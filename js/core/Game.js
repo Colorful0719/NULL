@@ -9,7 +9,7 @@ import { DialogueManager } from '../managers/DialogueManager.js?v=rinphoto1';
 import { InputManager } from '../managers/InputManager.js?v=regressionfix1';
 import { SceneManager } from '../managers/SceneManager.js?v=24p5';
 import { DialogueView } from '../views/DialogueView.js?v=ch2photospot1';
-import { MapManager } from '../managers/MapManager.js?v=ch2act1world1';
+import { MapManager } from '../managers/MapManager.js?v=task10a';
 import { MapView } from '../views/MapView.js?v=ch2act1world1';
 import { BattleManager } from '../managers/BattleManager.js?v=battlepolish2';
 import { BattleView } from '../views/BattleView.js?v=battleui1';
@@ -29,6 +29,11 @@ import { EchoManager } from '../managers/EchoManager.js?v=ch2echo1';
 import { EchoView } from '../views/EchoView.js?v=ch2echosocial1';
 import { PhoneManager } from '../managers/PhoneManager.js?v=ch2phone1';
 import { PhoneView } from '../views/PhoneView.js?v=ch2phone1';
+import { buildCh2FinalSnapshot } from '../final/Ch2FinalSnapshot.js?v=task10c';
+import { fragmentEntity, resolveCh2InformationFragments } from '../final/Ch2InformationFragments.js?v=task10c1';
+import { buildNullFirstDialogue } from '../final/Ch2NullEncounter.js?v=task10dr';
+import { NullBossManager } from '../managers/NullBossManager.js?v=task10master';
+import { buildNullBossSemanticPlan } from '../final/NullBossSemantics.js?v=task10e2b';
 
 export class Game {
   constructor(root) {
@@ -88,7 +93,7 @@ export class Game {
     this.puzzleManager = new PuzzleManager({puzzles:this.data.puzzles,gameState:this.state,view:new PuzzleView(this.root),saveManager:this.saveManager,onStart:(context,puzzle)=>this.beginPuzzle(context,puzzle),onComplete:(puzzle,context)=>this.completePuzzle(puzzle,context),onExit:(puzzle,context,completed)=>this.finishPuzzle(puzzle,context,completed)});
     this.memoryView=new MemoryInvestigationView(this.root);
     this.memoryManager=new MemoryInvestigationManager({definitions:this.data.memories,gameState:this.state,view:this.memoryView,saveManager:this.saveManager,onStart:(context,memory)=>this.beginMemory(context,memory),onComplete:(memory,context)=>this.completeMemory(memory,context),onExit:(memory,context)=>this.finishMemory(memory,context)});
-    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root,this.state), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onEnter:(scene)=>this.handleMapEnter(scene),onMove:()=>{this.recordCh2PostPhotoExplorationStep();this.recordCh2Act3ExplorationStep();} });
+    this.mapManager = new MapManager({ scenes: this.data.scenes, gameState: this.state, view: new MapView(this.root,this.state), saveManager:this.saveManager, onEncounter:(enemyId,context)=>this.startBattleFromMap(enemyId,context),onPuzzle:(id)=>this.startPuzzleFromMap(id),onInteract:(target)=>this.handleMapInteraction(target),onExit:(target,scene)=>this.handleMapExit(target,scene),onEnter:(scene)=>this.handleMapEnter(scene),onMove:()=>{this.recordCh2PostPhotoExplorationStep();this.recordCh2Act3ExplorationStep();},onNpcApproach:(entity,config)=>this.startMaleNpcApproachDialogue(entity,config) });
     this.dialogueManager = new DialogueManager({ data: this.data, view, choiceManager, saveManager: this.saveManager, onStart:(context,dialogue)=>this.beginDialogue(context,dialogue),onComplete: () => this.syncSaveUi(),onFinish:(context,dialogue,choice)=>this.finishDialogue(context,dialogue,choice) });
     this.sceneManager = new SceneManager({ gameState: this.state, dialogueManager: this.dialogueManager });
     this.inputManager = new InputManager({ root: this.root, dialogueManager: this.dialogueManager, getMapManager: () => this.mapManager,onControls:()=>this.guidanceManager.openControls(),onJournal:()=>this.guidanceManager.openJournal(),isModalOpen:()=>this.guidanceManager.modalOpen });
@@ -105,6 +110,7 @@ export class Game {
     this.root.querySelector('#puzzle-exit')?.addEventListener('click',()=>this.puzzleManager.exit());
     this.root.querySelector('#reflection-submit')?.addEventListener('click',()=>this.reflectionManager.submit());
     this.root.querySelector('#reflection-complete')?.addEventListener('click',()=>this.reflectionManager.exit());
+    this.root.querySelector('#ch2-complete-menu')?.addEventListener('click',()=>this.returnToMainMenu());
     this.root.querySelector('#survey-form')?.addEventListener('submit',(event)=>{event.preventDefault();this.submitSurveyForm();});
     this.root.querySelector('#survey-skip')?.addEventListener('click',()=>this.submitSurveyForm({skip:true}));
     this.root.querySelector('#survey-cancel')?.addEventListener('click',()=>this.closeSurveyForm({cancelled:true}));
@@ -120,6 +126,14 @@ export class Game {
   }
 
   handleMapInteraction(target) {
+      if(target.interaction?.kind==='ch2_final_fragment'){
+        const model=this.ch2FinalFragmentModel??this.prepareCh2FinalInformationWorld();const fragment=model?.fragments.find((item)=>item.id===target.interaction.fragmentId);if(!fragment)return '';
+        const viewed=new Set(this.state.get('flags.ch2FinalViewedFragmentIds')??[]),wasReady=Boolean(this.state.get('flags.ch2FinalNorthConvergenceReady'));viewed.add(fragment.id);this.state.set('flags.ch2FinalViewedFragmentIds',[...viewed]);const ready=model.requiredIds.every((id)=>viewed.has(id));this.state.set('flags.ch2FinalNorthConvergenceReady',ready);this.syncCh2FinalGuidance();if(ready&&!wasReady)this.guidanceManager?.queueNotice('前方似乎有什麼變化。');this.saveManager.save();
+        const dialogueId=`ch2_fragment_${fragment.id.replaceAll('.','_')}`;if(!this.data.dialogues.some((item)=>item.id===dialogueId))this.data.dialogues.push({id:dialogueId,label:`資訊碎片 · ${fragment.title}`,participants:[{characterId:'player',position:'right',expression:'neutral'}],lines:[{speakerId:'player',expression:'neutral',text:fragment.text}],endText:'返回資料世界。'});
+        const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id};this.dialogueManager.start(dialogueId,this.mapManager.scene.displayName,{kind:'ch2_final_fragment',overlay:true,returnContext});return '';
+      }
+      if(target.interaction?.kind==='ch2_final_convergence'){this.startCh2NullEncounter();return '';}
+      if(target.interaction?.kind==='ch2_null_talk'){return this.startNullBossFoundation()?'':'面前的身影安靜地留在資料之中。';}
     if(target.interaction?.kind==='ch2_story'){
       const eventId=target.interaction.eventId;
       if(eventId==='ch2_act2_photo_post'&&this.state.get('flags.ch2Act2PostCompleted'))return '這張活動照片已經分享過了。';
@@ -229,6 +243,12 @@ export class Game {
       return '';
     }
     if(target.interaction?.kind==='talk'){
+      if(target.characterId==='photo_keeper'&&this.state.get('flags.ch2NullProfileCollapsed')&&!this.state.get('flags.ch2PostBossReflectionComplete')){
+        this.ensureCh2FinalDialogues();
+        const returnContext={mode:'EXPLORATION',sceneId:this.mapManager.scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing'),sourceId:target.id,characterId:'photo_keeper'};
+        this.dialogueManager.start('ch2_post_boss_photo_keeper','資料世界',{kind:'ch2_post_boss_reflection',overlay:true,returnContext});
+        return '';
+      }
       const readyAll=(target.interaction.dialogueWhenAllFlags??[]).length>0&&(target.interaction.dialogueWhenAllFlags??[]).every((flag)=>this.state.get(`flags.${flag}`));
       const ready=readyAll||(target.interaction.requiredFlag&&this.state.get(`flags.${target.interaction.requiredFlag}`))||(target.interaction.requiredAnyFlags??[]).some((flag)=>this.state.get(`flags.${flag}`));
       const albumQuest=this.state.get('quests.ch1_album_path')??{};
@@ -278,6 +298,37 @@ export class Game {
     if(context.kind==='environment'&&context.observedFlag)this.state.set(`flags.${context.observedFlag}`,true);
     if(context.kind==='environment'&&context.setFlag)this.state.set(`flags.${context.setFlag}`,true);
     if(context.kind==='interaction'&&context.ambientTalkedFlag)this.state.set(`flags.${context.ambientTalkedFlag}`,true);
+    if(dialogue?.id==='ch2_final_photo_keeper_intro')this.state.set('flags.ch2FinalPhotoKeeperIntroComplete',true);
+    if(context.kind==='ch2_null_encounter'){
+      this.state.set('flags.ch2NullDialogueComplete',true);
+      this.state.set('flags.ch2BossStageReady',true);
+      this.mapManager.view.finishNullFormation();
+      this.prepareCh2FinalInformationWorld();
+    }
+    if(context.kind==='ch2_profile_collapse'){
+      this.state.set('flags.ch2ProfileCollapseDialogueComplete',true);
+      this.state.set('flags.ch2PostBossReflectionPending',true);
+      this.syncCh2FinalGuidance();
+      this.state.set('activeFlow.dialogue',null);
+      this.mapManager.enter(sceneId,{position:returnContext?.position??null,direction:returnContext?.facing??null});
+      this.state.set('exploration.returnContext',null);this.saveManager.save();
+      return;
+    }
+    if(context.kind==='ch2_post_boss_reflection'){
+      this.state.set('flags.ch2PostBossReflectionComplete',true);
+      this.state.set('flags.ch2PostBossReflectionPending',false);
+      this.state.set('flags.ch2ReflectionStarted',true);
+      this.state.set('activeFlow.dialogue',null);this.saveManager.save();
+      this.startReflection('ch2_data_profile_reflection');
+      return;
+    }
+    if(context.kind==='ch2_ending'){
+      this.state.set('flags.ch2EndingStarted',false);
+      this.state.set('flags.ch2Complete',true);
+      this.state.set('chapter','CH2_COMPLETE');
+      this.state.set('activeFlow.dialogue',null);this.state.set('exploration.returnContext',null);
+      this.saveManager.save();this.showCh2Complete();return;
+    }
     const noticeDiscovery=context.noticeBoardId?this.questManager.recordNoticeBoard?.(context.noticeBoardMapId??sceneId,context.noticeBoardId,context.noticeBoardCount??1):null;
     if(galleryKeeperComplete)this.state.set('flags.photoKeeperFinalDialogueComplete',true);
     const ch2Act1Dialogue=dialogue?.id?.startsWith('ch2_act1_');
@@ -418,18 +469,29 @@ export class Game {
       this.mapManager.refreshInteraction?.();
       questMessage='主線任務已更新：回去告訴 MIO 剛才發生的事。';
     }
+    if(dialogue?.id==='ch2_male_recognition_approach'){
+      this.state.set('flags.mioFollowerEncountered',true);
+      this.state.set('flags.mioConsequenceReportPending',true);
+      this.state.set('flags.mioFollowerConsequenceComplete',false);
+      this.state.set('flags.ch2LookingForMioEligible',false);
+      this.state.set('flags.ch2MaleNpcApproachDialogueStarted',false);
+      this.questManager.advance('ch2_explore_event','report_mio_consequence');
+      this.mapManager.view.refreshEntityVisibility?.(this.mapManager.scene);
+      this.mapManager.refreshInteraction?.();
+      questMessage='主線任務已更新：回去找 MIO。';
+    }
     if(dialogue?.id==='ch2_report_to_mio'){
       this.state.set('flags.mioConsequenceReportPending',false);
       this.state.set('flags.mioConsequenceReported',true);
       this.state.set('flags.mioFollowerConsequenceComplete',true);
       this.completeCh2Act1Consequence('high');
-      questMessage='ACT 1 完成：你和 MIO 談過照片帶來的現實反應。';
+      questMessage='你和 MIO 談過照片帶來的現實反應。';
     }
     if(['ch2_act1_lower_mio','ch2_act1_lower_mio_draft'].includes(dialogue?.id)){
       this.state.set('flags.ch2LowerConsequencePending',false);
       this.state.set('flags.mioFollowerConsequenceComplete',true);
       this.completeCh2Act1Consequence('lower');
-      questMessage='ACT 1 完成：你和 MIO 回顧了照片分享後的反應。';
+      questMessage='你和 MIO 回顧了照片分享後的反應。';
     }
     if(['ch2_act1_consequence_current_now','ch2_act1_consequence_general_now','ch2_act1_consequence_none_now','ch2_act1_consequence_later'].includes(dialogue?.id)){
       this.state.set('flags.ch2EchoReactionSeen',true);
@@ -528,6 +590,7 @@ export class Game {
       this.startReflection(next.id);
       return;
     }
+    if(context.kind==='ch2_final_fragment')this.prepareCh2FinalInformationWorld();
     this.mapManager.enter(sceneId,{position:returnContext?.position??null,direction:returnContext?.facing??null});
     this.state.set('exploration.returnContext',null);this.saveManager.save();
     if(dialogue?.id==='ch1_album_phase3_complete')this.mapManager.view.showMessage?.('ALBUM 的屏障已平靜。沿原路回家，去找 PARENT 談談照片與分享的約定。');
@@ -536,6 +599,126 @@ export class Game {
     if(noticeDiscovery?.isNew){const sideObjective=this.guidanceManager?.noticeBoardSideObjective(sceneId);if(sideObjective)this.guidanceManager?.queueNotice(`支線任務：${sideObjective}`);}
     this.guidanceManager?.flushNotice();
     this.flushCh2EchoReactionNotification();
+  }
+
+  isCh2FinalEntryEligible(){
+    const quest=this.state.get('quests.ch2_explore_event')??{};
+    return this.state.get('sceneId')==='ch2_community_event'
+      && Boolean(this.state.get('flags.ch2Started'))
+      && Boolean(this.state.get('flags.ch2Act3Complete'))
+      && Boolean(this.state.get('flags.ch2Act3RepairResolved'))
+      && quest.stageId==='prepare_to_leave';
+  }
+
+  handleMapExit(target,scene){
+    if(target?.id!=='ch2_community_to_neighborhood'||scene?.id!=='ch2_community_event')return false;
+    if(this.state.get('flags.ch2FinalEntryStarted')){this.continueCh2FinalEntry();return true;}
+    if(!this.isCh2FinalEntryEligible())return false;
+    return this.startCh2FinalEntry(target.id);
+  }
+
+  startCh2FinalEntry(exitId='ch2_community_to_neighborhood'){
+    if(this.state.get('flags.ch2FinalEntryStarted')){this.continueCh2FinalEntry();return true;}
+    if(!this.isCh2FinalEntryEligible())return false;
+    const quest=this.state.get('quests.ch2_explore_event')??{};
+    this.state.set('flags.ch2FinalEntryStarted',true);
+    this.state.set('activeFlow.finalEntry',{id:'ch2_final_entry',sourceSceneId:'ch2_community_event',exitId});
+    this.state.set('quests.ch2_explore_event',{...quest,status:'complete',stageId:'prepare_to_leave'});
+    this.state.set('exploration.interactionTargetId',null);
+    this.showCh2FinalEntryCheckpoint();
+    this.saveManager.save();
+    this.transitionToCh2FinalDataWorld();
+    return true;
+  }
+
+  continueCh2FinalEntry(){
+    if(this.state.get('flags.ch2FinalDataWorldEntered')){this.enterCh2FinalDataWorld({resume:true});return;}
+    this.showCh2FinalEntryCheckpoint();
+    this.transitionToCh2FinalDataWorld();
+  }
+
+  transitionToCh2FinalDataWorld(){
+    const enter=()=>this.enterCh2FinalDataWorld();
+    if(this.mapManager?.view?.transition)this.mapManager.view.transition(enter);else enter();
+  }
+
+  enterCh2FinalDataWorld({resume=false}={}){
+    if(!this.state.get('flags.ch2FinalEntryStarted'))return false;
+    const alreadyEntered=Boolean(this.state.get('flags.ch2FinalDataWorldEntered'));
+    this.state.set('flags.ch2FinalDataWorldEntered',true);
+    this.state.set('activeFlow.finalEntry',{...(this.state.get('activeFlow.finalEntry')??{}),id:'ch2_final_entry',sceneId:'ch2_final_data_world',status:'entered'});
+    const screen=this.root.querySelector('#final-entry-screen');if(screen)screen.hidden=true;
+      this.prepareCh2FinalInformationWorld();
+      this.mapManager.enter('ch2_final_data_world',{resetToSpawn:!(resume||alreadyEntered)});
+    if(resume&&this.state.get('flags.ch2FinalNorthConvergenceReady')&&this.ch2FinalFragmentModel?.requiredIds.length&&this.state.get('flags.ch2NullEncounterStarted')&&!this.state.get('flags.ch2NullDialogueComplete')){
+      // Resume only at a stable, single-NULL reveal boundary; never replay a completed encounter.
+      this.revealCh2Null();
+      this.startCh2NullDialogue();
+    }
+    this.saveManager.save();
+    return true;
+  }
+
+    buildCh2FinalSnapshot(){return buildCh2FinalSnapshot(this.state);}
+
+    startCh2NullEncounter(){
+      const model=this.ch2FinalFragmentModel,position=this.mapManager.position;
+      const viewed=new Set(this.state.get('flags.ch2FinalViewedFragmentIds')??[]);
+      if(this.state.get('sceneId')!=='ch2_final_data_world'||this.state.get('playerMovementLocked')
+        ||this.state.get('flags.ch2NullEncounterStarted')||!this.state.get('flags.ch2FinalNorthConvergenceReady')
+        ||!model?.requiredIds.length||!model.requiredIds.every((id)=>viewed.has(id))
+        ||position?.x!==9||position?.y!==3)return false;
+      this.state.set('flags.ch2NullEncounterStarted',true);
+      this.state.set('playerMovementLocked',true);
+      this.mapManager.view.beginNullFormation();this.saveManager.save();
+      const active=()=>this.state.get('sceneId')==='ch2_final_data_world'&&this.state.get('mode')===GAME_MODE.EXPLORATION&&this.state.get('flags.ch2NullEncounterStarted')&&!this.state.get('flags.ch2NullDialogueComplete');
+      // Narrative beats, not a map-loading delay. A reload resumes at the reveal boundary.
+      const formationTimer=setTimeout(()=>{this.bossDiagnostics?.timerFired(formationTimer);if(!active())return;this.revealCh2Null();
+        const dialogueTimer=setTimeout(()=>{this.bossDiagnostics?.timerFired(dialogueTimer);if(active())this.startCh2NullDialogue();},900);
+        this.bossDiagnostics?.timerStarted(dialogueTimer);
+      },1500);
+      this.bossDiagnostics?.timerStarted(formationTimer);
+      return true;
+    }
+
+    revealCh2Null(){
+      this.state.set('flags.ch2NullFormationComplete',true);
+      this.prepareCh2FinalInformationWorld();
+      this.mapManager.view.refreshEntityVisibility();
+      this.mapManager.view.revealNull();this.saveManager.save();
+    }
+
+    startCh2NullDialogue(){
+      if(this.state.get('flags.ch2NullDialogueComplete')||(this.state.get('mode')===GAME_MODE.DIALOGUE&&this.dialogueManager.dialogue?.id==='ch2_null_first_encounter'))return;
+      this.ensureCh2FinalDialogues();
+      const dialogue=buildNullFirstDialogue(this.ch2FinalFragmentModel);
+      const index=this.data.dialogues.findIndex((item)=>item.id===dialogue.id);
+      if(index<0)this.data.dialogues.push(dialogue);else this.data.dialogues[index]=dialogue;
+      this.mapManager.view.finishNullFormation();
+      this.dialogueManager.start(dialogue.id,'資料世界',{kind:'ch2_null_encounter',overlay:true,
+        returnContext:{sceneId:'ch2_final_data_world',position:{...this.mapManager.position},facing:'up'}});
+    }
+
+    prepareCh2FinalInformationWorld(){
+      const scene=this.data?.scenes?.find((item)=>item.id==='ch2_final_data_world');if(!scene)return null;
+      const model=resolveCh2InformationFragments(this.buildCh2FinalSnapshot());const viewed=new Set(this.state.get('flags.ch2FinalViewedFragmentIds')??[]);const ready=model.requiredIds.every((id)=>viewed.has(id));this.state.set('flags.ch2FinalNorthConvergenceReady',ready);
+      const revealed=ready&&Boolean(this.state.get('flags.ch2NullFormationComplete'));
+      scene.entities=(scene.entities??[]).filter((entity)=>!entity.generatedFinalFragment&&entity.id!=='ch2_final_convergence'&&entity.id!=='ch2_final_null');
+      const nodes=model.fragments.map((fragment)=>({...fragment,viewed:viewed.has(fragment.id)}));
+      scene.entities.push(...nodes.map((fragment)=>({...fragmentEntity(fragment),viewed:fragment.viewed,generatedFinalFragment:true})),{id:'ch2_final_convergence',type:'object',displayLabel:'聚合中的光',position:{x:9,y:2},nonBlocking:true,convergenceReady:ready,generatedFinalFragment:true,...(ready&&!revealed?{interaction:{kind:'ch2_final_convergence',prompt:'按 E 查看前方的變化',frontPositions:[{x:9,y:3,facing:'up'}]}}:{})});
+      if(revealed&&!this.state.get('flags.ch2NullProfileCollapsed'))scene.entities.push({id:'ch2_final_null',type:'object',displayLabel:'資料輪廓',presentationClass:'temporary-null',position:{x:9,y:2},nonBlocking:true,generatedFinalFragment:true,interaction:{kind:'ch2_null_talk',prompt:'按 E 查看',frontPositions:[{x:9,y:3,facing:'up'}]}});
+      scene.fragmentNodes=nodes;scene.fragmentConnections=model.connections;this.ch2FinalFragmentModel=model;return model;
+    }
+
+    syncCh2FinalGuidance(){
+      const keeper=Boolean(this.state.get('flags.ch2FinalPhotoKeeperIntroComplete')),viewed=(this.state.get('flags.ch2FinalViewedFragmentIds')??[]).length,ready=Boolean(this.state.get('flags.ch2FinalNorthConvergenceReady'));const collapsed=Boolean(this.state.get('flags.ch2NullProfileCollapsed'));const objective=collapsed&&!this.state.get('flags.ch2PostBossReflectionComplete')?'和 PHOTO KEEPER 談談。':this.state.get('flags.ch2NullDialogueComplete')?'再靠近看看那個資料輪廓。':ready?'前方似乎有什麼變化。':viewed?'看看散落在這裡的資訊。':keeper?'沿著前方繼續探索。':'和入口附近的 PHOTO KEEPER 談談。';if(collapsed){const quest=this.state.get('quests.ch2_explore_event')??{};this.state.set('quests.ch2_explore_event',{...quest,status:'ACTIVE',stageId:'post_boss_reflection'});}this.state.set('quests.ch1_guidance',{discovered:true,status:'ACTIVE',currentStage:collapsed?'post_boss_reflection':ready?'final_data_convergence':keeper?'explore_final_data_world':'meet_final_photo_keeper',objective,progress:0,maxProgress:1,completed:false});return objective;
+    }
+
+  showCh2FinalEntryCheckpoint(){
+    ['#story-intro','#title-screen','#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen','#survey-screen','#environment-closeup-screen','#phone-screen','#guidance-modal','#quest-notification'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});
+    const screen=this.root.querySelector('#final-entry-screen');if(screen)screen.hidden=false;
+    this.state.set('mode',GAME_MODE.MENU);this.state.set('playerMovementLocked',true);if(this.root?.dataset)this.root.dataset.gameMode='final-entry';
+    this.audioManager.stopBGM({fade:500});
   }
 
   photo01TaggableCharacters(){
@@ -659,8 +842,7 @@ export class Game {
     const scene=this.data.scenes.find((item)=>item.id==='ch2_community_event');
     const mio=scene?.entities?.find((item)=>item.id==='ch2_mio');
     if(!mio)return;
-    mio.roaming={requiredFlags:['ch2Act2BridgeComplete'],completeFlag:'ch2MioReachedActivityArea',destination:{x:18,y:9},navigationArea:{x:5,y:5,width:21,height:18},movementSpeed:420,idleDuration:{min:350,max:500},persistSteps:true};
-    this.mapManager.roamingNpcs?.syncVisibleNpcs?.();
+    this.placeFixedStoryNpc(mio,{x:18,y:9},'left');
   }
 
   openAct3Echo(){
@@ -796,7 +978,19 @@ export class Game {
 
   startReflection(id){this.audioManager.playBGM('REFLECTION');this.reflectionManager.start(id);}
   beginReflection(definition){this.state.set('activeFlow.reflection',{id:definition.id});this.state.set('mode',GAME_MODE.REFLECTION);if(this.root?.dataset)this.root.dataset.gameMode='reflection';this.state.set('playerMovementLocked',true);this.saveManager.save();}
-  finishReflection(){this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);this.saveManager.save();this.summaryManager.start();}
+  finishReflection(){const definition=this.reflectionManager.definition;this.state.set('activeFlow.reflection',null);this.state.set('exploration.returnContext',null);if(definition?.chapter==='CH2'){this.state.set('flags.ch2ReflectionComplete',true);this.startCh2Ending();return;}this.saveManager.save();this.summaryManager.start();}
+
+  ensureCh2FinalDialogues(){
+    this.data.characters.null??={displayName:'資料輪廓',presentationClass:'data-profile',portraits:{}};
+    const add=(dialogue)=>{const index=this.data.dialogues.findIndex((item)=>item.id===dialogue.id);if(index<0)this.data.dialogues.push(dialogue);else this.data.dialogues[index]=dialogue;};
+    add({id:'ch2_profile_collapse',label:'資料輪廓',sceneId:'ch2_final_data_world',participants:[{characterId:'player',position:'right',expression:'thinking'},{characterId:'null',position:'left',expression:'neutral'}],lines:[{speakerId:'player',expression:'thinking',text:'連結……斷開了。'},{speakerId:'null',expression:'neutral',text:'……'},{speakerId:'player',expression:'thinking',text:'可是那些資訊還在。'},{speakerId:'null',expression:'neutral',text:'嗯。'},{speakerId:'null',expression:'neutral',text:'只是沒有再像剛才那樣連在一起。'},{speakerId:'null',expression:'thinking',text:'分開的資訊，看起來只是碎片。'},{speakerId:'null',expression:'thinking',text:'連在一起，就可能看見更多。'}],choices:[],endText:'資料輪廓淡出，碎片留在資料世界。'});
+    add({id:'ch2_post_boss_photo_keeper',label:'第二章 · PHOTO KEEPER',sceneId:'ch2_final_data_world',participants:[{characterId:'photo_keeper',position:'left',expression:'thinking'},{characterId:'player',position:'right',expression:'thinking'}],lines:[{speakerId:'photo_keeper',expression:'thinking',text:'看見了嗎？'},{speakerId:'player',expression:'thinking',text:'那些資訊原本都是分開的。'},{speakerId:'player',expression:'thinking',text:'可是連起來之後，看起來就像知道了更多事情。'},{speakerId:'photo_keeper',expression:'neutral',text:'嗯。'},{speakerId:'photo_keeper',expression:'thinking',text:'但不是每一條線，都一定能得到答案。'},{speakerId:'player',expression:'thinking',text:'有些只是線索。'},{speakerId:'photo_keeper',expression:'neutral',text:'對。'},{speakerId:'photo_keeper',expression:'thinking',text:'真正重要的，是你有沒有注意自己留下了什麼，又讓誰能看見。'},{speakerId:'player',expression:'neutral',text:'……我好像懂了。'}],choices:[],endText:'PHOTO KEEPER 安靜地等你整理這次看見的線。'});
+    add({id:'ch2_final_ending',label:'第二章 · 結束',sceneId:'ch2_final_data_world',participants:[{characterId:'player',position:'right',expression:'thinking'},{characterId:'photo_keeper',position:'left',expression:'neutral'}],lines:[{speakerId:'player',expression:'thinking',text:'所以剛才那個輪廓……'},{speakerId:'photo_keeper',expression:'neutral',text:'只是這一次連起來的樣子。'},{speakerId:'player',expression:'thinking',text:'這一次？'},{speakerId:'photo_keeper',expression:'thinking',text:'你之後還會留下新的東西。'},{speakerId:'player',expression:'neutral',text:'……'},{speakerId:'photo_keeper',expression:'neutral',text:'走吧。'}],choices:[],endText:'你和 PHOTO KEEPER 一起離開資料世界。'});
+  }
+
+  startCh2Ending(){this.ensureCh2FinalDialogues();this.state.set('flags.ch2EndingStarted',true);this.state.set('mode',GAME_MODE.DIALOGUE);this.saveManager.save();this.dialogueManager.start('ch2_final_ending','資料世界',{kind:'ch2_ending',overlay:true,returnContext:{sceneId:'ch2_final_data_world',position:{...this.mapManager.position},facing:this.state.get('exploration.facing')??'down'}});}
+
+  showCh2Complete(){this.phoneManager?.hide();['#story-intro','#title-screen','#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen','#survey-screen','#environment-closeup-screen','#phone-screen','#final-entry-screen','#guidance-modal','#quest-notification'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});const screen=this.root.querySelector('#ch2-complete-screen');if(screen)screen.hidden=false;this.state.set('mode',GAME_MODE.MENU);this.state.set('playerMovementLocked',true);if(this.root?.dataset)this.root.dataset.gameMode='ch2-complete';this.audioManager.stopBGM({fade:500});}
 
   beginCh2Opening({resume=false}={}){
     this.guidanceManager.startChapter2Opening({index:resume?this.state.get('flags.ch2OpeningIndex'):0,onComplete:()=>this.mapManager.view.transition(()=>this.startCh2OpeningScene())});
@@ -835,13 +1029,18 @@ export class Game {
 
   handleMapEnter(scene){
     this.root.dataset.gameMode='exploration';
+    for(const id of ['kai','mio','rin'])if(this.state.get(`flags.partyFollowers.${id}.active`))this.state.set(`flags.partyFollowers.${id}.active`,false);
     this.audioManager.playBGM(scene.bgmId??'DAILY_EXPLORATION');
     if(scene.id==='ch2_community_event'&&this.state.get('flags.ch2TravelToEventAvailable')&&!this.state.get('flags.ch2ArrivedAtEvent'))this.completeCh2Arrival();
-    this.guidanceManager.onExploration(scene.id);
+    if(scene.id==='ch2_final_data_world'){
+      const previous=this.state.get('quests.ch1_guidance.objective'),objective=this.syncCh2FinalGuidance();
+      if(previous!==objective)this.guidanceManager.queueNotice(objective);
+    }else this.guidanceManager.onExploration(scene.id);
     if(scene.id==='home_map'&&this.state.get('flags.ch2OpeningSceneActive')&&!this.state.get('flags.ch2PingCompleted'))this.phoneManager.presentNotification();
     if(scene.id==='ch2_community_event'&&this.state.get('flags.ch2Act2BridgeComplete')&&!this.state.get('flags.ch2Act2PostCompleted'))this.prepareAct2CharacterMovement();
     if(scene.id==='ch2_community_event'&&this.state.get('flags.ch2Act3AnnouncementComplete')&&!this.state.get('flags.ch2GroupPhotoCompleted'))this.prepareAct3CharacterMovement();
     if(scene.id==='ch2_community_event'&&this.state.get('flags.ch2Act2BridgePending')&&!this.state.get('flags.ch2Act2BridgeComplete'))queueMicrotask(()=>{if(this.state.get('mode')===GAME_MODE.EXPLORATION)this.dialogueManager.start('ch2_act2_bridge','社區活動會場',{kind:'ch2_act2_bridge',overlay:true,returnContext:{mode:'EXPLORATION',sceneId:scene.id,position:{...this.mapManager.position},facing:this.state.get('exploration.facing')??'down'}});});
+    if(scene.id==='ch2_final_data_world'&&!this.state.get('flags.ch2FinalPhotoKeeperIntroComplete'))this.mapManager.view.showMessage?.('PHOTO KEEPER 就在附近，先和他談談。');
     this.flushCh2EchoReactionNotification();
     this.flushCh2Act3Announcement();
   }
@@ -867,7 +1066,7 @@ export class Game {
     this.mapManager.view.showMessage?.('主線任務：找到 MIO。');
   }
 
-  returnToMainMenu(){this.phoneManager?.hide();['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen','#survey-screen','#environment-closeup-screen','#phone-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
+  returnToMainMenu(){this.phoneManager?.hide();['#dialogue-scene','#map-screen','#battle-screen','#puzzle-screen','#memory-investigation-screen','#reflection-screen','#chapter-summary-screen','#echo-screen','#survey-screen','#environment-closeup-screen','#phone-screen','#final-entry-screen','#ch2-complete-screen'].forEach((selector)=>{const node=this.root.querySelector(selector);if(node)node.hidden=true;});this.root.querySelector('#title-screen').hidden=false;this.audioManager.stopBGM({fade:500});this.state.set('mode',GAME_MODE.MENU);if(this.root?.dataset)this.root.dataset.gameMode='menu';this.state.set('playerMovementLocked',true);this.saveManager.save();this.syncSaveUi();}
 
   handleAction(action) {
     if (action === 'start') {
@@ -928,9 +1127,9 @@ export class Game {
     if(this.state.get('flags.bonusSecondRewardPending')){this.openSecondRewardSelection();return;}
     if(this.state.get('flags.surveyCompleted')&&!this.state.get('flags.bonusShareChoice')){this.openBonusShareOffer();return;}
     const rewardNames={coins:'遊戲點數',equipment:'稀有裝備',skin:'限定造型'};
-    const status=completed?`<p>活動已完成。你已領取：${[first,this.state.get('flags.secondReward')].filter(Boolean).map((id)=>rewardNames[id]).join('、')}。</p>`:'<p>參加活動，即可選擇一項遊戲獎勵！</p><div class="environment-closeup-rewards"><div class="environment-closeup-reward"><strong>遊戲點數</strong>可在虛構遊戲世界使用的大量點數。</div><div class="environment-closeup-reward"><strong>稀有裝備</strong>帶有特殊邊框的幻想裝備。</div><div class="environment-closeup-reward"><strong>限定造型</strong>本次活動限定的角色外觀。</div></div><p>問卷的附加欄位都可以留白；完成後再決定是否參加額外分享活動。</p>';
+    const status=completed?`<p>活動已完成。你已領取：${[first,this.state.get('flags.secondReward')].filter(Boolean).map((id)=>rewardNames[id]).join('、')}。</p>`:'<p>參加活動，即可選擇一項遊戲獎勵！</p><div class="environment-closeup-rewards"><div class="environment-closeup-reward"><strong>遊戲點數</strong>可在遊戲中使用的大量點數。</div><div class="environment-closeup-reward"><strong>稀有裝備</strong>帶有特殊邊框的幻想裝備。</div><div class="environment-closeup-reward"><strong>限定造型</strong>本次活動限定的角色外觀。</div></div><p>完成問卷後，還可以選擇是否參加額外分享活動。</p>';
     this.state.set('flags.rewardEventStarted',true);
-    this.showEnvironmentCloseup({kicker:'活動攤位',title:'限定遊戲獎勵',image:'assets/images/ch2/environment/ch2_game_reward_booth_bg.png',alt:'社區活動中的遊戲獎勵攤位近景，完整展示虛構遊戲點數、稀有裝備與限定造型。',content:status,actions:completed?[{action:'close',label:'返回會場'}]:[{action:'survey',label:'查看活動並參加'},{action:'close',label:'稍後再說',secondary:true}]});
+    this.showEnvironmentCloseup({kicker:'活動攤位',title:'限定遊戲獎勵',image:'assets/images/ch2/environment/ch2_game_reward_booth_bg.png',alt:'社區活動中的遊戲獎勵攤位近景，完整展示遊戲點數、稀有裝備與限定造型。',content:status,actions:completed?[{action:'close',label:'返回會場'}]:[{action:'survey',label:'查看活動並參加'},{action:'close',label:'稍後再說',secondary:true}]});
   }
 
   openBonusShareOffer(){
@@ -1033,10 +1232,18 @@ export class Game {
 
   prepareAct3CharacterMovement(){
     const scene=this.data.scenes.find((item)=>item.id==='ch2_community_event');
-    const mio=scene?.entities?.find((item)=>item.id==='ch2_mio');const rin=scene?.entities?.find((item)=>item.id==='ch2_rin');
-    if(mio)mio.roaming={requiredFlags:['ch2Act3AnnouncementComplete'],completeFlag:'ch2MioReachedGroupPhoto',destination:{x:5,y:5},navigationArea:{x:2,y:2,width:24,height:21},movementSpeed:420,idleDuration:{min:350,max:500},persistSteps:true};
-    if(rin)rin.roaming={requiredFlags:['ch2Act3AnnouncementComplete'],completeFlag:'ch2RinReachedGroupPhoto',destination:{x:3,y:5},navigationArea:{x:2,y:2,width:24,height:21},movementSpeed:420,idleDuration:{min:350,max:500},persistSteps:true};
-    this.mapManager.roamingNpcs?.syncVisibleNpcs?.();
+    const mio=scene?.entities?.find((item)=>item.id==='ch2_mio');const rin=scene?.entities?.find((item)=>item.id==='ch2_rin');const kai=scene?.entities?.find((item)=>item.id==='ch2_kai');
+    this.placeFixedStoryNpc(mio,{x:5,y:5},'up');
+    this.placeFixedStoryNpc(rin,{x:3,y:5},'up');
+    this.placeFixedStoryNpc(kai,{x:6,y:5},'up');
+  }
+
+  placeFixedStoryNpc(entity,position,direction='down'){
+    if(!entity)return;
+    delete entity.roaming;entity.position={...position};entity.direction=direction;
+    if(entity.interaction){const {x,y}=position;entity.interaction.frontPositions=[{x,y:y+1,facing:'up'},{x:x-1,y,facing:'right'},{x:x+1,y,facing:'left'},{x,y:y-1,facing:'down'}];entity.interaction.frontPosition=entity.interaction.frontPositions[0];}
+    this.mapManager.view.updateRoamingNpc?.(entity,{state:'IDLE',frame:1,direction});
+    this.mapManager.refreshInteraction?.();
   }
 
   recordCh2PostPhotoWorldAction(source){
@@ -1089,6 +1296,13 @@ export class Game {
     this.state.set('flags.ch2LookingForMioSpawn',{...position});
   }
 
+  startMaleNpcApproachDialogue(entity,config){
+    if(config?.eventId!=='looking_for_mio_approach'||this.state.get('flags.mioFollowerEncountered'))return;
+    const sceneId=this.mapManager.scene?.id??'ch2_community_event';
+    const returnContext={mode:'EXPLORATION',sceneId,position:{...this.mapManager.position},facing:this.state.get('exploration.facing')??'up',sourceId:entity.id,characterId:entity.characterId};
+    this.dialogueManager.start('ch2_male_recognition_approach','活動會場',{kind:'ch2_story_consequence',overlay:true,returnContext});
+  }
+
   completeCh2Act1Consequence(route='lower'){
     if(this.state.get('flags.ch2Act1Complete'))return;
     this.state.set('flags.ch2Act1ConsequenceResolved',true);
@@ -1101,7 +1315,35 @@ export class Game {
     this.saveManager.save();
   }
 
+  startNullBossFoundation(){
+    if(this.state.get('sceneId')!=='ch2_final_data_world'||this.state.get('mode')!==GAME_MODE.EXPLORATION||!this.state.get('flags.ch2NullDialogueComplete')||!this.state.get('flags.ch2BossStageReady')||this.state.get('flags.ch2NullBossFoundationComplete'))return false;
+    this.state.set('flags.ch2NullBossStarted',true);
+    const snapshot=this.buildCh2FinalSnapshot();const plan=buildNullBossSemanticPlan(snapshot,resolveCh2InformationFragments(snapshot));
+    this.openNullBossFoundation({id:'ch2_null_boss',round:1,phase:'PLAYER',plan,returnContext:{position:{...this.mapManager.position},facing:this.state.get('exploration.facing')}});return true;
+  }
+
+  openNullBossFoundation(flow){
+    this.nullBossManager??=new NullBossManager({root:this.root,state:this.state,saveManager:this.saveManager,onExit:(context,result)=>{this.prepareCh2FinalInformationWorld();this.mapManager.enter('ch2_final_data_world',{position:context.position,direction:context.facing});if(result?.collapsed){this.ensureCh2FinalDialogues();this.dialogueManager.start('ch2_profile_collapse','資料世界',{kind:'ch2_profile_collapse',overlay:true,returnContext:{sceneId:'ch2_final_data_world',position:{...this.mapManager.position},facing:this.state.get('exploration.facing')??'up'}});}}});
+    this.bossDiagnostics?.attachBoss(this.nullBossManager);
+    this.nullBossManager.open(flow,this.data.scenes.find(s=>s.id==='ch2_final_data_world').mapArt.baseImage);
+  }
+
   resumeFromState(){
+    if(this.state.get('flags.ch2Complete')){this.showCh2Complete();return;}
+    // Post-Boss flows outrank the persistent "entered data world" fallback.
+    // ReflectionManager restores saved answers and the submitted confirmation.
+    const postBossDialogue=this.state.get('activeFlow.dialogue');
+    if(['ch2_profile_collapse','ch2_post_boss_photo_keeper','ch2_final_ending'].includes(postBossDialogue?.id)){
+      this.ensureCh2FinalDialogues();
+      this.dialogueManager.start(postBossDialogue.id,'資料世界',postBossDialogue.context??{});return;
+    }
+    const postBossReflection=this.state.get('activeFlow.reflection');
+    if(postBossReflection?.id==='ch2_data_profile_reflection'){this.startReflection(postBossReflection.id);return;}
+    if(this.state.get('flags.ch2ReflectionComplete')){this.startCh2Ending();return;}
+    const nullBoss=this.state.get('activeFlow.nullBoss');
+    if(nullBoss?.id==='ch2_null_boss'&&this.state.get('flags.ch2NullDialogueComplete')&&this.state.get('flags.ch2BossStageReady')){this.openNullBossFoundation(nullBoss);return;}
+    if(this.state.get('flags.ch2FinalDataWorldEntered')){this.enterCh2FinalDataWorld({resume:true});return;}
+    if(this.state.get('flags.ch2FinalEntryStarted')){this.continueCh2FinalEntry();return;}
     if(this.isKaiMeetingReady()&&!this.state.get('flags.ch2KaiCanMeet'))this.state.set('flags.ch2KaiCanMeet',true);
     if(this.state.get('flags.ch2Act1Complete')&&!this.state.get('flags.ch2Act2BridgeComplete')&&!this.state.get('flags.ch2Act2PostCompleted'))this.state.set('flags.ch2Act2BridgePending',true);
     if(this.state.get('flags.ch2Act2ReflectionComplete')&&!this.state.get('flags.ch2Act3AnnouncementComplete')&&!this.state.get('flags.ch2Act3AnnouncementReady'))this.state.set('flags.ch2Act3ExplorationActive',true);
@@ -1110,13 +1352,14 @@ export class Game {
     const echoFlow=this.state.get('activeFlow.echo');
     if(echoFlow?.config){this.echoManager.open(echoFlow.config);return;}
     const dialogueFlow=this.state.get('activeFlow.dialogue');
-    if(dialogueFlow?.id){const sceneName=this.data.scenes.find((item)=>item.id===dialogueFlow.context?.returnContext?.sceneId)?.displayName??'事件場景';this.dialogueManager.start(dialogueFlow.id,sceneName,dialogueFlow.context??{});return;}
+    if(dialogueFlow?.id){if(dialogueFlow.id.startsWith('ch2_profile_')||dialogueFlow.id.startsWith('ch2_post_boss_')||dialogueFlow.id==='ch2_final_ending')this.ensureCh2FinalDialogues();const sceneName=this.data.scenes.find((item)=>item.id===dialogueFlow.context?.returnContext?.sceneId)?.displayName??'事件場景';this.dialogueManager.start(dialogueFlow.id,sceneName,dialogueFlow.context??{});return;}
     const puzzleFlow=this.state.get('activeFlow.puzzle');
     if(puzzleFlow?.id){this.puzzleManager.start(puzzleFlow.id,puzzleFlow.context??{});return;}
     const memoryFlow=this.state.get('activeFlow.memory');
     if(memoryFlow?.id){this.memoryManager.start(memoryFlow.id,memoryFlow.context??{});return;}
     const reflectionFlow=this.state.get('activeFlow.reflection');
     if(reflectionFlow?.id){this.startReflection(reflectionFlow.id);return;}
+    if(this.state.get('flags.ch2ReflectionComplete')&&!this.state.get('flags.ch2Complete')){this.startCh2Ending();return;}
     const summaryFlow=this.state.get('activeFlow.summary');
     if(summaryFlow){this.summaryManager.start({index:summaryFlow.index??0});return;}
     if(this.state.get('flags.ch2Photo01PostDialoguePending')&&!this.state.get('flags.ch2Photo01PostDialogueComplete')){this.openPhoto01PostDialogue();return;}

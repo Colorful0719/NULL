@@ -30,6 +30,7 @@ export class DialogueView {
       const figure = document.createElement('figure');
       figure.className = `portrait portrait--${participant.position}`;
       figure.dataset.characterId = participant.characterId;
+      if(character.presentationClass){figure.classList.add(`portrait--${character.presentationClass}`);figure.setAttribute('aria-label',`${character.displayName} 暫時資料剪影`);return figure;}
       const image = document.createElement('img');
       image.src = character.portraits[participant.expression] ?? character.portraits[character.defaultPortrait];
       image.alt = `${character.displayName} 角色立繪`;
@@ -39,7 +40,7 @@ export class DialogueView {
     }));
   }
 
-  renderEnvironment(dialogue){const source=dialogue.environmentImage??'';if(!this.environmentVisual||!this.environmentImage)return;this.environmentVisual.hidden=!source;this.environmentImage.src=source;this.environmentImage.alt=dialogue.environmentAlt??`${dialogue.label}照片展示`;}
+  renderEnvironment(dialogue){const source=dialogue.environmentImage??dialogue.visual?.asset??'';if(!this.environmentVisual||!this.environmentImage)return;this.scene.classList.toggle('dialogue-scene--ch2-photo',Boolean(source&&source.includes('images/ch2/echo/')));this.environmentVisual.hidden=!source;if(source)this.environmentImage.src=source;else this.environmentImage.removeAttribute('src');this.environmentImage.alt=dialogue.environmentAlt??dialogue.visual?.alt??`${dialogue.label}照片展示`;}
 
   playPhotoFlash(){
     this.scene.classList.remove('is-photo-flash');
@@ -65,7 +66,7 @@ export class DialogueView {
       portrait.classList.toggle('is-muted', !speaking);
       if (speaking && line.expression) {
         const image = portrait.querySelector('img');
-        image.src = character.portraits[line.expression] ?? character.portraits[character.defaultPortrait];
+        if(image)image.src = character.portraits[line.expression] ?? character.portraits[character.defaultPortrait];
       }
     });
   }
@@ -98,6 +99,7 @@ export class DialogueView {
     this.scene.hidden = true;
     this.scene.classList.remove('dialogue-scene--overlay');
     this.scene.classList.remove('dialogue-scene--environment');
+    this.scene.classList.remove('dialogue-scene--ch2-photo');
     if(this.environmentVisual)this.environmentVisual.hidden=true;if(this.environmentImage)this.environmentImage.removeAttribute('src');
     if(!this.overlay)this.root.querySelector('#title-screen').hidden = false;
     this.overlay=false;

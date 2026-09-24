@@ -35,6 +35,7 @@ export class MapView {
   }
   render(scene, position, onExit, onEncounter, onPuzzle) {
     this.scene=scene;
+    this.screen.classList.remove('is-null-forming','has-null-revealed','is-null-encounter');
     this.screen.dataset.theme = scene.theme;
     this.screen.dataset.debugMap = String(DEBUG_MAP);
     this.grid.style.setProperty('--map-columns', scene.grid?.width ?? 6);
@@ -63,7 +64,7 @@ export class MapView {
       tile.setAttribute('aria-hidden', 'true');
       return tile;
     }));
-    this.entityLayer?.replaceChildren(...(scene.entities ?? []).filter((entity)=>this.isEntityVisible(entity)).map((entity) => this.createEntitySprite(entity)));
+    this.entityLayer?.replaceChildren(this.createFragmentConnections(scene),...(scene.entities ?? []).filter((entity)=>this.isEntityVisible(entity)).map((entity) => this.createEntitySprite(entity)));
     this.entityVisibilityKey=this.visibleEntityKey(scene);
     this.renderDebug(scene);
     this.lastGrid=scene.grid;this.showMessage('');
@@ -89,7 +90,12 @@ export class MapView {
       const sprite = document.createElement('span');
       sprite.className = `map-entity map-entity--${entity.type}`;
       if(entity.interaction?.kind)sprite.classList.add(`map-entity--interaction-${entity.interaction.kind}`);
+      if(entity.fragmentType)sprite.classList.add(`map-fragment--${entity.fragmentType.toLowerCase()}`);
+      if(entity.id==='ch2_final_convergence')sprite.classList.add('map-final-convergence');
+      if(entity.presentationClass)sprite.classList.add(`map-entity--${entity.presentationClass}`);
+      if(entity.convergenceReady)sprite.classList.add('is-ready');
       sprite.dataset.entityId = entity.id;
+      if(entity.viewed)sprite.dataset.viewed='true';
       const iconWorldAnchor=entity.visualBounds&&entity.iconAnchor?{
         x:entity.visualBounds.x+entity.visualBounds.width*entity.iconAnchor.x,
         y:entity.visualBounds.y+entity.visualBounds.height*entity.iconAnchor.y
@@ -118,7 +124,7 @@ export class MapView {
       }else if(entity.image){
         sprite.classList.add('map-entity--image');
         sprite.style.backgroundImage=`url("${entity.image}")`;
-      }else sprite.textContent = label;
+      }else if(!entity.presentationClass)sprite.textContent = label;
       const friendlyCharacters=['parent','kai','rin','mio','photo_kid','photo_keeper'];
       if(entity.type==='npc'&&friendlyCharacters.includes(entity.characterId)){
         const nameTag=document.createElement('span');nameTag.className='map-friendly-label';nameTag.textContent=label;sprite.append(nameTag);
@@ -127,12 +133,34 @@ export class MapView {
       sprite.setAttribute('aria-label', entity.type==='npc'?`${label} 地圖角色`:`${label} 可互動物件`);
       return sprite;
   }
+  createFragmentConnections(scene){
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('map-fragment-connections');svg.setAttribute('viewBox',`0 0 ${scene.grid?.width??1} ${scene.grid?.height??1}`);svg.setAttribute('aria-hidden','true');
+    const byId=new Map((scene.fragmentNodes??[]).map((node)=>[node.id,node]));
+    for(const edge of scene.fragmentConnections??[]){const from=byId.get(edge.from),to=byId.get(edge.to);if(!from||!to)continue;const line=document.createElementNS('http://www.w3.org/2000/svg','line');line.setAttribute('x1',from.position.x+.5);line.setAttribute('y1',from.position.y+.5);line.setAttribute('x2',to.position.x+.5);line.setAttribute('y2',to.position.y+.5);svg.append(line);}
+    return svg;
+  }
+  beginNullFormation(){
+    this.screen.classList.add('is-null-forming','is-null-encounter');
+    this.entityLayer?.querySelectorAll('.map-entity--interaction-ch2_final_fragment[data-viewed="true"]').forEach((node)=>node.classList.add('is-null-reacting'));
+    const svg=this.entityLayer?.querySelector('.map-fragment-connections');svg?.classList.add('is-null-reacting');
+    // Temporary light flow from actual viewed nodes, not additional semantic connections.
+    for(const node of this.scene.fragmentNodes??[]){if(!node.viewed)continue;const ray=document.createElementNS('http://www.w3.org/2000/svg','line');ray.classList.add('null-formation-ray');ray.setAttribute('x1',node.position.x+.5);ray.setAttribute('y1',node.position.y+.5);ray.setAttribute('x2',9.5);ray.setAttribute('y2',2.5);svg?.append(ray);}
+    this.entityLayer?.querySelector('.map-final-convergence')?.classList.add('is-null-reacting');
+  }
+  revealNull(){this.screen.classList.add('has-null-revealed','is-null-encounter');this.entityLayer?.querySelector('[data-entity-id="ch2_final_null"]')?.classList.add('is-revealed');}
+  finishNullFormation(){this.screen.classList.remove('is-null-forming');this.entityLayer?.querySelectorAll('.null-formation-ray').forEach((node)=>node.remove());this.entityLayer?.querySelectorAll('.is-null-reacting').forEach((node)=>node.classList.remove('is-null-reacting'));this.revealNull();}
   updateRoamingNpc(entity,npc){
     const sprite=this.entityLayer?.querySelector(`.map-entity[data-entity-id="${entity.id}"]`);if(!sprite)return;
     sprite.style.setProperty('--entity-x',entity.position.x);sprite.style.setProperty('--entity-y',entity.position.y);
     const animation=entity.mapSprite?.animation;if(!animation)return;
     this.applyAnimatedNpcFrame(sprite,entity.mapSprite,npc);
     sprite.dataset.direction=npc.direction;sprite.dataset.state=npc.state;
+  }
+  showNpcRecognition(entity,duration=900){
+    const sprite=this.entityLayer?.querySelector(`.map-entity[data-entity-id="${entity.id}"]`);if(!sprite)return;
+    sprite.querySelector('.map-npc-recognition-emote')?.remove();
+    const emote=document.createElement('span');emote.className='map-npc-recognition-emote';emote.textContent='!';emote.setAttribute('aria-label','注意到玩家');sprite.append(emote);
+    setTimeout(()=>emote.remove(),duration);
   }
   applyAnimatedNpcFrame(sprite,mapSprite,npc){
     const animation=mapSprite.animation,rows=animation.directionRows??{down:0,left:1,right:2,up:3};

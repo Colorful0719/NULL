@@ -16,6 +16,13 @@ export class InteractionSystem {
 
     for (const entity of scene.entities ?? []) {
       if (!entity.interaction || entity.interaction.enabled === false) continue;
+      // Information fragments use the standard adjacent range on every side,
+      // regardless of facing. Distance also selects a single nearest fragment.
+      if(entity.interaction.kind==='ch2_final_fragment'){
+        const range=distance(playerPosition,entity.position);
+        if(range<=1)candidates.push({source:'entity',...entity,score:range-2});
+        continue;
+      }
       const fronts=entity.interaction.frontPositions??(entity.interaction.frontPosition?[entity.interaction.frontPosition]:[]);
       if(fronts.length){
         const front=fronts.find((position)=>samePoint(playerPosition,position)&&facing===(position.facing??'up'));
@@ -34,3 +41,4 @@ export class InteractionSystem {
     return candidates.sort((a, b) => a.score - b.score || a.id.localeCompare(b.id))[0] ?? null;
   }
 }
+

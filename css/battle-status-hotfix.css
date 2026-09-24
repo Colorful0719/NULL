@@ -1,0 +1,79 @@
+/* CH1 battle presentation: six in-flow regions, shared by ALBUM and enemies. */
+#battle-screen.battle-screen--redesign {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto auto auto;
+  gap: 8px;
+  padding: 14px;
+  min-height: 0;
+  height: 100%;
+}
+#battle-screen[hidden] { display: none; }
+#battle-screen .battle-header { min-height: 50px; }
+#battle-screen .battle-header h1 { font-size: 32px; }
+#battle-screen .battle-main { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 12px; min-height: 0; }
+#battle-screen .battle-enemy-panel { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 12px; min-width: 0; min-height: 0; }
+#battle-screen .battle-enemy-info { align-self: stretch; padding: 14px; }
+#battle-screen .battle-enemy-info p { margin: 12px 0; font-size: 14px; }
+#battle-screen .battle-enemy-info strong { font-size: 16px; overflow-wrap: anywhere; }
+#battle-screen .battle-stage { display: grid; grid-template-rows: minmax(0, 1fr); min-height: 0; }
+#battle-screen .battle-field { min-height: 0; height: 100%; padding: 10px; display: grid; grid-template-rows: minmax(0, 1fr); align-content: stretch; }
+#battle-screen .battle-enemy-art { width: 100%; height: 100%; min-height: 0; max-height: 100%; max-width: 100%; object-fit: contain; }
+#battle-screen .player-battle-card { align-self: stretch; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(80px, 1fr) auto; gap: 8px; padding: 12px; min-height: 0; }
+#battle-screen .player-battle-card > img { display: block; width: 100%; height: 100%; min-height: 0; max-height: 130px; object-fit: contain; margin: auto; }
+#battle-screen .player-battle-card > div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; min-width: 0; }
+#battle-screen .player-battle-card h2 { grid-column: 1 / -1; margin: 0; }
+#battle-screen .player-battle-card p { margin: 0; padding: 6px 0 0; font-size: 14px; overflow-wrap: anywhere; }
+#battle-screen .player-battle-card p:last-child { grid-column: 1 / -1; }
+#battle-screen .player-battle-card strong { font-size: 16px; }
+#battle-screen .boss-mechanic-panel { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; padding: 8px 14px; border: 1px solid rgba(169,133,255,.4); background: #141b30; }
+#battle-screen #boss-phase { position: static; margin: 0; font-size: 16px; font-weight: 700; color: #d8c5ff; }
+#battle-screen #boss-phase:empty { display: none; }
+#battle-screen .battle-intent { position: static; margin: 0; padding: 0; border: 0; background: none; font-size: 14px; }
+#battle-screen.battle-screen--redesign > .battle-message-row .battle-message {
+  position: static;
+  z-index: auto;
+  transform: none;
+  width: 100%;
+  min-height: 64px;
+  max-height: none;
+  margin: 0;
+  padding: 10px 14px;
+  background: #071321;
+  box-shadow: none;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  pointer-events: none;
+}
+#battle-screen .battle-commands { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+#battle-screen .battle-commands button { min-height: 60px; padding: 8px; column-gap: 6px; }
+#battle-screen .battle-commands button strong { font-size: 16px; }
+#battle-screen .battle-commands button small { font-size: 12px; }
+#battle-screen .battle-utility { margin: 0; min-height: 32px; }
+#battle-screen .battle-tip { font-size: 13px; }
+@media (max-width: 1100px) {
+  #battle-screen .battle-main { grid-template-columns: minmax(0, 1fr) 230px; gap: 8px; }
+  #battle-screen .battle-enemy-panel { grid-template-columns: 150px minmax(0, 1fr); gap: 8px; }
+  #battle-screen .battle-enemy-info { padding: 10px; }
+  #battle-screen .battle-commands { gap: 6px; }
+  #battle-screen .battle-commands button { grid-template-columns: 1fr; text-align: center; }
+  #battle-screen .battle-commands button > span { display: none; }
+}
+@media (max-width: 899px) {
+  #battle-screen .battle-main { grid-template-columns: minmax(0, 1fr) 210px; }
+  #battle-screen .battle-enemy-panel { grid-template-columns: 130px minmax(0, 1fr); }
+  #battle-screen .battle-commands { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  #battle-screen .boss-mechanic-panel { flex-wrap: wrap; }
+}
+
+#battle-screen .battle-commands[hidden] { display: none; }
+#battle-screen:has(#battle-result:not([hidden])) .battle-action-area { display: none; }
+#battle-screen .battle-result {
+  position: static; grid-row: 5; transform: none; width: 100%;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: 14px; padding: 8px 14px; box-shadow: none; text-align: left;
+}
+#battle-screen .battle-result[hidden] { display: none; }
+#battle-screen .battle-result h2, #battle-screen .battle-result p { margin: 0; }
+#battle-screen .battle-result h2 { font-size: 18px; }

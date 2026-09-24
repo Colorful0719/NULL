@@ -1,0 +1,100 @@
+/* CH2 ECHO composer: one bounded content region, full-image media, stable actions. */
+.echo-screen[data-echo-stage="compose"] {
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-panel {
+  box-sizing: border-box;
+  max-height: 100%;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-body {
+  grid-template-columns: minmax(300px, .94fr) minmax(400px, 1.06fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-preview {
+  box-sizing: border-box;
+  container-type: size;
+  height: 100%;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  padding: clamp(12px, 2vh, 22px);
+  overflow: hidden;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-preview img {
+  width: auto;
+  height: auto;
+  max-width: min(100%, 100cqw);
+  max-height: min(100%, 100cqh);
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-compose {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-caption {
+  box-sizing: border-box;
+  min-height: 54px;
+  max-height: 132px;
+  margin: 2px 0 8px;
+  padding: 6px 0 8px;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-form {
+  align-content: start;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-profile-row {
+  margin-bottom: 8px;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-setting-row {
+  min-height: 48px;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-audience-preview {
+  margin-bottom: 6px;
+  padding: 8px 10px;
+}
+
+.echo-screen[data-echo-stage="compose"] .echo-actions {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 899px), (orientation: portrait) {
+  .echo-screen[data-echo-stage="compose"] .echo-body {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .echo-screen[data-echo-stage="compose"] .echo-preview {
+    height: clamp(220px, 40dvh, 360px);
+  }
+
+  .echo-screen[data-echo-stage="compose"] .echo-compose {
+    min-height: auto;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+}
+
+@media (max-height: 700px) and (orientation: landscape) and (min-width: 900px) {
+  .echo-screen[data-echo-stage="compose"] .echo-caption {
+    min-height: 54px;
+  }
+}

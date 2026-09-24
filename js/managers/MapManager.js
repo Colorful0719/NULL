@@ -2,14 +2,16 @@ import { GAME_MODE } from '../core/GameMode.js';
 import { InteractionSystem } from '../systems/InteractionSystem.js?v=neighborhoodboards1';
 import { RoamingEnemyManager } from './RoamingEnemyManager.js?v=roamingchase1';
 import { RoamingNpcManager } from './RoamingNpcManager.js?v=ch2npcdebug1';
+import { PartyFollowerManager } from './PartyFollowerManager.js?v=partyfollower1';
 import { MapAssetCache } from '../core/MapAssetCache.js?v=mapperf1';
 
 export class MapManager {
-  constructor({ scenes, gameState, view, saveManager, onEncounter, onPuzzle, onInteract, onEnter, onMove, assetCache = new MapAssetCache() }) {
+  constructor({ scenes, gameState, view, saveManager, onEncounter, onPuzzle, onInteract, onExit, onEnter, onMove, onNpcApproach, assetCache = new MapAssetCache() }) {
     this.scenes = scenes; this.gameState = gameState; this.view = view; this.saveManager = saveManager; this.onEncounter=onEncounter; this.onPuzzle=onPuzzle;
-    this.onInteract=onInteract;this.onEnter=onEnter;this.onMove=onMove;this.assetCache=assetCache;this.scene = null; this.position = { x: 0, y: 0 };
+    this.onInteract=onInteract;this.onExit=onExit;this.onEnter=onEnter;this.onMove=onMove;this.assetCache=assetCache;this.scene = null; this.position = { x: 0, y: 0 };
     this.roamingEnemies=new RoamingEnemyManager({gameState,view,saveManager,isCollision:(position)=>this.isCollision(position),onEncounter:(enemy)=>this.handleRoamingEncounter(enemy)});
-    this.roamingNpcs=new RoamingNpcManager({gameState,view,saveManager,isCollision:(position,ignoreId)=>this.isCollision(position,ignoreId),onPositionChange:()=>this.refreshInteraction()});
+    this.roamingNpcs=new RoamingNpcManager({gameState,view,saveManager,isCollision:(position,ignoreId)=>this.isCollision(position,ignoreId),onPositionChange:()=>this.refreshInteraction(),onApproach:onNpcApproach});
+    this.partyFollowers=new PartyFollowerManager({gameState,view,saveManager,isCollision:(position,ignoreId)=>this.isCollision(position,ignoreId),onPositionChange:()=>this.refreshInteraction()});
   }
   enter(sceneId, { resetToSpawn = false, position = null, direction = null } = {}) {
     const measureStart=globalThis.performance?.now?.()??0;
@@ -32,7 +34,7 @@ export class MapManager {
     this.gameState.set('mode', GAME_MODE.EXPLORATION);
     this.gameState.set('playerMovementLocked', false);
     this.persistExploration();
-    this.view.open(); this.view.render(scene, this.position, (to) => this.enter(to), (enemyId)=>this.onEncounter?.(enemyId), (puzzleId)=>this.onPuzzle?.(puzzleId));this.roamingEnemies.enter(scene);this.roamingNpcs.enter(scene); this.view.move(this.position, this.gameState.get('exploration.facing') ?? scene.spawnFacing ?? 'down');this.refreshInteraction();this.onEnter?.(scene);
+    this.view.open(); this.view.render(scene, this.position, (to) => this.enter(to), (enemyId)=>this.onEncounter?.(enemyId), (puzzleId)=>this.onPuzzle?.(puzzleId));this.roamingEnemies.enter(scene);this.roamingNpcs.enter(scene);this.partyFollowers.enter(scene,this.position); this.view.move(this.position, this.gameState.get('exploration.facing') ?? scene.spawnFacing ?? 'down');this.refreshInteraction();this.onEnter?.(scene);
     this.assetCache.preloadNeighbors(scene,this.scenes);
     const measureEnd=globalThis.performance?.now?.()??measureStart;
     this.lastEnterMetric={sceneId:scene.id,durationMs:Number((measureEnd-measureStart).toFixed(2))};
@@ -48,7 +50,7 @@ export class MapManager {
     };
     this.gameState.set('exploration.facing', facing);
     const moved=!this.isCollision(next);
-    if (moved) this.position = next;
+    if (moved) {this.position = next;this.partyFollowers.recordPlayerPosition(this.position);}
     this.persistExploration();
     this.view.move(this.position, facing, { blocked: this.isCollision(next) });
     if(moved&&this.roamingEnemies.checkPlayer(this.position))return true;
@@ -105,6 +107,7 @@ export class MapManager {
       const message = this.onInteract?.(target, this.scene);
       if (message) this.view.showMessage?.(message);
     } else if (target.type === 'exit') {
+      if(this.onExit?.(target,this.scene))return true;
       const conditionMet=this.meetsCondition(target);
       if(conditionMet){const destination=this.resolveDestination(target);const options={position:destination.targetPosition??null,direction:destination.targetDirection??null};this.gameState.set('playerMovementLocked',true);if(this.view.transition)this.view.transition(()=>this.enter(destination.to,options));else this.enter(destination.to,options);}else this.view.showMessage?.(target.lockedMessage??'目前無法進入。');
     }
@@ -133,6 +136,8 @@ export class MapManager {
   }
 
   get grid() { return this.scene?.grid ?? { width: 6, height: 4 }; }
+  setFollower(characterId,options){this.partyFollowers.setFollower(characterId,options);}
+  clearFollower(characterId){this.partyFollowers.clearFollower(characterId);}
   meetsCondition(target){const single=!target.condition||this.gameState.get(`flags.${target.condition.flag}`)===target.condition.equals;const anyFlags=target.requiredAnyFlags??[];return single&&(!anyFlags.length||anyFlags.some((flag)=>this.gameState.get(`flags.${flag}`)));}
   resolveDestination(target){
     const alternate=target.destinationWhen;
@@ -144,7 +149,7 @@ export class MapManager {
       && position.x >= 0 && position.y >= 0 && position.x < this.grid.width && position.y < this.grid.height;
   }
   isEntityVisible(entity){const interaction=entity.interaction??{};const all=(interaction.visibleWhenAllFlags??[]).every((flag)=>this.gameState.get(`flags.${flag}`));return all&&(!interaction.hiddenUntilFlag||this.gameState.get(`flags.${interaction.hiddenUntilFlag}`))&&(!interaction.hiddenWhenFlag||!this.gameState.get(`flags.${interaction.hiddenWhenFlag}`));}
-  isCollision(position,ignoreEntityId=null) { const interactionFront=!ignoreEntityId&&(this.scene?.entities??[]).filter((entity)=>this.isEntityVisible(entity)).some((entity)=>{const fronts=entity.interaction?.frontPositions??(entity.interaction?.frontPosition?[entity.interaction.frontPosition]:[]);return fronts.some((front)=>front.x===position.x&&front.y===position.y);});if(interactionFront)return false;return (this.scene?.collisions ?? []).some((point) => point.x === position.x && point.y === position.y) || (this.scene?.collisionRects ?? []).some((rect)=>position.x>=rect.x&&position.x<rect.x+rect.width&&position.y>=rect.y&&position.y<rect.y+rect.height) || (this.scene?.entities ?? []).filter((entity)=>entity.id!==ignoreEntityId&&this.isEntityVisible(entity)).some((entity) => ['npc','object'].includes(entity.type) && entity.position.x === position.x && entity.position.y === position.y); }
+  isCollision(position,ignoreEntityId=null) { const interactionFront=!ignoreEntityId&&(this.scene?.entities??[]).filter((entity)=>this.isEntityVisible(entity)).some((entity)=>{const fronts=entity.interaction?.frontPositions??(entity.interaction?.frontPosition?[entity.interaction.frontPosition]:[]);return fronts.some((front)=>front.x===position.x&&front.y===position.y);});if(interactionFront)return false;return (this.scene?.collisions ?? []).some((point) => point.x === position.x && point.y === position.y) || (this.scene?.collisionRects ?? []).some((rect)=>position.x>=rect.x&&position.x<rect.x+rect.width&&position.y>=rect.y&&position.y<rect.y+rect.height) || (this.scene?.entities ?? []).filter((entity)=>!entity.nonBlocking&&entity.id!==ignoreEntityId&&this.isEntityVisible(entity)).some((entity) => ['npc','object'].includes(entity.type) && entity.position.x === position.x && entity.position.y === position.y); }
   persistExploration() {
     this.gameState.set(`exploration.mapPositions.${this.scene.id}`, this.position);
     this.saveManager.save();
